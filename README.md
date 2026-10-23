@@ -68,8 +68,23 @@ This project is an initial reference for exploring geospatial and machine-learni
 - **Privacy matters.** Any population-related indicators should be aggregated appropriately and handled in a way that avoids exposing individuals.
 - **Public-safety claims require evidence.** HeatSafe-ML is not an official warning system and will not replace public health guidance or government advisories.
 
+## ⚖️ Project Governance & Standalone Coordination
+
+HeatSafe-ML coordinates development, scientific integrity, and roadmap delivery across three standalone foundational documents:
+
+- **Project Rules & Regulations ([README.md](file:///c:/Users/aayus/heatsafe-ML/README.md)):** The authoritative definition of project scope, domain approach, scientific integrity constraints, and public-safety regulations.
+- **IDE Development Commands & Agent Operating System ([agent.md](file:///c:/Users/aayus/heatsafe-ML/agent.md)):** Governs IDE commands, developer workflows, 4-layer backend architecture, folder limits, and coding standards ([code-standards/](file:///c:/Users/aayus/heatsafe-ML/code-standards)).
+- **Phasewise Execution Tracker ([progress.md](file:///c:/Users/aayus/heatsafe-ML/progress.md)):** Tracks delivery across Phases 0–12, maintaining strictly gated exit criteria from Foundation to Monitoring & Release.
+
+### Inviolable Structural Rules
+Throughout development, 3 structural rules are strictly protected and cannot be overturned by agent commands:
+1. **Strict 2-File-Per-Folder Limit:** Every parent folder may contain at most 2 child executable code files (`.py`, `.jsx`, `.tsx`).
+2. **Single Root `.gitignore` & `requirements.txt`:** Exactly 1 root [`.gitignore`](file:///c:/Users/aayus/heatsafe-ML/.gitignore) and 1 root [`requirements.txt`](file:///c:/Users/aayus/heatsafe-ML/requirements.txt) across the entire codebase.
+3. **No Additional Markdown Files:** Absolute freeze on generating new `.md` files; all project documentation, data logs, and decisions reside exclusively within the standalone triad (`README.md`, `agent.md`, `progress.md`).
+
 ## 🚀 Roadmap
 
+> For live phase status, checklists, and exit criteria, see [progress.md](file:///c:/Users/aayus/heatsafe-ML/progress.md).
 - [ ] Verify the Nagpur study boundary and available geospatial datasets
 - [ ] Audit source quality, licensing, dates, and spatial resolution
 - [ ] Create a reproducible data-ingestion and preprocessing workflow

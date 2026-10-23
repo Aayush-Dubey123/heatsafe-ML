@@ -1,0 +1,51 @@
+# ==============================================================================
+# AI Voice Studio — Consolidated Production Requirements
+# ==============================================================================
+
+# Web Framework & ASGI Server
+fastapi>=0.115.0
+uvicorn[standard]>=0.34.0
+pydantic>=2.10.0
+pydantic-settings>=2.7.0
+python-multipart>=0.0.20
+python-dotenv>=1.0.0
+
+# Database (SQLAlchemy SQLite)
+sqlalchemy>=2.0.38
+
+# Audio Processing & DSP
+soundfile>=0.12.1
+librosa>=0.10.2
+pyloudnorm>=0.1.1
+pydub>=0.25.1
+audioread>=3.0.1
+soxr>=0.4.0
+
+# Scientific & Array Computing
+numpy==1.26.4
+scipy>=1.13.0,<=1.15.3
+
+# Chatterbox Multilingual Neural TTS Synthesis
+chatterbox-tts==0.1.7
+conformer==0.3.2
+s3tokenizer==0.3.0
+resemble-perth==1.0.1
+
+# Neural Network Framework & Model Weights
+transformers>=4.48.0,<=5.2.0
+diffusers==0.29.0
+safetensors>=0.4.5
+huggingface-hub>=0.28.0
+einops>=0.8.0
+
+# Text Processing & Multilingual Phonetics
+regex>=2024.5.15
+pykakasi>=2.3.0
+jaconv>=0.3.4
+spacy_pkuseg>=0.0.33
+tqdm>=4.66.0
+packaging>=24.0
+
+# Testing & HTTP Client
+pytest>=8.3.0
+httpx>=0.28.0

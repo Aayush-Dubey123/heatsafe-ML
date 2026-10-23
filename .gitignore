@@ -1,0 +1,113 @@
+# ==============================================================================
+# Root Git Ignore Rules
+# ==============================================================================
+
+# Local environment configuration (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# Credentials, keys, and certificates
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+
+# Local databases and SQLite files
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite-journal
+*.sqlite3-journal
+!Thumbs.db
+
+# Operational and lab journals
+JOURNAL.txt
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Python virtual environments
+venv/
+.venv/
+.venv*/
+*_venv/
+env/
+ENV/
+
+# Testing and linting caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Logs (keep directory structure with .gitkeep)
+*.log
+logs/*
+backend/logs/*
+mcp/logs/*
+!logs/.gitkeep
+!backend/logs/.gitkeep
+
+# Node / Frontend build outputs & dependencies
+node_modules/
+dist/
+build/
+.output/
+.wrangler/
+.tanstack/
+.vercel/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary job storage & audio uploads/outputs
+backend/storage/
+storage/
+
+# AI voice models, weights, indexes, and checkpoints
+backend/voices/**/*.pth
+backend/voices/**/*.index
+*.pth
+*.pt
+*.bin
+*.safetensors
+*.onnx
+checkpoints/
+backend/voices/checkpoints_v2/
+backend/voices/rvc_models/
+
+# Raw and generated audio working files
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.m4a
+
+# Keep official voice library reference and preview assets
+!backend/voices/reference/client_ref.wav
+!backend/voices/reference/client_ref.txt
+!backend/voices/reference/script.txt
+!backend/voices/previews/client_ref_preview.wav
+
+# Final review independent test artifacts
+final_review/
+
+
+
