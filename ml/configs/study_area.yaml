@@ -1,0 +1,21 @@
+# ==============================================================================
+# HeatSafe-ML — Study Area Configuration (Nagpur, Maharashtra, India)
+# ==============================================================================
+
+study_area:
+  name: "Nagpur Urban Area"
+  state: "Maharashtra"
+  country: "India"
+  crs_geographic: "EPSG:4326"
+  crs_projected: "EPSG:32644"  # UTM Zone 44N
+  target_grid_resolution_meters: 30
+
+bounding_box:
+  min_longitude: 78.9500
+  max_longitude: 79.2000
+  min_latitude: 21.0500
+  max_latitude: 21.2500
+
+center_coordinates:
+  latitude: 21.1458
+  longitude: 79.0882

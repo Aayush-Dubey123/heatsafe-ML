@@ -12,7 +12,7 @@ This document serves as the permanent, static anchor for all AI agent operations
 ### Master Rules of Engagement
 1. **Static Anchor (Do Not Modify):** This document (`agent.md`) is immutable during standard feature development. Never modify, rewrite, or alter this file unless explicitly instructed by the user with a direct command to update the constitution.
 2. **The 3 Inviolable Structural Rules (Protected from Agent Commands):**
-   - **Rule A — Strict Two-File Folder Limit (Executable Code):** Throughout development, every parent folder must only contain at most 2 child executable code files (e.g., `.py`, `.jsx`, `.tsx`; no more than 2 code files may be created or worked on per parent folder; just the parent folder, 2 subsequent code files, and all implementation is written strictly within them). Project documentation ([README.md](file:///c:/Users/aayus/heatsafe-ML/README.md), [progress.md](file:///c:/Users/aayus/heatsafe-ML/progress.md)) and git directory anchors (`.gitkeep`) are strictly exempt metadata.
+   - **Rule A — Strict Two-File Folder Limit (Executable Code):** Throughout development, every parent folder must only contain at most 2 child executable code files (e.g., `.py`, `.jsx`, `.tsx`; no more than 2 code files may be created or worked on per parent folder; just the parent folder, 2 subsequent code files, and all implementation is written strictly within them). Project documentation ([README.md](file:///c:/Users/aayus/heatsafe-ML/README.md), [progress.md](file:///c:/Users/aayus/heatsafe-ML/progress.md)) is strictly exempt metadata. Never create `.gitkeep` files or placeholder directories.
    - **Rule B — Single Root `.gitignore` & Single `requirements.txt`:** Throughout the entire lifecycle of development, there must strictly be only **1 root [`.gitignore`](file:///c:/Users/aayus/heatsafe-ML/.gitignore)** and **1 root [`requirements.txt`](file:///c:/Users/aayus/heatsafe-ML/requirements.txt)** file. Never create duplicate, local, or subfolder `.gitignore` or `requirements.txt` / dependency files anywhere in the codebase.
    - **Rule C — No Additional Markdown Files (`.md` Freeze):** From here onwards throughout development, **no more `.md` files should be created or developed**. The workspace is strictly limited to the existing root triad: [README.md](file:///c:/Users/aayus/heatsafe-ML/README.md) (project rules & regulations), [agent.md](file:///c:/Users/aayus/heatsafe-ML/agent.md) (IDE dev operating system), and [progress.md](file:///c:/Users/aayus/heatsafe-ML/progress.md) (phasewise execution tracker). All documentation, data dictionaries, decision logs, or notes must be recorded within these existing files instead of creating new `.md` files.
    - **Inviolability Constraint:** IDE commands, agent routines, prompts, and autonomous workflows must **NEVER overturn, bypass, or weaken these 3 rules** unless explicitly and directly commanded by the user.
@@ -156,35 +156,52 @@ Always execute work according to the 5-step methodology:
 
 ---
 
-## 4. Anchor 3: Canonical Backend Prebuilt Structure
+## 4. Anchor 3: Minimal Component Architecture (`backend/` & `ml/`)
 
-The backend structure below is the **canonical architectural foundation**. All backend code must reside within this prebuilt structure. Do not introduce alternative folder structures unless explicitly requested. Throughout development, every parent folder should only contain at most 2 child executable code files (e.g., `.py` files; no more than 2 code files created or worked on per parent folder), with project documentation ([README.md](file:///c:/Users/aayus/heatsafe-ML/README.md), [progress.md](file:///c:/Users/aayus/heatsafe-ML/progress.md)) and git anchors (`.gitkeep`) exempt as metadata. Strictly 1 root [`requirements.txt`](file:///c:/Users/aayus/heatsafe-ML/requirements.txt) and 1 root [`.gitignore`](file:///c:/Users/aayus/heatsafe-ML/.gitignore) exist for the workspace, and no additional `.md` files may ever be created.
+The repository follows a clean, minimal component-based architecture. All backend services reside within `backend/`, and all ML and geospatial pipelines reside within `ml/`.
+
+### Target Component Boundaries
+- **Root**: Project-wide documentation ([README.md](file:///c:/Users/aayus/heatsafe-ML/README.md), [agent.md](file:///c:/Users/aayus/heatsafe-ML/agent.md), [progress.md](file:///c:/Users/aayus/heatsafe-ML/progress.md)), architectural diagram (`architecture.mmd`), one root [`.gitignore`](file:///c:/Users/aayus/heatsafe-ML/.gitignore), single root [`requirements.txt`](file:///c:/Users/aayus/heatsafe-ML/requirements.txt), and project tooling configuration (`.github/`, `.vscode/`, `.agents/`, `code-standards/`).
+- **`backend/`**: FastAPI application and backend-specific code.
+- **`ml/`**: ML/geospatial source code, tests, configs, and datasets.
+- **`frontend/`**: Future UI; strictly deferred until explicitly commanded.
+
+Never create `.gitkeep` files or placeholder directories. Avoid unnecessary files, duplicated configuration, and redundant dependency manifests.
 
 ```text
-c:\Users\aayus\heatsafe-ML\backend/
-├── commons/
-│   ├── auth.py                  # Shared JWT token signing/verification & bcrypt password hashing
-│   └── logger.py                # Centralized application logging factory with console & file handlers
-└── core/
-    ├── __init__.py              # Application root package: environment loading (.env) & logger re-export
-    ├── apis/
-    │   ├── api.py               # FastAPI composition root: CORS, security middleware, and router mounts
-    │   ├── routes/              # Thin HTTP endpoint definitions (e.g., auth, resources, domains)
-    │   └── schemas/             # Pydantic v2 data contracts
-    │       ├── requests/        # Incoming request validation schemas
-    │       └── responses/       # Outgoing serialized response schemas
-    ├── controllers/             # Domain business logic, authorization checks, orchestration
-    ├── cruds/                   # Low-level persistence operations & queries
-    ├── database/
-    │   ├── base_class.py        # Persistence Base model alias (ODMantic Model / SQLAlchemy Base)
-    │   └── database.py          # Process-wide database singleton client & engine factory
-    ├── models/                  # Stored data schemas, collection/table definitions, enums
-    └── services/                # External integrations, third-party clients, background jobs
+heatsafe-ML/
+├── backend/
+│   ├── commons/
+│   │   ├── auth.py                  # Shared JWT token signing/verification & security helpers
+│   │   └── logger.py                # Centralized application logging factory
+│   ├── core/
+│   │   ├── __init__.py              # Application root package: environment loading & logger re-export
+│   │   ├── apis/
+│   │   │   ├── api.py               # FastAPI composition root: CORS, security middleware, and router mounts
+│   │   │   ├── routes/              # Thin HTTP endpoint definitions (e.g., health.py)
+│   │   │   └── schemas/             # Pydantic v2 data contracts
+│   │   │       ├── requests/        # Incoming request validation schemas
+│   │   │       └── responses/       # Outgoing serialized response schemas
+│   │   ├── controllers/             # Domain business logic, authorization checks, orchestration
+│   │   ├── cruds/                   # Low-level persistence operations & queries
+│   │   ├── database/
+│   │   │   ├── base_class.py        # Persistence Base model alias (SQLAlchemy Base)
+│   │   │   └── database.py          # Process-wide database singleton client & engine factory
+│   │   ├── models/                  # Stored data schemas, table definitions, enums
+│   │   └── services/                # External integrations, third-party clients, background jobs
+│   ├── tests/                       # Backend test suite (<= 2 .py per folder)
+│   └── main.py                      # ASGI runtime entrypoint
+└── ml/
+    ├── src/
+    │   └── commons/                 # logger.py, manifest.py
+    ├── configs/                     # study_area.yaml, thresholds.yaml
+    ├── tests/                       # test_smoke.py (mirrors src/ folder-for-folder, <= 2 .py per folder)
+    └── data/                        # manifest/ (tracked), raw/, interim/, processed/ (git-ignored)
 ```
 
 ### Folder Responsibilities Summary
 - **`backend/commons/`**: Cross-cutting utilities used across multiple architectural layers (auth helpers, logging engine).
-- **`backend/core/apis/api.py`**: The FastAPI ASGI application assembler (`core.apis.api:app`).
+- **`backend/core/apis/api.py`**: The FastAPI ASGI application assembler (`backend.core.apis.api:app`).
 - **`backend/core/apis/routes/`**: APIRouters handling HTTP transport only.
 - **`backend/core/apis/schemas/`**: Pydantic request and response schemas isolating API contracts from database models.
 - **`backend/core/controllers/`**: Core domain decisions and business rules.
@@ -192,6 +209,10 @@ c:\Users\aayus\heatsafe-ML\backend/
 - **`backend/core/database/`**: Database client lifecycle, connection pooling, and base model definitions.
 - **`backend/core/models/`**: Stored database entity definitions.
 - **`backend/core/services/`**: Third-party integrations, SDK wrappers, and background workflows.
+- **`ml/src/commons/`**: Shared geospatial ML utilities (manifest tracking, logging).
+- **`ml/configs/`**: YAML/JSON configuration files for study area, ingestion, model parameters, and thresholds.
+- **`ml/tests/`**: Test suite dedicated to ML pipelines, data validation, and model baselines.
+- **`ml/data/`**: Raw, interim, and processed data directories (git-ignored) plus tracked data manifest.
 
 ---
 
@@ -242,6 +263,4 @@ When the user explicitly issues a command to build the frontend, activate the fo
 - Design & Aesthetics: Activate [.agents/skills/impeccable](file:///c:/Users/aayus/heatsafe-ML/.agents/skills/impeccable) and [.agents/skills/web-design-guidelines](file:///c:/Users/aayus/heatsafe-ML/.agents/skills/web-design-guidelines).
 - State & Boundaries: Typed API clients in `lib/api`, centralized environment variable configuration, accessibility, responsive UI, zero hardcoded backend URLs.
 
-HARDWARE: Windows 11 laptop, NVIDIA RTX 3050 6GB VRAM, 16GB RAM, i5-12450HX. Use the CUDA build of PyTorch.
-Keep GPU memory under ~5GB: load only one heavy model on the GPU at a time (OpenVoice OR RVC), use fp16 where safe,
-and free GPU memory between jobs. Always support a CPU fallback.
+HARDWARE: Windows 11 laptop, NVIDIA RTX 3050 6GB VRAM, 16GB RAM, i5-12450HX. Tabular models (LightGBM, Random Forest) run on CPU on the dev laptop. Always support a CPU fallback.

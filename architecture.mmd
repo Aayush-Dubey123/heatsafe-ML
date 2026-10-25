@@ -1,13 +1,48 @@
-
 flowchart TD
-    GEO["GEO<br/>PROJECT"]
+    GEO["GEO<br/>PROJECT: HeatSafe-ML"]
 
-    GEO --> FE["Frontend"]
-    GEO --> BE["backend"]
-    GEO --> DOCS["gitignore /<br/>requirement /md"]
+    GEO --> FE["Frontend (UI - LOCKED)<br/>[PLANNED]"]
+    GEO --> BE["Backend (backend/)<br/>[IMPLEMENTED & TESTED]"]
+    GEO --> ML["ML & Geospatial (ml/)<br/>[IMPLEMENTED & TESTED]"]
+    GEO --> DOCS["Project Governance<br/>[IMPLEMENTED & TESTED]"]
+
+    subgraph BackendComponents ["backend/ Architecture (4-Layer Flow)"]
+        BE --> BE_MAIN["main.py (ASGI Uvicorn Entry)<br/>[IMPLEMENTED]"]
+        BE --> BE_COMMONS["commons/<br/>(logger.py, auth.py)<br/>[IMPLEMENTED & TESTED]"]
+        BE --> BE_API["core/apis/api.py (Composition Root)<br/>[IMPLEMENTED & TESTED]"]
+        BE_API --> BE_ROUTE["core/apis/routes/health.py<br/>[IMPLEMENTED & TESTED]"]
+        BE_ROUTE --> BE_SCHEMAS["core/apis/schemas/<br/>(requests/ & responses/)<br/>[IMPLEMENTED & TESTED]"]
+        BE_ROUTE --> BE_CTRL["core/controllers/health_controller.py<br/>[IMPLEMENTED & TESTED]"]
+        BE_CTRL --> BE_CRUD["core/cruds/health_crud.py<br/>[IMPLEMENTED & TESTED]"]
+        BE_CTRL --> BE_SVC["core/services/system_service.py<br/>[IMPLEMENTED & TESTED]"]
+        BE_CRUD --> BE_DB["core/database/<br/>(database.py, base_class.py)<br/>[IMPLEMENTED & TESTED]"]
+        BE_CRUD --> BE_MODEL["core/models/health_model.py<br/>[IMPLEMENTED & TESTED]"]
+        BE --> BE_TEST["tests/test_health.py<br/>[TESTED]"]
+    end
+
+    subgraph MLComponents ["ml/ Geospatial Architecture"]
+        ML --> ML_COMMONS["src/commons/<br/>(logger.py, manifest.py)<br/>[IMPLEMENTED & TESTED]"]
+        ML --> ML_CONFIGS["configs/<br/>(study_area.yaml, thresholds.yaml)<br/>[IMPLEMENTED & TESTED]"]
+        ML --> ML_DATA["data/<br/>(manifest/, raw/, interim/, processed/)<br/>[PLANNED]"]
+        ML --> ML_PIPE["src/ (ingest, preprocess, models, validate)<br/>[PLANNED]"]
+        ML --> ML_TEST["tests/test_smoke.py<br/>[TESTED]"]
+    end
+
+    subgraph GovernanceComponents ["Root Governance & Tooling"]
+        DOCS --> DOC_TRIAD["Root Triad Documents<br/>(README.md, agent.md, progress.md)<br/>[IMPLEMENTED]"]
+        DOCS --> DOC_CONF["Root Tooling<br/>(.gitignore, requirements.txt, ci.yml)<br/>[IMPLEMENTED & TESTED]"]
+        DOCS --> DOC_SKILLS[".agents/ & code-standards/<br/>[IMPLEMENTED & TESTED]"]
+    end
 
     FE --> START(("start"))
-    BE --> START
-    DOCS --> START
+    BE_TEST --> START
+    ML_TEST --> START
+    DOC_CONF --> START
 
     START --> PHASE{"phase<br/>wise dev"}
+
+    PHASE --> P0["Phase 0: Foundation & Minimal Component Architecture<br/>[TESTED & CLOSED]"]
+    P0 --> P1["Phase 1: Study Area & Data-Source Inventory<br/>[PLANNED]"]
+    P1 --> BE_GATE{"Backend & ML Acceptance Gate<br/>(Exit Criteria Verification)"}
+    BE_GATE -- "Owner Command: 'move to frontend'" --> FE_GATE{"Frontend Gate Unlocked<br/>[LOCKED]"}
+    FE_GATE --> FE

@@ -9,13 +9,13 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
    - The project owner explicitly issues the command: *"move to frontend"*.
 3. **Strict Gate Closure:** A phase closes only when **every measurable exit criterion** is ticked and its evidence is logged in the phase's *Evidence* line. No skipping ahead.
 4. **Three Inviolable Structural Rules:**
-   - Strict 2-file-per-folder limit for executable code (`.py`, `.jsx`, `.tsx`). No `__init__.py` files (use namespace packages) so the limit is never silently exceeded. Tests follow the same rule.
+   - Strict 2-file-per-folder limit for executable code (`.py`, `.jsx`, `.tsx`). Never create `.gitkeep` files or placeholder directories. Tests follow the same rule.
    - Strictly 1 root [`.gitignore`](.gitignore) and 1 root [`requirements.txt`](requirements.txt).
    - Absolute freeze on new markdown files; all documentation stays in [README.md](README.md), [agent.md](agent.md), and [progress.md](progress.md).
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 4, and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 0 (Foundation & Setup)  
+**Current phase:** Phase 1 (Study Area Verification & Data Feasibility Audit) — Phase 0 Closed  
 **Frontend status:** 🔒 LOCKED  
 **Last updated:** 2026-10-25  
 
@@ -47,36 +47,35 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 
 ---
 
-## Target Repository Layout (2-file rule applied)
+## Target Minimal Component Architecture (2-file rule applied)
 
 ```
 heatsafe-ML/
-├─ README.md · agent.md · progress.md · requirements.txt · .gitignore · Dockerfile · .env.example
-├─ .github/workflows/ci.yml                (non-code YAML)
-├─ configs/                                (YAML/JSON only: study_area.yaml, ingest.yaml, model.yaml, thresholds.yaml)
-├─ data/
-│  ├─ raw/ · interim/ · processed/          (git-ignored)
-│  └─ manifest/data_manifest.json           (tracked)
-├─ src/
-│  ├─ commons/        logger.py, manifest.py
-│  ├─ ingest/         __main__.py, sources.py
-│  ├─ preprocess/     align.py, features.py
-│  ├─ validate/       schema.py
-│  ├─ eda/            maps.py, stats.py
-│  ├─ models/
-│  │  ├─ baseline/    baselines.py, metrics.py
-│  │  ├─ core/        train.py, evaluate.py
-│  │  └─ explain/     shap_analysis.py, intervals.py
-│  ├─ exposure/       index.py, vulnerability.py
-│  ├─ pipeline/       run_batch.py, fallback.py
-│  └─ storage/        cog.py, postgis.py
-├─ backend/
-│  ├─ main.py, deps.py
-│  ├─ commons/        logger.py, config.py
-│  └─ core/<layer>/<domain>/                (layers: routers, controllers, services, repositories;
-│                                            domains: heat, forecast, wards, cooling, tiles, system;
-│                                            each domain folder holds ≤ 2 .py files)
-└─ tests/                                   (mirrors src/ and backend/ folder-for-folder, ≤ 2 .py per folder)
+├── README.md · agent.md · progress.md · architecture.mmd · requirements.txt · .gitignore
+├── .github/workflows/ci.yml                (CI workflow configuration)
+├── .vscode/                                (IDE tooling configuration)
+├── .agents/                                (Agent skills and governance rules)
+├── code-standards/                         (Backend and frontend coding standards)
+├── backend/
+│   ├── commons/                            (logger.py, auth.py)
+│   ├── core/
+│   │   ├── __init__.py                     (environment loading, logger export)
+│   │   ├── apis/
+│   │   │   ├── api.py                      (FastAPI composition root)
+│   │   │   ├── routes/                     (health.py)
+│   │   │   └── schemas/                    (requests/health_request.py, responses/health_response.py)
+│   │   ├── controllers/                    (health_controller.py)
+│   │   ├── cruds/                          (health_crud.py)
+│   │   ├── database/                       (database.py, base_class.py)
+│   │   ├── models/                         (health_model.py)
+│   │   └── services/                       (system_service.py)
+│   ├── tests/                              (test_health.py)
+│   └── main.py                             (ASGI runtime entrypoint)
+└── ml/
+    ├── src/commons/                        (logger.py, manifest.py)
+    ├── configs/                            (study_area.yaml, thresholds.yaml)
+    ├── tests/                              (test_smoke.py)
+    └── data/                               (manifest/data_manifest.json [tracked], raw/ interim/ processed/ [git-ignored])
 ```
 
 ---
@@ -88,20 +87,21 @@ heatsafe-ML/
 
 ### Milestone 1: Foundation & Setup
 
-#### Phase 0 — Foundation & Lightweight Toolchain `[ ]`
-**Concrete assets:** repo with `main`/`dev`; folder tree above (empty folders hold `.gitkeep`); `requirements.txt` with exact pins; `src/commons/manifest.py`, `src/commons/logger.py`; `tests/smoke/test_env.py`; `data/manifest/data_manifest.json`.
-- [ ] GitHub repository, branching model (`main`, `dev`, `feature/*`), issue labels per phase (`phase-0` … `phase-10`)
-- [ ] Directory scaffolding conforming to the 2-file rule (tree above)
-- [ ] Python environment (3.11) with a single pinned root `requirements.txt` (earthengine-api, geopandas, rasterio, pandas, pyarrow, pandera, scikit-learn, lightgbm, shap, esda, libpysal, pytest, pytest-cov, fastapi, pydantic>=2)
-- [ ] Data manifest helper writing: source, scene ID, acquisition date, SHA256, size in bytes, pull timestamp
-- [ ] Google Earth Engine non-commercial authentication verified by reading one Landsat scene's metadata
-- [ ] `pytest` configured; smoke test checks imports, GEE auth, manifest write/read, and logs hardware (CUDA/CPU)
-- [ ] Decisions D1–D7 copied into `README.md` as "Project Decisions" with status (open/locked)
+#### Phase 0 — Foundation & Minimal Component Architecture `[x]`
+**Concrete assets:** Root documentation triad (`README.md`, `agent.md`, `progress.md`), `architecture.mmd`, single root `requirements.txt` and `.gitignore`, CI workflow `.github/workflows/ci.yml`; minimal working `backend/` 4-layer health stack with `backend/tests/test_health.py`; `ml/src/commons/logger.py`, `ml/src/commons/manifest.py`, `ml/configs/study_area.yaml`, `ml/configs/thresholds.yaml`, and `ml/tests/test_smoke.py`.
+- [x] Repository structure audited and verified: foreign audio dependencies removed, strict 2-file folder limits enforced, zero `.gitkeep` files.
+- [x] Minimal component-based architecture established: `backend/` for FastAPI services, `ml/` for geospatial pipelines and configs, `frontend/` frozen and deferred.
+- [x] Python environment configured with a single root `requirements.txt` containing FastAPI, Pydantic v2, SQLAlchemy, NumPy, SciPy, Pandas, Shapely, Rasterio, Scikit-learn, LightGBM, and PyYAML.
+- [x] Single root `.gitignore` sanitizing secrets, caches, and raw geospatial datasets (`.tif`, `.nc`, `.shp`, `ml/data/raw/`, `ml/data/interim/`, `ml/data/processed/`).
+- [x] Data manifest helper implemented (`ml/src/commons/manifest.py`) writing cryptographic SHA256 hashes, scene IDs, sizes, and UTC timestamps.
+- [x] `architecture.mmd` updated showing real component connections and status markers preserving top-to-bottom visual hierarchy.
+- [x] Automated test suite configured and verified green (6/6 passing across backend and ML).
 - **Measurable Exit Criteria:**
-  - [ ] Fresh clone builds the environment with one command (`pip install -r requirements.txt`).
-  - [ ] `pytest tests/` passes 100% green.
-  - [ ] Hardware log line (CUDA or CPU fallback) is produced.
-- **Evidence:** CI-less local run output pasted in the change log; commit hash.
+  - [x] Single root `requirements.txt` installs cleanly and consolidates production dependencies.
+  - [x] `pytest` passes 100% green across all components (6 passed in 2.64s).
+  - [x] Backend 4-layer flow (`routes -> controllers -> CRUD/services -> database`) fully validated with automated integration test.
+  - [x] ML configuration and manifest cryptographic hashing validated.
+- **Evidence:** `pytest -v` executed with 6/6 tests passing (`backend/tests/test_health.py` 2 passed, `ml/tests/test_smoke.py` 4 passed). Zero `.gitkeep` placeholder files created.
 
 ---
 

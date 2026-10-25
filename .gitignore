@@ -1,5 +1,5 @@
 # ==============================================================================
-# Root Git Ignore Rules
+# HeatSafe-ML — Single Root Git Ignore Rules
 # ==============================================================================
 
 # Local environment configuration (never commit secrets)
@@ -24,7 +24,6 @@
 *.db-shm
 *.sqlite-journal
 *.sqlite3-journal
-!Thumbs.db
 
 # Operational and lab journals
 JOURNAL.txt
@@ -43,7 +42,7 @@ venv/
 env/
 ENV/
 
-# Testing and linting caches
+# Testing, linting, and coverage caches
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
@@ -51,24 +50,47 @@ ENV/
 .coverage.*
 htmlcov/
 
-# Logs (keep directory structure with .gitkeep)
+# Application and pipeline logs
 *.log
-logs/*
-backend/logs/*
-mcp/logs/*
-!logs/.gitkeep
-!backend/logs/.gitkeep
+logs/
+backend/logs/
+ml/logs/
 
-# Node / Frontend build outputs & dependencies
+# Geospatial raw, interim, and processed data artifacts
+ml/data/raw/
+ml/data/interim/
+ml/data/processed/
+*.tif
+*.tiff
+*.geotiff
+*.nc
+*.h5
+*.hdf
+*.shp
+*.shx
+*.dbf
+*.cpg
+*.prj
+*.gpkg
+
+# Explicitly track data manifest definitions
+!ml/data/manifest/data_manifest.json
+
+# Model weights and serialized pipelines
+*.pkl
+*.joblib
+*.onnx
+ml/models/checkpoints/
+
+# Node / Frontend build outputs & dependencies (deferred branch)
 node_modules/
 dist/
 build/
-.output/
-.wrangler/
-.tanstack/
-.vercel/
+.next/
+out/
+.cache/
 
-# OS and IDE files
+# OS and IDE configuration files
 .DS_Store
 Thumbs.db
 ehthumbs.db
@@ -76,38 +98,3 @@ ehthumbs.db
 .vscode/
 *.swp
 *.swo
-
-# Temporary job storage & audio uploads/outputs
-backend/storage/
-storage/
-
-# AI voice models, weights, indexes, and checkpoints
-backend/voices/**/*.pth
-backend/voices/**/*.index
-*.pth
-*.pt
-*.bin
-*.safetensors
-*.onnx
-checkpoints/
-backend/voices/checkpoints_v2/
-backend/voices/rvc_models/
-
-# Raw and generated audio working files
-*.wav
-*.mp3
-*.flac
-*.ogg
-*.m4a
-
-# Keep official voice library reference and preview assets
-!backend/voices/reference/client_ref.wav
-!backend/voices/reference/client_ref.txt
-!backend/voices/reference/script.txt
-!backend/voices/previews/client_ref_preview.wav
-
-# Final review independent test artifacts
-final_review/
-
-
-

@@ -1,0 +1,15 @@
+# ==============================================================================
+# HeatSafe-ML — Scientific & Quality Thresholds Configuration
+# ==============================================================================
+
+satellite_ingestion:
+  max_cloud_cover_percent: 20.0
+  min_usable_scenes_training: 40
+  min_scenes_per_season: 8
+
+freshness_rules:
+  max_scene_age_days: 16       # Flag stale if greater than two Landsat revisits
+  max_weather_age_hours: 24     # Applicable when real-time weather covariates active
+
+model_baselines:
+  min_rmse_improvement_percent: 15.0  # Exit criterion vs spatial median baseline
