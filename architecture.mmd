@@ -1,0 +1,13 @@
+
+flowchart TD
+    GEO["GEO<br/>PROJECT"]
+
+    GEO --> FE["Frontend"]
+    GEO --> BE["backend"]
+    GEO --> DOCS["gitignore /<br/>requirement /md"]
+
+    FE --> START(("start"))
+    BE --> START
+    DOCS --> START
+
+    START --> PHASE{"phase<br/>wise dev"}

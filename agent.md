@@ -29,6 +29,25 @@ This document serves as the permanent, static anchor for all AI agent operations
 Whatever the stack may be (`.py`, `.jsx`, `.tsx`, etc.), every folder structure, architectural layer, and line of code must strictly conform to the conventions defined in [code-standards](file:///c:/Users/aayus/heatsafe-ML/code-standards):
 - **Backend (`.py`):** Strictly follow [code-standards/backend-standards](file:///c:/Users/aayus/heatsafe-ML/code-standards/backend-standards).
 - **Frontend (`.jsx`, `.tsx`):** Strictly follow [code-standards/frontend-standards](file:///c:/Users/aayus/heatsafe-ML/code-standards/frontend-standards) when triggered.
+### Mandatory Architecture Diagram Rule
+
+The existing `ARCHITECTURE.mmd` diagram and the owner's reference image define the original structure and visual style. Do not replace them with a newly designed architecture.
+
+Your responsibility is to progressively COMPLETE the diagram as you develop the project.
+
+- Preserve the existing root project node, Frontend, Backend, project configuration/documentation branches, Start node, and phase-wise development flow.
+- Whenever you implement or modify something, extend the existing diagram with the actual components, source files, modules, endpoints, data flows, dependencies, tests, and connections involved.
+- Show clearly how frontend components connect to backend endpoints, how backend modules connect to data sources and ML pipelines, and how configuration, testing, and deployment connect to these components.
+- Every new component must be connected to its relevant parent and downstream components. Avoid isolated boxes and disconnected diagrams.
+- Maintain the same visual language as the reference: rectangular component nodes, directional connecting arrows, decision diamonds for gates, and a top-to-bottom main flow with left-to-right branches.
+- Use Mermaid embedded in Markdown so the diagram remains editable and renders in GitHub.
+- Mark each component as PLANNED, IMPLEMENTED, TESTED, or BLOCKED based on actual evidence. Never claim work is complete merely because it appears in the plan.
+- Update the diagram after each development command whenever the implementation or status changes. Update progress.md consistently.
+- Inspect the existing diagram and repository before editing. Preserve existing valid content and extend it rather than replacing it.
+- Keep all work aligned with the existing project phases and backend-first gate. Do not implement frontend features until explicitly authorized.
+
+The final diagram must visually explain what has actually been built, what connects to what, what has been tested, and what remains to be done.
+
 
 ### 2.1 The 4-Layer Flow
 All API features must strictly follow this unidirectional flow:
