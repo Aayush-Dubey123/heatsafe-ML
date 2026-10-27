@@ -1,0 +1,59 @@
+[
+  {
+    "source": "OSM_Relation_12969115",
+    "scene_id": "nagpur_nmc_boundary_v1",
+    "acquisition_date": "2024-01-01T00:00:00Z",
+    "sha256": "7e3ec86434508309df12dcf709b1fd746f832266113e299a35a238ef5706c9ec",
+    "size_bytes": 33053,
+    "recorded_at_utc": "2026-10-27T15:12:49.695678+00:00",
+    "metadata": {
+      "crs": "EPSG:4326",
+      "type": "city_boundary",
+      "admin_level": 8,
+      "vertices": 387,
+      "bounds_wgs84": [
+        78.9952182,
+        21.0529736,
+        79.1788461,
+        21.2310022
+      ]
+    }
+  },
+  {
+    "source": "NMC_Administrative_Zones_2024",
+    "scene_id": "nagpur_zones_boundary_v1",
+    "acquisition_date": "2024-01-01T00:00:00Z",
+    "sha256": "28f5e670fa89108d1ab88a0b6903c05b6701f7ae8f2619acb6b1e3f84cec326a",
+    "size_bytes": 43858,
+    "recorded_at_utc": "2026-10-27T15:13:36.536482+00:00",
+    "metadata": {
+      "crs": "EPSG:4326",
+      "type": "administrative_zones",
+      "admin_level": 9,
+      "num_zones": 10
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20251218_02_T1",
+    "acquisition_date": "2025-12-18T05:08:52.167187Z",
+    "sha256": "0f9dc8a991e00f52d069fc06e1b326320cf341c349f96e5f257339894e5a4ff7",
+    "size_bytes": 84746930,
+    "recorded_at_utc": "2026-10-27T15:44:13.028219+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_SR_B6.tif"
+      }
+    }
+  }
+]

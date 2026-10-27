@@ -1,0 +1,62 @@
+# ==============================================================================
+# HeatSafe-ML — Data Ingestion Configuration
+# ==============================================================================
+
+spatial_constraints:
+  wrs_path: "144"
+  wrs_row: "045"
+  crs: "EPSG:4326"
+  bounding_box:
+    min_longitude: 78.9500
+    min_latitude: 21.0500
+    max_longitude: 79.2000
+    max_latitude: 21.2500
+
+temporal_constraints:
+  training_start_date: "2019-01-01"
+  training_end_date: "2025-12-31"
+  test_year: 2026
+
+filtering:
+  cloud_cover_max: 20.0
+
+stac_service:
+  search_endpoint: "https://planetarycomputer.microsoft.com/api/stac/v1/search"
+  signing_endpoint: "https://planetarycomputer.microsoft.com/api/sas/v1/sign"
+
+sources:
+  landsat:
+    stac_collection: "landsat-c2-l2"
+    target_bands:
+      lwir11: "ST_B10"       # Thermal infrared surface temperature
+      qa_pixel: "QA_PIXEL"   # Pixel quality assessment
+      qa_radsat: "QA_RADSAT" # Radiometric saturation
+      green: "SR_B3"         # Surface reflectance Green
+      red: "SR_B4"           # Surface reflectance Red
+      nir08: "SR_B5"         # Surface reflectance NIR
+      swir16: "SR_B6"        # Surface reflectance SWIR-1
+  sentinel2:
+    stac_collection: "sentinel-2-l2a"
+    match_window_days: 5
+    target_bands:
+      B03: "green"
+      B04: "red"
+      B08: "nir"
+      B11: "swir"
+      SCL: "scene_classification"
+  dem:
+    stac_collection: "cop-dem-glo-30"
+    target_tiles:
+      - "Copernicus_DSM_COG_10_N21_00_E078_00_DEM"
+      - "Copernicus_DSM_COG_10_N21_00_E079_00_DEM"
+
+retry_policy:
+  max_retries: 5
+  initial_delay_seconds: 1.0
+  backoff_factor: 2.0
+
+storage:
+  raw_root: "ml/data/raw"
+  landsat_dir: "ml/data/raw/landsat"
+  sentinel2_dir: "ml/data/raw/sentinel2"
+  dem_dir: "ml/data/raw/dem"

@@ -68,6 +68,18 @@ This project is an initial reference for exploring geospatial and machine-learni
 - **Privacy matters.** Any population-related indicators should be aggregated appropriately and handled in a way that avoids exposing individuals.
 - **Public-safety claims require evidence.** HeatSafe-ML is not an official warning system and will not replace public health guidance or government advisories.
 
+
+### 🔬 Target Variable Specifications
+
+To maintain scientific rigor, HeatSafe-ML strictly decouples land surface temperature, air temperature, and apparent heat index across different modeling stages:
+
+| Variable | Physical Meaning | Primary Data Source | Native Resolution | Model Target In | Evaluation Metrics | Baseline Benchmark |
+|:---|:---|:---|:---|:---|:---|:---|
+| **Land Surface Temperature (LST, °C)** | Radiative skin temperature of ground materials and canopy | Landsat 8/9 Collection 2 L2 (`ST_B10`) | ~100 m (resampled to 30 m by USGS) | Model 1 (Phase 5) | Spatial RMSE, MAE, $R^2$, Residual Moran's I | Historical spatial cell-mean climatology |
+| **Station Air Temperature ($T_{air}$, °C)** | Ambient dry-bulb temperature measured at 2 m height in shaded, ventilated Stevenson screens | IMD Sonegaon (42867) & CPCB CAAQMS (Civil Lines, Ambazari) | Point station observations | Model 2 (Post-Gate) | Point RMSE, MAE, Mean Bias Error (MBE) | Nearest-neighbor station observation / IDW |
+| **Heat Index (Apparent Temp, °C)** | Steadman physiological apparent temperature combining $T_{air}$ and relative humidity | Derived from station sensors & ERA5-Land reanalysis | Point / 0.1° reanalysis grid (~11 km) | Model 3 (Post-Gate) | Category classification accuracy (NOAA brackets), MAE | Point-station direct formula computation |
+
+*Crucial distinction:* Satellite LST during Nagpur summers (March–May) regularly exceeds 2 m air temperature by 10°C to 18°C due to intense solar irradiance on built asphalt and barren surfaces. LST and $T_{air}$ are never conflated or directly substituted for each other.
 ## ⚖️ Project Governance & Standalone Coordination
 
 HeatSafe-ML coordinates development, scientific integrity, and roadmap delivery across three standalone foundational documents:

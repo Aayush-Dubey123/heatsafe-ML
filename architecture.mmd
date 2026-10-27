@@ -22,10 +22,10 @@ flowchart TD
 
     subgraph MLComponents ["ml/ Geospatial Architecture"]
         ML --> ML_COMMONS["src/commons/<br/>(logger.py, manifest.py)<br/>[IMPLEMENTED & TESTED]"]
-        ML --> ML_CONFIGS["configs/<br/>(study_area.yaml, thresholds.yaml)<br/>[IMPLEMENTED & TESTED]"]
-        ML --> ML_DATA["data/<br/>(manifest/, raw/, interim/, processed/)<br/>[PLANNED]"]
-        ML --> ML_PIPE["src/ (ingest, preprocess, models, validate)<br/>[PLANNED]"]
-        ML --> ML_TEST["tests/test_smoke.py<br/>[TESTED]"]
+        ML --> ML_CONFIGS["configs/<br/>(study_area.yaml, thresholds.yaml, ingest.yaml)<br/>[IMPLEMENTED & TESTED]"]
+        ML --> ML_DATA["data/<br/>(manifest/data_manifest.json, raw/boundary/, raw/landsat/)<br/>[IMPLEMENTED & TESTED]"]
+        ML --> ML_INGEST["src/ingest/<br/>(__main__.py, sources.py)<br/>[IMPLEMENTED & TESTED]"]
+        ML --> ML_TEST["tests/<br/>(test_smoke.py, test_study_area.py, ingest/test_ingest.py)<br/>[IMPLEMENTED & TESTED]"]
     end
 
     subgraph GovernanceComponents ["Root Governance & Tooling"]
@@ -42,7 +42,9 @@ flowchart TD
     START --> PHASE{"phase<br/>wise dev"}
 
     PHASE --> P0["Phase 0: Foundation & Minimal Component Architecture<br/>[TESTED & CLOSED]"]
-    P0 --> P1["Phase 1: Study Area & Data-Source Inventory<br/>[PLANNED]"]
-    P1 --> BE_GATE{"Backend & ML Acceptance Gate<br/>(Exit Criteria Verification)"}
+    P0 --> P1["Phase 1: Study Area & Data-Source Inventory<br/>[TESTED & CLOSED]"]
+    P1 --> P2["Phase 2: Incremental Ingestion Pipeline<br/>[TESTED & CLOSED]"]
+    P2 --> P3["Phase 3: Preprocessing, QA Masking & Feature Engineering<br/>[PLANNED]"]
+    P3 --> BE_GATE{"Backend & ML Acceptance Gate<br/>(Exit Criteria Verification)"}
     BE_GATE -- "Owner Command: 'move to frontend'" --> FE_GATE{"Frontend Gate Unlocked<br/>[LOCKED]"}
     FE_GATE --> FE

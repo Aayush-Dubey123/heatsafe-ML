@@ -19,3 +19,26 @@ bounding_box:
 center_coordinates:
   latitude: 21.1458
   longitude: 79.0882
+
+# ==============================================================================
+# Master 30 m Analytical Grid (EPSG:32644 - UTM Zone 44N)
+# Design Justifications:
+# - 1 km Buffer: Prevents border-pixel truncation during spatial convolution
+#   and focal filtering, captures microclimatic transitions at the urban-rural
+#   periphery, and provides margin when snapping coordinates to 30 m multiples.
+# - 30 m Analytical Grid: Aligns with standard Landsat and Copernicus 30 m
+#   analytical products for multi-sensor array operations. Landsat thermal is
+#   natively ~100 m resampled to 30 m by USGS; the 30 m grid is strictly an
+#   analytical alignment grid, never claiming 'street-level accuracy' (D6).
+# ==============================================================================
+projected_grid:
+  crs: "EPSG:32644"
+  cell_size_meters: 30.0
+  buffer_meters: 1000.0
+  min_easting: 285960.0
+  max_easting: 314220.0
+  min_northing: 2328030.0
+  max_northing: 2351880.0
+  ncols: 942
+  nrows: 795
+  total_cells: 748890
