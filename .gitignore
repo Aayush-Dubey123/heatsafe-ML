@@ -57,7 +57,8 @@ backend/logs/
 ml/logs/
 
 # Geospatial raw, interim, and processed data artifacts
-ml/data/raw/
+ml/data/raw/*
+!ml/data/raw/boundary/
 ml/data/interim/
 ml/data/processed/
 *.tif
