@@ -3,8 +3,8 @@
     "source": "OSM_Relation_12969115",
     "scene_id": "nagpur_nmc_boundary_v1",
     "acquisition_date": "2024-01-01T00:00:00Z",
-    "sha256": "7e3ec86434508309df12dcf709b1fd746f832266113e299a35a238ef5706c9ec",
-    "size_bytes": 33053,
+    "sha256": "deb2915a884d40f5bce18061c608ee66e909f3933d80b6a8b8ae4aae0b6a402f",
+    "size_bytes": 31476,
     "recorded_at_utc": "2026-10-27T15:12:49.695678+00:00",
     "metadata": {
       "crs": "EPSG:4326",
