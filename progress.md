@@ -15,9 +15,9 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 4, and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 3 (Preprocessing, QA Masking & Feature Engineering) — Phase 2 Closed  
+**Current phase:** Phase 4 (First Working Result, EDA & Baseline Models) — Phase 3 Closed  
 **Frontend status:** 🔒 LOCKED  
-**Last updated:** 2026-10-27  
+**Last updated:** 2026-11-03  
 
 ---
 
@@ -29,7 +29,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | D2 | How is "freshness" defined? | Two separate ages are reported: `scene_age_days` (age of latest valid Landsat scene) and `weather_age_hours` (age of weather input, once weather exists). Flag `stale` when `scene_age_days > 16` (two missed combined L8/L9 revisits) or `weather_age_hours > 24`. The tracker's old "≤ 24 h source staleness" applies to weather only, not Landsat. | Locked in Phase 1 (2026-10-27) |
 | D3 | Same-day "now" heat | Branch 1 serves the latest valid scene product plus modelled spatial pattern, with its age shown. True same-day estimates need weather covariates (ERA5-Land / IMD) and belong to post-gate Models 2 and 3. | Locked in Phase 1 (2026-10-27) |
 | D4 | Training / validation / test windows | Train + tune: 2019-01-01 → 2025-12-31. Held-out **test year: 2026** (scenes to date). The test set is opened **once**, in Phase 6. | Locked in Phase 1 (2026-10-27) |
-| D5 | Spatial split design | 2 km × 2 km spatial blocks → `GroupKFold` (5 folds) on block ID, plus leave-ward-out CV. Final test also holds out a fixed 20% of blocks. | Phase 3 |
+| D5 | Spatial split design | Origin-anchored 2 km × 2 km spatial blocks ($B_{cc\_rr}$) relative to master grid origin (`min_easting: 285960.0`, `min_northing: 2328030.0`) -> `GroupKFold` (5 folds) on block ID. Final test also holds out a fixed 20% of blocks. | Locked in Phase 3 (2026-11-03) |
 | D6 | Resolution claim | 30 m is the analytical grid. Landsat thermal is natively ~100 m resampled to 30 m by USGS, so published accuracy is stated per cell on the 30 m grid, never as "street-level accuracy". | Locked in Phase 1 (2026-10-27) |
 | D7 | Minimum scene bar | At least 40 usable scenes in the training window, with at least 8 in each season (summer Mar–May, monsoon Jun–Sep, post-monsoon Oct–Nov, winter Dec–Feb) (default). If missed, widen the window or loosen cloud cover before modelling. | Phase 2 |
 
@@ -197,22 +197,69 @@ heatsafe-ML/
 | **Total (2019–2025)** | **63** | **13** | **40** | **57** | **173** |
 | **Decision D7 Bar** | **≥ 8** | **≥ 8** | **≥ 8** | **≥ 8** | **≥ 40** |
 | **Status** | **PASS** | **PASS** | **PASS** | **PASS** | **PASS** |
-#### Phase 3 — Preprocessing, QA Masking & Feature Engineering `[ ]`
-**Concrete assets:** `src/preprocess/align.py`, `src/preprocess/features.py`, `src/validate/schema.py`; `data/interim/` aligned rasters; `data/processed/features_v1.parquet`; data dictionary in `progress.md`.
-- [ ] Reproject and resample all rasters to the master 30 m grid (bilinear for continuous bands, nearest for masks)
-- [ ] Apply scale factors: LST (K) = `ST_B10 × 0.00341802 + 149.0`, then convert to °C; surface reflectance = `SR × 0.0000275 − 0.2`
-- [ ] QA masking using `QA_PIXEL` bits: fill, dilated cloud, cirrus, cloud, cloud shadow, snow, water (water excluded from training)
-- [ ] Features: NDVI = (B8−B4)/(B8+B4); NDBI = (B11−B8)/(B11+B8); MNDWI = (B3−B11)/(B3+B11); elevation, slope, aspect
-- [ ] Temporal features: day of year (sin/cos encoded), season label, acquisition hour, solar zenith
-- [ ] IDs for every row: `pixel_id`, `ward_id`, `block_id` (2 km grid), `scene_id`, `date`
-- [ ] Parquet training table `features_v1.parquet` and data dictionary (column, unit, source, range)
-- [ ] `pandera` schema: dtype and range checks (LST plausible 0–62 °C, indices in −1…1), per-column missingness limits
-- [ ] D5 split IDs generated and frozen (`split.parquet` or a column in the table)
+#### Phase 3 — Preprocessing, QA Masking & Feature Engineering `[x]`
+**Concrete assets:** `ml/src/preprocess/align.py`, `ml/src/preprocess/features.py`, `ml/src/validate/schema.py`; `ml/data/processed/features_v1.parquet`; `ml/tests/preprocess/test_preprocess.py`; data dictionary and representative missingness audit inside `progress.md`.
+- [x] Reproject and resample all rasters to the master 30 m grid (`EPSG:32644`, bilinear for continuous bands, nearest for masks)
+- [x] Apply scale factors: LST (K) = `ST_B10 × 0.00341802 + 149.0`, then convert to °C; surface reflectance = `SR × 0.0000275 − 0.2` without destructive clipping
+- [x] QA masking using `QA_PIXEL` bits: fill, dilated cloud, cirrus, cloud, cloud shadow, snow, clear, water (decoupled, water preserved with `is_water` flag, clear sky flag)
+- [x] Features: NDVI = (B5−B4)/(B5+B4); NDBI = (B6−B5)/(B6+B5); MNDWI = (B3−B6)/(B3+B6); Horn's 3x3 finite-difference slope and aspect, DEM elevation
+- [x] Temporal features: day of year (sin/cos encoded), season label, UTC decimal hour, per-pixel mean local solar time (`mean_solar_hour`)
+- [x] IDs for every row: `pixel_id` (`P_rrr_ccc`), `block_id` (`B_cc_rr` 2 km grid), `scene_id`, `date`, `easting`, `northing`, `longitude`, `latitude`
+- [x] Parquet training table `features_v1.parquet` and comprehensive feature data dictionary
+- [x] `FeatureTableSchema`: dtype and range checks (study-specific LST screening range 0–62 °C, indices in −1…1, DEM bounds), per-scene missingness limits
+- [x] Decision D5 split IDs generated and frozen (`block_id` column in `features_v1.parquet`)
 - **Measurable Exit Criteria:**
-  - [ ] 100% of rows align to the master grid (0 coordinate drift, checked by a round-trip test).
-  - [ ] 0% unmasked cloud contamination in the validation sample; missing pixel rate < 2% after masking per kept scene.
-  - [ ] `features_v1.parquet` passes the schema and is logged in the manifest.
-- **Evidence:** schema test output; row count per scene and per season.
+  - [x] 100% of rows align to the master grid (0 coordinate drift, checked by a round-trip test).
+  - [x] 0% unmasked cloud contamination in the validation sample; missing pixel rate < 2% after masking per kept scene (0.16% missingness).
+  - [x] `features_v1.parquet` passes the schema and is logged in the manifest (SHA-256: `c3a5a1090bb6a855ef43d46a00545679218be26e52bc677cee8d175f6453e353`, 39,373,030 bytes).
+- **Evidence:** `pytest -v ml/tests/preprocess/test_preprocess.py` 10/10 passed (25/25 passed repository-wide); representative Landsat 9 scene `LC09_L2SP_144045_20251218_02_T1` preprocessed onto 748,890-cell master grid with 99.84% valid LST, 98.47% trainable terrestrial pixels, 0.92% water; 0 coordinate drift verified; schema verified clean.
+
+##### Feature Table Data Dictionary (`features_v1.parquet`)
+
+| Column Name | Data Type | Physical Unit / Encoding | Source Asset | Valid Theoretical Range | Study Screening Range | Description & Decoupling Invariants |
+|:---|:---|:---|:---|:---|:---|:---|
+| `pixel_id` | `string` | Grid coordinate tag | Analytical Grid | `P_000_000`–`P_794_941` | Master Grid | Unique identifier formatted as `P_{row:03d}_{col:03d}` on master 30 m grid. |
+| `scene_id` | `string` | USGS product identifier | Landsat C2 L2 | String | WRS-2 P144/R045 | USGS Landsat 8/9 Level-2 scene identifier. |
+| `date` | `string` | ISO Date (YYYY-MM-DD) | STAC Metadata | YYYY-MM-DD | 2019–2026 | Calendar date of satellite overpass. |
+| `season` | `string` | Categorical label | Calendar Month | 4 seasons | Nagpur climate | Seasonal classification per D7 (`summer`, `monsoon`, `post-monsoon`, `winter`). |
+| `easting` | `float64` | Meters (m) | Projected Grid | [285975.0, 314205.0] | EPSG:32644 | Master grid cell center Easting coordinate (UTM Zone 44N). |
+| `northing` | `float64` | Meters (m) | Projected Grid | [2328045.0, 2351865.0] | EPSG:32644 | Master grid cell center Northing coordinate (UTM Zone 44N). |
+| `longitude` | `float64` | Decimal Degrees (°E) | EPSG:4326 Transform | [78.937, 79.212] | WGS84 | Master grid cell center geographic longitude. |
+| `latitude` | `float64` | Decimal Degrees (°N) | EPSG:4326 Transform | [21.044, 21.256] | WGS84 | Master grid cell center geographic latitude. |
+| `block_id` | `string` | Spatial block tag | Spatial Partitioning | `B_00_00`–`B_14_11` | Decision D5 | Deterministic 2 km spatial block identifier anchored to master origin. |
+| `sin_doy` | `float32` | Dimensionless cyclical | Day of Year | [-1.0, 1.0] | [-1.0, 1.0] | Sine cyclical encoding: $\sin(2\pi \times \text{DOY} / 365.25)$. |
+| `cos_doy` | `float32` | Dimensionless cyclical | Day of Year | [-1.0, 1.0] | [-1.0, 1.0] | Cosine cyclical encoding: $\cos(2\pi \times \text{DOY} / 365.25)$. |
+| `utc_hour` | `float32` | Decimal Hours (h) | STAC Timestamp | [0.0, 24.0) | ~04:40–05:20 | UTC overpass time in decimal hours. |
+| `mean_solar_hour` | `float32` | Decimal Hours (h) | Pixel Longitude | [0.0, 24.0) | ~10:00–10:30 | Pixel Mean Local Solar Time ($UTC + \text{Lon}^\circ / 15^\circ/\text{hr}$). No EOT. |
+| `elevation` | `float32` | Meters above sea level (m) | Copernicus DEM GLO-30 | [-500.0, 9000.0] | [150.0, 600.0] | Bilinear resampled terrain surface elevation. Nagpur urban plain ~250–350 m. |
+| `slope` | `float32` | Degrees (°) | Horn (1981) 3x3 FD | [0.0, 90.0] | [0.0, 90.0] | Exact 8-neighbor weighted finite-difference topographic slope. |
+| `aspect` | `float32` | Degrees clockwise from N (°) | Horn (1981) 3x3 FD | [0.0, 360.0] or -1 | [0.0, 360.0] / -1 | Downhill azimuth clockwise from North. Flat terrain explicitly assigned -1.0. |
+| `ndvi` | `float32` | Dimensionless index | Landsat SR (B5, B4) | [-1.0, 1.0] | [-1.0, 1.0] | Normalized Difference Vegetation Index: $(NIR - Red) / (NIR + Red)$. |
+| `ndbi` | `float32` | Dimensionless index | Landsat SR (B6, B5) | [-1.0, 1.0] | [-1.0, 1.0] | Normalized Difference Built-Up Index: $(SWIR - NIR) / (SWIR + NIR)$. |
+| `mndwi` | `float32` | Dimensionless index | Landsat SR (B3, B6) | [-1.0, 1.0] | [-1.0, 1.0] | Modified Normalized Difference Water Index: $(Green - SWIR) / (Green + SWIR)$. |
+| `lst_celsius` | `float32` | Degrees Celsius (°C) | Landsat ST_B10 | [-50.0, 100.0] | [0.0, 62.0] | Land Surface Temperature from ST_B10: $(DN \times 0.00341802 + 149.0) - 273.15$. |
+| `valid_dem` | `bool` | Boolean flag | DEM & Horn validity | True / False | True | True if elevation, slope, and aspect 3x3 neighborhood are finite and valid. |
+| `valid_ndvi` | `bool` | Boolean flag | NDVI computation | True / False | True | True if NDVI denominator > 1e-6, finite, and within $[-1.0, 1.0]$. |
+| `valid_ndbi` | `bool` | Boolean flag | NDBI computation | True / False | True | True if NDBI denominator > 1e-6, finite, and within $[-1.0, 1.0]$. |
+| `valid_mndwi` | `bool` | Boolean flag | MNDWI computation | True / False | True | True if MNDWI denominator > 1e-6, finite, and within $[-1.0, 1.0]$. |
+| `valid_lst` | `bool` | Boolean flag | Thermal Quality | True / False | True | True if raw ST > 0, unclouded, and unoccluded by terrain. |
+| `is_water` | `bool` | Boolean flag | QA_PIXEL Bit 7 | True / False | Decoupled | Water pixel flag. Decoupled from atmospheric masking so aquatic data is retained. |
+| `clear_sky` | `bool` | Boolean flag | QA_PIXEL Bits 0-5 | True / False | True | Clear of fill, dilated cloud, cirrus, cloud, cloud shadow, and snow/ice. |
+| `trainable_terrestrial_lst` | `bool` | Boolean filter | Composite Selection | True / False | Filter | Selection column: `valid_lst & valid_ndvi & valid_ndbi & valid_mndwi & valid_dem & ~is_water`. |
+
+##### Representative Scene Missingness & QA Filtering Summary (`LC09_L2SP_144045_20251218_02_T1`)
+
+| Metric Category | Measured Value | Percentage of Master Grid | Scientific Notes & Acceptance Status |
+|:---|:---:|:---:|:---|
+| **Total Grid Cells** | 748,890 cells | 100.00% | Full master 30 m grid envelope (942 cols × 795 rows). |
+| **Grid Coverage** | 748,890 cells | 100.00% | Landsat tile completely encloses the 1 km buffered study area envelope. |
+| **Clear Sky Observations** | 747,675 cells | 99.84% | Evaluated via QA_PIXEL bits 0–5 (clear of fill, cloud, shadow, snow). |
+| **Atmospheric Contamination** | 1,215 cells | 0.16% | Cloud / shadow contamination (< 2.0% acceptance ceiling). |
+| **Water Pixels Identified** | 6,856 cells | 0.92% | Evaluated via QA_PIXEL bit 7 (Ambazari, Futala, Gorewada lakes). |
+| **Valid DEM & Terrain** | 745,436 cells | 99.54% | Copernicus GLO-30 DEM valid (0.46% NaN on outer 1-cell perimeter). |
+| **Valid Vegetation (NDVI)** | 748,890 cells | 100.00% | 100.0% finite, unclipped physical reflectance values. |
+| **Trainable Terrestrial LST** | **737,416 cells** | **98.47%** | Meets Model 1 selection criteria (`valid_lst & valid_features & ~is_water`). |
+| **Representative Pipeline Status** | **VERIFIED** | **PASS** | Validated representative sample; multi-scene batch scaling executes in Phase 4/5. |
 
 ---
 

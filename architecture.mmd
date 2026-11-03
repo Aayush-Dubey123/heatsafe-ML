@@ -1,50 +1,99 @@
 flowchart TD
-    GEO["GEO<br/>PROJECT: HeatSafe-ML"]
+  %% =========================================================================
+  %% HeatSafe-ML Urban Heat Intelligence Pipeline (Balanced Landscape Tree)
+  %% Clean horizontal tiers, 4-card balanced grid, and verified repository evidence.
+  %% =========================================================================
 
-    GEO --> FE["Frontend (UI - LOCKED)<br/>[PLANNED]"]
-    GEO --> BE["Backend (backend/)<br/>[IMPLEMENTED & TESTED]"]
-    GEO --> ML["ML & Geospatial (ml/)<br/>[IMPLEMENTED & TESTED]"]
-    GEO --> DOCS["Project Governance<br/>[IMPLEMENTED & TESTED]"]
+  ROOT["<b>HeatSafe-ML: Geospatial ML for Urban Heat Intelligence in Nagpur</b><br/>Goal: Convert multi-source geospatial data into heat insights (LST, heat zones, drivers) using a reproducible, verified pipeline.<br/><i>[Branch 1: Backend and ML Engine (Active) | Branch 2: Frontend Dashboard (Locked)]</i>"]
 
-    subgraph BackendComponents ["backend/ Architecture (4-Layer Flow)"]
-        BE --> BE_MAIN["main.py (ASGI Uvicorn Entry)<br/>[IMPLEMENTED]"]
-        BE --> BE_COMMONS["commons/<br/>(logger.py, auth.py)<br/>[IMPLEMENTED & TESTED]"]
-        BE --> BE_API["core/apis/api.py (Composition Root)<br/>[IMPLEMENTED & TESTED]"]
-        BE_API --> BE_ROUTE["core/apis/routes/health.py<br/>[IMPLEMENTED & TESTED]"]
-        BE_ROUTE --> BE_SCHEMAS["core/apis/schemas/<br/>(requests/ & responses/)<br/>[IMPLEMENTED & TESTED]"]
-        BE_ROUTE --> BE_CTRL["core/controllers/health_controller.py<br/>[IMPLEMENTED & TESTED]"]
-        BE_CTRL --> BE_CRUD["core/cruds/health_crud.py<br/>[IMPLEMENTED & TESTED]"]
-        BE_CTRL --> BE_SVC["core/services/system_service.py<br/>[IMPLEMENTED & TESTED]"]
-        BE_CRUD --> BE_DB["core/database/<br/>(database.py, base_class.py)<br/>[IMPLEMENTED & TESTED]"]
-        BE_CRUD --> BE_MODEL["core/models/health_model.py<br/>[IMPLEMENTED & TESTED]"]
-        BE --> BE_TEST["tests/test_health.py<br/>[TESTED]"]
-    end
+  ROOT --> S_SOURCES
 
-    subgraph MLComponents ["ml/ Geospatial Architecture"]
-        ML --> ML_COMMONS["src/commons/<br/>(logger.py, manifest.py)<br/>[IMPLEMENTED & TESTED]"]
-        ML --> ML_CONFIGS["configs/<br/>(study_area.yaml, thresholds.yaml, ingest.yaml)<br/>[IMPLEMENTED & TESTED]"]
-        ML --> ML_DATA["data/<br/>(manifest/data_manifest.json, raw/boundary/, raw/landsat/)<br/>[IMPLEMENTED & TESTED]"]
-        ML --> ML_INGEST["src/ingest/<br/>(__main__.py, sources.py)<br/>[IMPLEMENTED & TESTED]"]
-        ML --> ML_TEST["tests/<br/>(test_smoke.py, test_study_area.py, ingest/test_ingest.py)<br/>[IMPLEMENTED & TESTED]"]
-    end
+  %% -------------------------------------------------------------------------
+  %% Tier 1: Environmental Data Sources (External / Free Inputs)
+  %% -------------------------------------------------------------------------
+  subgraph S_SOURCES ["Data Sources (External / Free Inputs)"]
+    direction LR
+    SRC_LANDSAT["<b>Landsat 8 and 9</b><br/>(USGS C2 L2)<br/>- Thermal (ST_B10) and Optical (B3-B6)<br/>- 173 scenes (2019-2025) verified (D7)<br/>- 30 m resampled analytical grid<br/>- Status: INGESTED and VERIFIED"]
+    SRC_S2["<b>Sentinel-2</b><br/>(Copernicus L2A)<br/>- Multispectral optical (B3, B4, B8, B11)<br/>- 10/20 m resampled to 30 m grid<br/>- High-res vegetation and water features<br/>- Status: FEASIBILITY VERIFIED"]
+    SRC_DEM["<b>Copernicus DEM</b><br/>(GLO-30 Global DSM)<br/>- 30 m static elevation (N21E078/079)<br/>- Used for Horn slope and aspect derivatives<br/>- Topographic elevation plain ~300 m<br/>- Status: INGESTED and VERIFIED"]
+    SRC_BOUND["<b>Boundary Data</b><br/>(OSM / NMC Official)<br/>- Authoritative NMC municipal boundary<br/>- 10 administrative zone boundaries<br/>- Topologically verified GeoJSONs<br/>- Status: INGESTED and REGISTERED"]
+    SRC_MET["<b>IMD and CPCB</b><br/>(Ground Stations)<br/>- 2 m ambient air temp, humidity, wind<br/>- Sonegaon Airport and CAAQMS sites<br/>- Distinct kinetic air temp for validation<br/>- Status: AUDITED INVENTORY"]
 
-    subgraph GovernanceComponents ["Root Governance & Tooling"]
-        DOCS --> DOC_TRIAD["Root Triad Documents<br/>(README.md, agent.md, progress.md)<br/>[IMPLEMENTED]"]
-        DOCS --> DOC_CONF["Root Tooling<br/>(.gitignore, requirements.txt, ci.yml)<br/>[IMPLEMENTED & TESTED]"]
-        DOCS --> DOC_SKILLS[".agents/ & code-standards/<br/>[IMPLEMENTED & TESTED]"]
-    end
+    SRC_LANDSAT ~~~ SRC_S2 ~~~ SRC_DEM ~~~ SRC_BOUND ~~~ SRC_MET
+  end
 
-    FE --> START(("start"))
-    BE_TEST --> START
-    ML_TEST --> START
-    DOC_CONF --> START
+  S_SOURCES --> S_PIPE
 
-    START --> PHASE{"phase<br/>wise dev"}
+  %% -------------------------------------------------------------------------
+  %% Tier 2: Phased Data Processing and Feature Pipeline (Core ML Stack)
+  %% -------------------------------------------------------------------------
+  subgraph S_PIPE ["Data Processing and Feature Pipeline (Core ML Stack)"]
+    direction LR
+    P1["<b>Phase 1</b><br/>Study Area and Feasibility<br/>- Verify Nagpur (NMC) boundary<br/>- Master 30 m grid (748,890 cells)<br/>- Station inventory and D1-D4, D6 locked<br/>- Assess data availability and licenses<br/>[PASS] Completed and Verified"]
+    P2["<b>Phase 2</b><br/>Data Ingestion and Management<br/>- Download and organize Landsat and DEM<br/>- Validate scenes (quality, date, coverage)<br/>- Exponential backoff retry resilience<br/>- Register assets in data_manifest.json<br/>[PASS] Completed and Verified (173 scenes)"]
+    P3["<b>Phase 3</b><br/>Preprocessing and Feature Engg.<br/>- Reproject to 30 m grid (EPSG:32644)<br/>- QA masking (cloud, shadow, snow, water)<br/>- Scale LST (deg C) and surface reflectance<br/>- Derive NDVI, NDBI, MNDWI indices<br/>- Compute slope and aspect (Horn 3x3)<br/>- Temporal and 2 km spatial blocks (D5)<br/>- Export features_v1.parquet (39.4 MB)<br/>[PASS] Completed and Verified (Sample Scene)"]
+    P4["<b>Phase 4</b><br/>ML Modeling and Analysis<br/>- Train seasonal LST / heat baselines<br/>- Spatial-block cross-validation (D5)<br/>- Baseline evaluation (RMSE, MAE, R2)<br/>- Getis-Ord Gi* hotspot clustering<br/>[PLANNED] Next Planned Milestone"]
+    P5["<b>Phase 5</b><br/>Insights and Delivery<br/>- Primary Model 1 (LightGBM/RF)<br/>- Generate seasonal mean heat maps<br/>- Build FastAPI /v1/heat endpoints<br/>- Summarize city-level heat risk<br/>[PLANNED] Future Delivery"]
 
-    PHASE --> P0["Phase 0: Foundation & Minimal Component Architecture<br/>[TESTED & CLOSED]"]
-    P0 --> P1["Phase 1: Study Area & Data-Source Inventory<br/>[TESTED & CLOSED]"]
-    P1 --> P2["Phase 2: Incremental Ingestion Pipeline<br/>[TESTED & CLOSED]"]
-    P2 --> P3["Phase 3: Preprocessing, QA Masking & Feature Engineering<br/>[PLANNED]"]
-    P3 --> BE_GATE{"Backend & ML Acceptance Gate<br/>(Exit Criteria Verification)"}
-    BE_GATE -- "Owner Command: 'move to frontend'" --> FE_GATE{"Frontend Gate Unlocked<br/>[LOCKED]"}
-    FE_GATE --> FE
+    P1 --> P2
+    P2 --> P3
+    P3 --> P4
+    P4 --> P5
+  end
+
+  S_PIPE --> S_STRUCT
+
+  %% -------------------------------------------------------------------------
+  %% Tier 3: Core Architecture, Storage, Outputs and Verification
+  %% -------------------------------------------------------------------------
+  subgraph S_STRUCT ["Core Architecture, Storage, System Outputs and Verification"]
+    direction LR
+    BOX_REPO["<b>Core Repository Structure</b><br/>- <b>backend/</b> - FastAPI 4-layer health stack<br/>- <b>ml/</b> - Data pipeline, features, models<br/>- <b>data/</b> - Raw, processed and manifest<br/>- <b>configs/</b> - Study area, processing settings<br/>- <b>tests/</b> - Unit and integration test suites<br/>- Status: IMPLEMENTED and TESTED"]
+
+    BOX_STORAGE[("<b>Data and Artifact Storage</b><br/>- <b>Raw Data:</b> ml/data/raw/ (173 scenes and DEM)<br/>- <b>Processed Data:</b> features_v1.parquet (39.4 MB)<br/>- <b>Data Manifest:</b> data_manifest.json (SHA-256)<br/>- <b>Maps:</b> data/processed/maps/ (planned GeoTIFFs)<br/>- Status: PERSISTED and REGISTERED")]
+
+    BOX_OUTPUTS["<b>Pipeline System Outputs</b><br/>- <b>Clean feature dataset:</b> Parquet table<br/>- <b>Quality masks:</b> cloud, shadow, snow, water<br/>- <b>Derived indices:</b> NDVI, NDBI, MNDWI<br/>- <b>Terrain features:</b> elevation, slope, aspect<br/>- <b>Spatial and temporal:</b> 2 km blocks and solar time<br/>- Status: OPERATIONAL (Phase 3)"]
+
+    BOX_VERIF["<b>Key Verification (Phase 3)</b><br/>[PASS] <b>Grid size:</b> 795 x 942 (30 m analytical grid)<br/>[PASS] <b>CRS:</b> EPSG:32644 (UTM Zone 44N)<br/>[PASS] <b>LST screening:</b> 0 deg C to 62 deg C valid range<br/>[PASS] <b>Missingness:</b> 0.16% (under 2% target)<br/>[PASS] <b>QA masks:</b> cloud, shadow, snow, water<br/>[PASS] <b>Tests:</b> 25/25 passed repository-wide<br/>[PASS] <b>Registered:</b> features_v1.parquet (SHA-256)"]
+
+    BOX_REPO ~~~ BOX_STORAGE ~~~ BOX_OUTPUTS ~~~ BOX_VERIF
+  end
+
+  S_STRUCT --> S_DELIVERY
+
+  %% -------------------------------------------------------------------------
+  %% Tier 4: Acceptance Gates and Delivery Milestones
+  %% -------------------------------------------------------------------------
+  subgraph S_DELIVERY ["Acceptance Gates and Delivery Milestones"]
+    direction LR
+    GATE_BE{"<b>Backend Gate Certified?</b><br/>- p95 under 200 ms | Cov 85% plus<br/>- Phase 10 verification"}
+    GATE_FE{"<b>Frontend Unlocked?</b><br/>- Explicit owner command<br/>- Status: [LOCKED]"}
+    FE_DASH["<b>Frontend Web Dashboard (frontend/)</b><br/>- Next.js/React app with Deck.gl 30 m heat map viewer<br/>- Ward heat vulnerability scorecards and cooling shelter tools<br/>- Consumes backend REST API endpoints<br/>- Status: [LOCKED - Awaiting Gate Exit]"]
+
+    GATE_BE -- "Owner Command: 'move to frontend'" --> GATE_FE
+    GATE_FE -- "Unlocks Branch 2" --> FE_DASH
+  end
+
+  %% -------------------------------------------------------------------------
+  %% Visual Styles (Soft Palette)
+  %% -------------------------------------------------------------------------
+  style ROOT fill:#0f2744,stroke:#0f2744,color:#ffffff,stroke-width:2px;
+  style S_SOURCES fill:#f8fafc,stroke:#cbd5e1,stroke-width:1.5px;
+  style S_PIPE fill:#f8fafc,stroke:#cbd5e1,stroke-width:1.5px;
+  style S_STRUCT fill:#f8fafc,stroke:#cbd5e1,stroke-width:1.5px;
+  style S_DELIVERY fill:#f8fafc,stroke:#cbd5e1,stroke-width:1.5px;
+
+  style P1 fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px;
+  style P2 fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px;
+  style P3 fill:#fef3c7,stroke:#d97706,stroke-width:1.5px;
+  style P4 fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px;
+  style P5 fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px;
+
+  style BOX_REPO fill:#f1f5f9,stroke:#64748b,stroke-width:1.5px;
+  style BOX_STORAGE fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px;
+  style BOX_OUTPUTS fill:#ede9fe,stroke:#7c3aed,stroke-width:1.5px;
+  style BOX_VERIF fill:#d1fae5,stroke:#059669,stroke-width:1.5px;
+
+  style GATE_BE fill:#fef9c3,stroke:#ca8a04,stroke-width:1.5px;
+  style GATE_FE fill:#fef9c3,stroke:#ca8a04,stroke-width:1.5px;
+  style FE_DASH fill:#fce7f3,stroke:#db2777,stroke-width:1.5px;

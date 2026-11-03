@@ -14,6 +14,8 @@ jobs:
   backend-and-ml-ci:
     name: Backend & ML Lint, Syntax & Automated Tests
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: "."
 
     steps:
       - name: Check out repository
@@ -42,5 +44,6 @@ jobs:
       - name: Run automated test suite
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+          PYTHONPATH: "."
         run: |
-          pytest -v
+          python -m pytest -v

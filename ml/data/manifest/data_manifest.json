@@ -34,26 +34,18 @@
     }
   },
   {
-    "source": "USGS_Landsat_C2L2",
+    "source": "heatsafe_feature_pipeline_v1",
     "scene_id": "LC09_L2SP_144045_20251218_02_T1",
-    "acquisition_date": "2025-12-18T05:08:52.167187Z",
-    "sha256": "0f9dc8a991e00f52d069fc06e1b326320cf341c349f96e5f257339894e5a4ff7",
-    "size_bytes": 84746930,
-    "recorded_at_utc": "2026-10-27T15:44:13.028219+00:00",
+    "acquisition_date": "2025-12-18T00:00:00Z",
+    "sha256": "c3a5a1090bb6a855ef43d46a00545679218be26e52bc677cee8d175f6453e353",
+    "size_bytes": 39373030,
+    "recorded_at_utc": "2026-11-03T14:48:42.147778+00:00",
     "metadata": {
-      "cloud_cover": 0.0,
-      "platform": "landsat-9",
-      "wrs_path": "144",
-      "wrs_row": "045",
-      "bands": {
-        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_ST_B10.tif",
-        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_QA_PIXEL.tif",
-        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_QA_RADSAT.tif",
-        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_SR_B3.tif",
-        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_SR_B4.tif",
-        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_SR_B5.tif",
-        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251218_02_T1_SR_B6.tif"
-      }
+      "total_rows": 748890,
+      "trainable_rows": 737416,
+      "water_rows": 6856,
+      "season": "winter",
+      "crs": "EPSG:32644"
     }
   }
 ]

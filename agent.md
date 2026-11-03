@@ -48,6 +48,25 @@ Your responsibility is to progressively COMPLETE the diagram as you develop the 
 
 The final diagram must visually explain what has actually been built, what connects to what, what has been tested, and what remains to be done.
 
+### Architecture Diagram Documentation Rules
+
+The following permanent rules govern all architectural diagram creation, modification, and maintenance:
+
+1. **Readable Component Descriptions:** Every meaningful component must have a readable description of what it does in clear, human language.
+2. **Simple Human Responsibility:** Every node must explain its primary responsibility in simple human language (ELI5 level) so someone unfamiliar with the project understands its purpose.
+3. **Explicit Connection Information:** Every major connection must explain what information, data payload, or output moves between components along the connecting edges.
+4. **Branch Justification:** Every architectural branch must explain why that branch exists and what specific processing happens along it.
+5. **Visible Inputs and Outputs:** External inputs (satellite catalogs, municipal boundaries, client requests) and system outputs (GeoTIFFs, Parquet feature tables, REST API responses, UI heat layers) must be explicitly shown.
+6. **Preserve Implemented Subsystems:** Completed phases must retain their actual component nodes, internal branches, and verified connections rather than being collapsed into a single summary box.
+7. **No "Phase Completed" Black Boxes:** Never replace an implemented subsystem with a single generic node stating only "Phase completed".
+8. **Input-Process-Output Traceability:** A completed phase must show what was built, what input data it receives, what processing it performs, what output artifacts it produces, and where its output goes.
+9. **Never Misrepresent Planned Work:** Planned components must never be represented as implemented. Clearly distinguish between what is operational versus what is planned or locked.
+10. **Evidence-Grounded Status:** Every node must have an explicit status marker (`[IMPLEMENTED & TESTED]`, `[IMPLEMENTED]`, `[TESTED & CLOSED]`, `[PLANNED]`, `[LOCKED]`, or `[BLOCKED]`) grounded in actual repository evidence.
+11. **Synchronized on Architecture Changes:** The diagram must be updated whenever meaningful architecture changes, pipeline steps, or backend services are implemented.
+12. **Update Existing Diagram:** Update and expand the existing diagram rather than recreating it from assumptions or discarding historical architecture.
+13. **Code and Progress Alignment:** Keep the diagram synchronized with actual source code, automated test suites, configuration files, and documented milestone progress in `progress.md`.
+14. **No Hallucinated Capabilities:** Do not invent non-existent connections, unbuilt APIs, fictional data flows, or unverified capabilities.
+15. **Preserve Project Rules:** Preserve all existing project rules, including the Markdown file freeze and two-file folder limits. Do not create new documentation files for architecture documentation.
 
 ### 2.1 The 4-Layer Flow
 All API features must strictly follow this unidirectional flow:
