@@ -15,7 +15,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 6 (Model 1) — Phase 5 closed 2026-11-09; Phase 4 awaiting first CI run; Plan v2 adopted (D8)  
+**Current phase:** Phase 7 (Final test & Model Card) — next step: open the test set once, then owner Go/No-Go. Phases 5–6 closed 2026-11-09; Phase 4 awaiting first CI run. 2026 test scenes (28) downloaded, not yet evaluated.  
 **Frontend status:** 🔒 LOCKED  
 **Last updated:** 2026-11-09  
 
@@ -395,19 +395,36 @@ p-values are < 1e-10 everywhere but are optimistic because pixels are spatially 
 
 ### Milestone 6: Scientific Validation & Model Development
 
-#### Phase 6 — Model 1 Development (Single ML Model First) `[ ]`
+#### Phase 6 — Model 1 Development (Single ML Model First) `[x]`
 **Concrete assets:** `ml/src/models/core/train.py`, `ml/src/models/core/evaluate.py`, `ml/src/models/explain/shap_analysis.py`, `ml/src/models/explain/intervals.py`; `ml/configs/model.yaml`; model registry `ml/models/registry/<version>/` (LightGBM native format + SHA-256, git-ignored, published per Phase 9); `ml/data/processed/experiments/*.json`.
-- [ ] Spatial-block CV (D5) with a unit test proving no `block_id` appears in both train and validation within any fold (zero leakage)
-- [ ] Model 1: LightGBM first, Random Forest as a comparison, small tuning budget (e.g., 30 trials), seeds fixed, CPU only
-- [ ] SHAP global and per-season importance plots
-- [ ] 90% prediction intervals via quantile regression (5th/95th percentile models); report empirical coverage and mean width
-- [ ] Each run logs parameters, metrics, data version, git commit into a local JSON file (T14)
-- [ ] Secondary models (air-temp transfer, forecast offsets) deferred until Model 1 passes
+- [x] Spatial-block CV (D5) with a unit test proving no `block_id` appears in both train and validation within any fold (zero leakage)
+- [x] Model 1: LightGBM first, Random Forest as a comparison, small tuning budget (e.g., 30 trials), seeds fixed, CPU only
+- [x] SHAP global and per-season importance plots
+- [x] 90% prediction intervals via quantile regression (5th/95th percentile models); report empirical coverage and mean width
+- [x] Each run logs parameters, metrics, data version, git commit into a local JSON file (T14)
+- [x] Secondary models (air-temp transfer, forecast offsets) deferred until Model 1 passes
 - **Measurable Exit Criteria:**
-  - [ ] Model 1 reduces RMSE by ≥ 15% versus Baseline 3 on held-out spatial blocks.
-  - [ ] 90% intervals cover ≥ 85% of held-out points.
-  - [ ] Leakage test is green and part of the test suite.
-- **Evidence:** CV table (per fold, per season); experiment log file names.
+  - [x] Model 1 reduces RMSE by ≥ 15% versus Baseline 3 on held-out spatial blocks.
+  - [x] 90% intervals cover ≥ 85% of held-out points.
+  - [x] Leakage test is green and part of the test suite.
+- **Evidence (2026-11-09):** run `m1-20261109T150313Z` (commit `260c6c4`, training table SHA-256 `99822146c014298e…`, 1,946,895 CV rows, 122 scenes), log `ml/data/processed/experiments/m1-20261109T150313Z.json`; leakage tests `ml/tests/models/test_model1.py` green (block disjointness asserted in every fold; anchors use training rows only).
+
+##### Model 1 Cross-Validation Results (5-fold spatial blocks, RMSE °C)
+
+| Season | Baseline 3 | Random Forest | Model 1 (LightGBM) | **Model 1 + residual kriging (chosen)** |
+|:---|:---:|:---:|:---:|:---:|
+| **Overall** | 2.351 | 1.578 | 1.404 | **1.227** |
+| Summer | 2.121 | 1.884 | 1.646 | 1.422 |
+| Monsoon | 2.494 | 2.318 | 2.132 | 1.670 |
+| Post-monsoon | 2.406 | 1.244 | 1.158 | 1.080 |
+| Winter | 2.480 | 1.212 | 1.055 | 0.979 |
+
+- **Gate:** RMSE improvement vs. Baseline 3 = **47.8%** (needed ≥ 15%); MAE 0.877 °C, bias −0.005 °C, R² 0.981.
+- **90% intervals:** empirical coverage **87.4%** overall (summer 88.4%, monsoon 88.5%, post-monsoon 86.7%, winter 86.8%), mean width 3.55 °C. Meets the ≥ 85% criterion but is ~2.6 points below nominal 90% — to be re-checked on the test set and calibrated if it persists.
+- **Tuned parameters (30-trial random search, 3-fold block CV on 400k rows):** num_leaves 255, learning_rate 0.05, min_child_samples 100, feature_fraction 0.8, lambda_l2 5.0.
+- **Top SHAP drivers (mean |SHAP|, °C):** sin_doy 0.86, scene_anchor_lst 0.79, ndbi_150m 0.71, ndvi_150m 0.66, ndvi_450m 0.53, mndwi_450m 0.50 — neighbourhood built-up/vegetation context matters more than the pixel's own index.
+- **Caveat:** CV scores reuse the folds that guided tuning (slightly optimistic); the unbiased number comes from the one-time Phase 7 test.
+- Model files (`point.txt`, `lower.txt`, `upper.txt`, `metadata.json`) are in the git-ignored registry `ml/models/registry/m1-20261109T150313Z/` with hashes in the manifest.
 
 #### Phase 7 — Ground-Truth Validation & Model Cards `[ ]`
 **Concrete assets:** final evaluation report section in `README.md`; test-set metrics with 95% CIs; Model Card for LST in `README.md`; station comparison table.
