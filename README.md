@@ -8,7 +8,7 @@ By integrating multispectral and thermal satellite observations from **Landsat 8
 
 > **Current Operational Status (Branch 1 - Backend & ML):**  
 > - **Roadmap:** Plan v2 (adopted 2026-11-09) — production backend for a public-facing app, citizens first, at zero recurring cost (Decisions D8–D10, T1–T18 in [`progress.md`](progress.md)).  
-> - **Active Phase:** Phase 6 (Model 1 Development). Phase 4 verified locally (first CI run pending); Phase 5 closed with locked baselines (Baseline 3 CV RMSE 2.351 °C)  
+> - **Active Phase:** Phase 7 (one-time final test + Go/No-Go). Phase 6 closed: Model 1 CV RMSE 1.227 °C vs Baseline 3 2.351 °C (−47.8%), 90% intervals cover 87.4%. Phase 4 first CI run pending  
 > - **Completed Milestones:** Phase 0 (Foundation Architecture), Phase 1 (Study Area & Master Grid), Phase 2 (STAC Ingestion Pipeline), Phase 3 (Preprocessing, QA Masking & Feature Engineering)  
 > - **Branch 2 (Frontend UI):** 🔒 **LOCKED** under Two-Branch Governance until full Backend Acceptance Gate verification.  
 > - **Live Test Suite:** 44/44 unit & integration tests passing (`python -m pytest -v`, verified 2026-11-09).
@@ -287,8 +287,8 @@ Progress is strictly gated across thirteen defined phases (Plan v2, Decision D8)
 | **3** | **Preprocessing & Features** | Feature Pipeline | **`[x]` DONE** | QA pixel cloud/shadow masking, NDVI, NDBI, MNDWI, Copernicus DEM slope/aspect, `features_v1.parquet` |
 | **4** | **Backend Foundation Hardening** | Backend / Security | **`[~]` CI PENDING** | Typed settings, Postgres + PostGIS, Alembic migrations, error envelope, CORS & secrets fixed, pinned deps, ruff + mypy |
 | **5** | **First Working Result & Baselines** | Analysis & Baseline | **`[x]` DONE** | Seasonal LST maps, Gi* hotspots, Baselines 1–3 locked as the bar to beat |
-| **6** | **Model 1 Development** | Machine Learning | **`[~]` ACTIVE** | LightGBM/RF on CPU, 2 km spatial-block CV, leakage test, 90% quantile intervals, RMSE ≥ 15% better than Baseline 3 |
-| **7** | **Validation & Model Card** | Verification | `[ ]` PLANNED | Held-out 2026 test opened once, bootstrap CIs, Model Card, owner Go/No-Go |
+| **6** | **Model 1 Development** | Machine Learning | **`[x]` DONE** | LightGBM/RF on CPU, 2 km spatial-block CV, leakage test, 90% quantile intervals, RMSE ≥ 15% better than Baseline 3 |
+| **7** | **Validation & Model Card** | Verification | **`[~]` NEXT** | Held-out 2026 test opened once, bootstrap CIs, Model Card, owner Go/No-Go |
 | **8** | **Exposure, Vulnerability & Cooling Assets** | Risk Analytics | `[ ]` PLANNED | Exposure Index 0–100, zone vulnerability & ranks with intervals, OSM cooling assets |
 | **9** | **Versioned Data Products** | Publishing | `[ ]` PLANNED | COGs, pre-rendered tiles, PostGIS zone tables, atomic "latest" pointer, hashed bundles |
 | **10** | **Automated Inference Pipeline** | Pipeline | `[ ]` PLANNED | Scheduled GitHub Actions run, freshness flags (`scene_age_days ≤ 16`), fallback, 4 failure-injection tests |
