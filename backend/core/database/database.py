@@ -1,22 +1,26 @@
-import os
-from typing import Generator
+from collections.abc import Generator
+
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
+
 from backend.core import logger
+from backend.core.config.settings import get_settings
 
 logging = logger(__name__)
 
-# Resolve DATABASE_URL, falling back to local SQLite if unset or set to placeholder
-_raw_url = os.getenv("HEATSAFE_DATABASE_URL") or os.getenv("DATABASE_URL")
-if not _raw_url or "USER:PASSWORD" in _raw_url:
-    DATABASE_URL: str = "sqlite:///./heatsafe.sqlite3"
-else:
-    DATABASE_URL = _raw_url
+_settings = get_settings()
+DATABASE_URL: str = _settings.database_url
+# Fail fast instead of hanging forever when the database host is unreachable.
+POSTGRES_CONNECT_TIMEOUT_SECONDS = 10
 
-# Initialize SQLAlchemy engine with connection pool hardening
+# Process-wide engine singleton with connection health checks.
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {},
+    connect_args=(
+        {"check_same_thread": False}
+        if DATABASE_URL.startswith("sqlite")
+        else {"connect_timeout": POSTGRES_CONNECT_TIMEOUT_SECONDS}
+    ),
     pool_pre_ping=True,
 )
 

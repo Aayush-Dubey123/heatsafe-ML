@@ -1,19 +1,8 @@
-import pytest
 from fastapi.testclient import TestClient
+
 from backend.core.apis.api import app
-from backend.core.database.base_class import Base
-from backend.core.database.database import engine
 
 client = TestClient(app)
-
-
-@pytest.fixture(autouse=True)
-def setup_database():
-    """
-    Ensure clean schema state prior to each test case execution.
-    """
-    Base.metadata.create_all(bind=engine)
-    yield
 
 
 def test_get_health():

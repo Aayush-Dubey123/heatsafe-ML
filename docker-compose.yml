@@ -1,0 +1,29 @@
+# HeatSafe-ML local development database (Decision T7).
+# PostgreSQL 16 + PostGIS 3.4, bound to localhost only.
+#
+#   cp .env.example .env          # then set HEATSAFE_DB_PASSWORD and HEATSAFE_DATABASE_URL
+#   docker compose up -d db
+#   alembic -c backend/alembic.ini upgrade head
+#
+# Credentials are read from .env; there are no defaults in this file.
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: heatsafe-db
+    environment:
+      POSTGRES_DB: heatsafe
+      POSTGRES_USER: heatsafe
+      POSTGRES_PASSWORD: ${HEATSAFE_DB_PASSWORD:?Set HEATSAFE_DB_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - heatsafe_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U heatsafe -d heatsafe"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  heatsafe_pgdata:
