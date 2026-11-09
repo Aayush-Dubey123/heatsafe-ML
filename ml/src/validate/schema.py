@@ -1,7 +1,7 @@
 """
 HeatSafe-ML Feature Table Schema Validation & Missingness Audit Engine.
 Validates dtypes, coordinates, physical feature boundaries, decoupled validity masks,
-and study-specific LST screening range ([0°C, 62°C]) for Nagpur urban heat intelligence.
+and study-specific LST screening range ([0°C, 70°C], Decision D14) for Nagpur urban heat intelligence.
 """
 
 from typing import Any, Dict, List, Optional, Tuple
@@ -22,7 +22,7 @@ class FeatureTableSchema:
         2. Dtype conformance across spatial, temporal, features, and validity flags.
         3. Theoretical physical boundary checks on valid data (indices in [-1, 1], slope in [0, 90], aspect in [0, 360] or -1).
         4. Study-specific screening validation:
-           LST screening range [0.0°C, 62.0°C] is enforced as a study-specific screening boundary
+           LST screening range [0.0°C, 70.0°C] (D14; raised from 62°C after 2019–2025 summer scenes showed real 62–68°C bare/built surfaces) is enforced as a study-specific screening boundary
            for Nagpur urban heat modeling (filtering tropical unphysical sub-zero artifacts or sensor flares
            while preserving extreme summer road/asphalt temperatures).
     """
@@ -60,7 +60,7 @@ class FeatureTableSchema:
 
     # Study-Specific Screening Boundaries
     LST_SCREENING_MIN_C: float = 0.0
-    LST_SCREENING_MAX_C: float = 62.0
+    LST_SCREENING_MAX_C: float = 70.0
     ELEVATION_MIN_M: float = 150.0
     ELEVATION_MAX_M: float = 600.0
 

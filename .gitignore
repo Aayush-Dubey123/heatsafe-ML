@@ -82,6 +82,7 @@ ml/data/processed/
 *.joblib
 *.onnx
 ml/models/checkpoints/
+ml/models/registry/
 
 # Node / Frontend build outputs & dependencies (deferred branch)
 node_modules/

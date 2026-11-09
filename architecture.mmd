@@ -13,7 +13,7 @@ flowchart TD
   %% -------------------------------------------------------------------------
   subgraph S_SOURCES ["Data Sources (External / Free Inputs)"]
     direction LR
-    SRC_LANDSAT["<b>Landsat 8 and 9</b><br/>(USGS C2 L2)<br/>- Thermal (ST_B10) and Optical (B3-B6)<br/>- 173 scenes (2019-2025) verified (D7)<br/>- 30 m resampled analytical grid<br/>- Status: INGESTED and VERIFIED"]
+    SRC_LANDSAT["<b>Landsat 8 and 9</b><br/>(USGS C2 L2)<br/>- Thermal (ST_B10) and Optical (B3-B6)<br/>- 125 L8/9 scenes (2019-2025) verified (D7)<br/>- 30 m resampled analytical grid<br/>- Status: INGESTED and VERIFIED"]
     SRC_S2["<b>Sentinel-2</b><br/>(Copernicus L2A)<br/>- Multispectral optical (B3, B4, B8, B11)<br/>- 10/20 m resampled to 30 m grid<br/>- High-res vegetation and water features<br/>- Status: FEASIBILITY VERIFIED"]
     SRC_DEM["<b>Copernicus DEM</b><br/>(GLO-30 Global DSM)<br/>- 30 m static elevation (N21E078/079)<br/>- Used for Horn slope and aspect derivatives<br/>- Topographic elevation plain ~300 m<br/>- Status: INGESTED and VERIFIED"]
     SRC_BOUND["<b>Boundary Data</b><br/>(OSM / NMC Official)<br/>- Authoritative NMC municipal boundary<br/>- 10 administrative zone boundaries<br/>- Topologically verified GeoJSONs<br/>- Status: INGESTED and REGISTERED"]
@@ -30,9 +30,9 @@ flowchart TD
   subgraph S_PIPE ["Data Processing and Feature Pipeline (Core ML Stack)"]
     direction LR
     P1["<b>Phase 1</b><br/>Study Area and Feasibility<br/>- Verify Nagpur (NMC) boundary<br/>- Master 30 m grid (748,890 cells)<br/>- Station inventory and D1-D4, D6 locked<br/>- Assess data availability and licenses<br/>[PASS] Completed and Verified"]
-    P2["<b>Phase 2</b><br/>Data Ingestion and Management<br/>- Download and organize Landsat and DEM<br/>- Validate scenes (quality, date, coverage)<br/>- Exponential backoff retry resilience<br/>- Register assets in data_manifest.json<br/>[PASS] Completed and Verified (173 scenes)"]
+    P2["<b>Phase 2</b><br/>Data Ingestion and Management<br/>- Download and organize Landsat and DEM<br/>- Validate scenes (quality, date, coverage)<br/>- Exponential backoff retry resilience<br/>- Register assets in data_manifest.json<br/>[PASS] Completed and Verified (125 L8/9 scenes)"]
     P3["<b>Phase 3</b><br/>Preprocessing and Feature Engg.<br/>- Reproject to 30 m grid (EPSG:32644)<br/>- QA masking (cloud, shadow, snow, water)<br/>- Scale LST (deg C) and surface reflectance<br/>- Derive NDVI, NDBI, MNDWI indices<br/>- Compute slope and aspect (Horn 3x3)<br/>- Temporal and 2 km spatial blocks (D5)<br/>- Export features_v1.parquet (39.4 MB)<br/>[PASS] Completed and Verified (Sample Scene)"]
-    P5["<b>Phase 5</b><br/>First Working Result and Baselines<br/>- Seasonal mean LST GeoTIFF and PNG maps<br/>- Getis-Ord Gi* hotspot clusters (p under 0.05)<br/>- Spearman LST vs NDVI, NDBI, MNDWI, elevation<br/>- Baselines 1-3 on validation folds only<br/>[PLANNED] Next ML Milestone"]
+    P5["<b>Phase 5</b><br/>First Working Result and Baselines<br/>- Seasonal mean LST GeoTIFF and PNG maps<br/>- Getis-Ord Gi* hotspot clusters (p under 0.05)<br/>- Spearman LST vs NDVI, NDBI, MNDWI, elevation<br/>- Baselines 1-3 on validation folds only<br/>- 125 L8/9 scenes, 2.44 M sampled pixels<br/>- B3 CV RMSE 2.351 C (bar: 1.998 C)<br/>[IMPLEMENTED & TESTED] Closed 2026-11-09"]
     P6["<b>Phase 6</b><br/>Model 1 Development<br/>- LightGBM first, Random Forest comparison (CPU)<br/>- 2 km spatial-block CV and leakage test (D5)<br/>- 90% intervals via quantile models<br/>- SHAP drivers and JSON run logs<br/>[PLANNED] Must beat Baseline 3 by 15%"]
     P7["<b>Phase 7</b><br/>Validation and Model Card<br/>- 2026 test set opened once (D4)<br/>- Station comparison as a separate variable<br/>- Bootstrap 95% confidence intervals<br/>- Model Card and owner Go/No-Go<br/>[PLANNED] Science Gate"]
     P8["<b>Phase 8</b><br/>Exposure, Vulnerability and Cooling<br/>- Heat Exposure Index 0-100 from validated LST<br/>- 10 NMC zone vulnerability and ranks (T18)<br/>- OSM parks, water, hospitals, shelters<br/>- Aggregated only, no personal data<br/>[PLANNED] Risk Layers"]
@@ -54,7 +54,7 @@ flowchart TD
     direction LR
     BOX_REPO["<b>Core Repository Structure</b><br/>- <b>backend/</b> - FastAPI 4-layer health stack<br/>- <b>ml/</b> - Data pipeline, features, models<br/>- <b>data/</b> - Raw, processed and manifest<br/>- <b>configs/</b> - Study area, processing settings<br/>- <b>tests/</b> - Unit and integration test suites<br/>- Status: IMPLEMENTED and TESTED"]
 
-    BOX_STORAGE[("<b>Data and Artifact Storage</b><br/>- <b>Raw Data:</b> ml/data/raw/ (173 scenes and DEM)<br/>- <b>Processed Data:</b> features_v1.parquet (39.4 MB)<br/>- <b>Data Manifest:</b> data_manifest.json (SHA-256)<br/>- <b>Maps:</b> data/processed/maps/ (planned GeoTIFFs)<br/>- Status: PERSISTED and REGISTERED")]
+    BOX_STORAGE[("<b>Data and Artifact Storage</b><br/>- <b>Raw Data:</b> ml/data/raw/ (125 cropped L8/9 scenes and DEM)<br/>- <b>Processed Data:</b> features_v1.parquet (39.4 MB)<br/>- <b>Data Manifest:</b> data_manifest.json (SHA-256)<br/>- <b>Maps:</b> data/processed/maps/ (planned GeoTIFFs)<br/>- Status: PERSISTED and REGISTERED")]
 
     BOX_OUTPUTS["<b>Pipeline System Outputs</b><br/>- <b>Clean feature dataset:</b> Parquet table<br/>- <b>Quality masks:</b> cloud, shadow, snow, water<br/>- <b>Derived indices:</b> NDVI, NDBI, MNDWI<br/>- <b>Terrain features:</b> elevation, slope, aspect<br/>- <b>Spatial and temporal:</b> 2 km blocks and solar time<br/>- Status: OPERATIONAL (Phase 3)"]
 

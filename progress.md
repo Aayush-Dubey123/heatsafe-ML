@@ -15,7 +15,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 4 (Backend Foundation Hardening) — verified locally incl. Docker Postgres; awaiting first CI run; Plan v2 adopted (D8)  
+**Current phase:** Phase 6 (Model 1) — Phase 5 closed 2026-11-09; Phase 4 awaiting first CI run; Plan v2 adopted (D8)  
 **Frontend status:** 🔒 LOCKED  
 **Last updated:** 2026-11-09  
 
@@ -35,6 +35,10 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | D8 | Roadmap v2 for a public app | Phases 4–10 replaced by Phases 4–12 (Plan v2): new Phase 4 Foundation Hardening, new Phase 9 Data Products & Publishing; former Phases 4–10 renumbered 5–8 and 10–12. Target: public-facing app, citizens first. | Locked 2026-11-09 |
 | D9 | Parallel API contract track | API skeleton and OpenAPI v1 contract may be built in parallel once Phase 5 baselines exist, serving products tagged `model_version: "baseline"`. Phase 11 still closes only after the Phase 7 Go decision. | Locked 2026-11-09 |
 | D10 | Zero-cost infrastructure | Recurring cost must be ₹0 (resume project). Free-tier exit criteria: p95 measured on a warm instance with cold start documented separately; "unattended" = 14 consecutive green scheduled GitHub Actions runs plus uptime monitor healthy whenever awake; restore test = `pg_dump` artifact restored into a fresh Neon branch or local Postgres. Free-tier limits re-verified at sign-up and recorded here. | Locked 2026-11-09 |
+| D11 | Baseline 2 definition under spatial CV | Per-pixel seasonal climatology is undefined for pixels in held-out blocks (they never appear in training under D5). Baseline 2 is therefore the **per-scene city mean of training-fold pixels**; per-pixel climatology is still produced as the Phase 5 seasonal maps. | Locked 2026-11-09 (Phase 5) |
+| D12 | Model 1 feature design | Model 1 predicts the LST **anomaly from a scene anchor** (mean LST of the scene's training-fold / observed pixels), adds 150 m and 450 m neighbourhood means of NDVI/NDBI/MNDWI, and may add per-scene IDW residual kriging (chosen by CV). Rationale: Baseline 3 already uses same-scene information through residual interpolation, so a fair comparison needs the model to see the scene level too; at serving time the anchor comes from the observed clear pixels of the latest scene. | Locked 2026-11-09 (Phase 6) |
+| D13 | Branch policy | Exactly two long-lived branches: `main` (released) and `development` (all phase work, one commit per phase). Work merges `development` → `main` only on the owner's instruction. CI runs on both. | Locked 2026-11-09 |
+| D14 | LST screening range | Upper screening bound raised from 62 °C to **70 °C**. Evidence (2019–2025, 2.44 M sampled pixels): 0.51% exceed 62 °C, max 68.2 °C, concentrated in mid-May/June scenes on low-NDVI, built/bare surfaces (mean NDVI 0.22, NDBI +0.09) — physically plausible peak surface heat, not sensor error. 62 °C had been set from a single winter scene. | Locked 2026-11-09 (Phase 5) |
 
 ### Technology Decision Log (Plan v2, locked 2026-11-09)
 
@@ -207,23 +211,25 @@ heatsafe-ML/
   - [x] `python -m ml.src.ingest --source landsat --limit 1` run twice downloads 0 new bytes on the second run.
   - [x] Injected network failure recovers within retry limits and logs the failure (`test_download_asset_with_retry_and_recovery`).
   - [x] 100% of manifest hashes re-verify on disk.
-  - [x] Decision D7 met (173 usable scenes, with at least 13 in each season).
-- **Evidence:** `pytest -v ml/tests/ingest/test_ingest.py` 5/5 passed (15/15 passed repository-wide); CLI idempotency test run twice downloaded 0 new bytes on second run (scene `LC09_L2SP_144045_20251218_02_T1` skipped); injected network timeout recovered via exponential backoff; 100% of manifest records re-verified; Decision D7 verified with 173 scenes (Summer=63, Monsoon=13, Post-Monsoon=40, Winter=57).
+  - [x] Decision D7 met (125 Landsat 8/9 scenes, at least 12 in each season; corrected from 173, which included Landsat 7 — see note below).
+- **Evidence:** `pytest -v ml/tests/ingest/test_ingest.py` 5/5 passed (15/15 passed repository-wide); CLI idempotency test run twice downloaded 0 new bytes on second run (scene `LC09_L2SP_144045_20251218_02_T1` skipped); injected network timeout recovered via exponential backoff; 100% of manifest records re-verified; Decision D7 verified with 173 scenes (Summer=63, Monsoon=13, Post-Monsoon=40, Winter=57) — later corrected to 125 Landsat 8/9 scenes (Summer=40, Monsoon=12, Post-Monsoon=29, Winter=44); see the correction note below.
 
 ##### Seasonal Scene Inventory Audit (Decision D7 Compliance)
 
 | Year | Summer (Mar–May) | Monsoon (Jun–Sep) | Post-Monsoon (Oct–Nov) | Winter (Dec–Feb) | Annual Total |
 |:---|:---:|:---:|:---:|:---:|:---:|
-| **2019** | 11 | 1 | 5 | 10 | 27 |
-| **2020** | 10 | 0 | 4 | 8 | 22 |
-| **2021** | 10 | 1 | 6 | 7 | 24 |
-| **2022** | 9 | 4 | 6 | 7 | 26 |
-| **2023** | 10 | 3 | 8 | 9 | 30 |
+| **2019** | 5 | 0 | 2 | 5 | 12 |
+| **2020** | 5 | 0 | 2 | 5 | 12 |
+| **2021** | 5 | 1 | 3 | 4 | 13 |
+| **2022** | 5 | 4 | 5 | 7 | 21 |
+| **2023** | 7 | 3 | 6 | 7 | 23 |
 | **2024** | 7 | 1 | 5 | 8 | 21 |
 | **2025** | 6 | 3 | 6 | 8 | 23 |
-| **Total (2019–2025)** | **63** | **13** | **40** | **57** | **173** |
+| **Total (2019–2025)** | **40** | **12** | **29** | **44** | **125** |
 | **Decision D7 Bar** | **≥ 8** | **≥ 8** | **≥ 8** | **≥ 8** | **≥ 40** |
 | **Status** | **PASS** | **PASS** | **PASS** | **PASS** | **PASS** |
+
+> **Correction (2026-11-09, Phase 5):** the original audit reported 173 scenes because the STAC search did not filter by satellite and counted 48 Landsat 7 scenes (SLC-off striping, different band names — out of scope). The table above is the Landsat 8/9-only audit after adding `platforms: [landsat-8, landsat-9]` to `ml/configs/ingest.yaml`. D7 is still met.
 #### Phase 3 — Preprocessing, QA Masking & Feature Engineering `[x]`
 **Concrete assets:** `ml/src/preprocess/align.py`, `ml/src/preprocess/features.py`, `ml/src/validate/schema.py`; `ml/data/processed/features_v1.parquet`; `ml/tests/preprocess/test_preprocess.py`; data dictionary and representative missingness audit inside `progress.md`.
 - [x] Reproject and resample all rasters to the master 30 m grid (`EPSG:32644`, bilinear for continuous bands, nearest for masks)
@@ -333,22 +339,57 @@ Landsat / DEM (Planetary Computer) → ingest → preprocess → Model 1 (batch)
 
 ### Milestone 5: First Working Result & Baselines
 
-#### Phase 5 — First Working Result, EDA & Baseline Models `[ ]`
-**Concrete assets:** `ml/src/eda/maps.py`, `ml/src/eda/stats.py`, `ml/src/models/baseline/baselines.py`, `ml/src/models/baseline/metrics.py`; `ml/data/processed/maps/lst_{summer,postmonsoon}_YYYY.tif` + PNG previews; locked baseline score table.
-- [ ] **First Working Result:** seasonal mean LST GeoTIFFs and PNG maps for summer vs. post-monsoon/winter, with metadata (scene list, date range, CRS, masking summary)
-- [ ] Hotspot analysis: Getis-Ord Gi* (distance band or queen contiguity), significant clusters at p < 0.05, exported as a GeoJSON layer
-- [ ] Correlations (Spearman): LST vs. NDVI, NDBI, MNDWI, elevation, by season
-- [ ] Baselines on the validation folds only (test set untouched):
-  - Baseline 1: per-season mean LST of the city
-  - Baseline 2: per-pixel seasonal climatology (mean of that pixel in the same season from training years)
-  - Baseline 3: OLS on NDVI, NDBI, MNDWI, elevation, with spatial interpolation (e.g., inverse-distance) of residuals
-- [ ] Metrics module: RMSE, MAE, bias, R², Spearman, each reported per season
+#### Phase 5 — First Working Result, EDA & Baseline Models `[x]`
+**Concrete assets:** `ml/src/dataset/{build.py, splits.py}`, `ml/src/eda/{maps.py, stats.py}`, `ml/src/models/baseline/{baselines.py, metrics.py}`, `ml/configs/splits.yaml` (frozen), Phase 5 settings in `ml/configs/thresholds.yaml`; cropped multi-scene ingestion in `ml/src/ingest/`; tests in `ml/tests/{dataset,eda,models}/`. Artifacts (git-ignored, hashed in the manifest): `ml/data/interim/scenes/*.npz` (122 scene cubes), `ml/data/processed/{training_v2.parquet, scene_index.parquet}`, `ml/data/processed/maps/lst_<season>_2019_2025.{tif,png}` + `hotspots_<season>.geojson`, `ml/data/processed/baselines/baseline_scores.json`, `ml/data/processed/eda/spearman_by_season.json`.
+- [x] Multi-scene ingestion: study-area windows read straight from remote COGs (~6.5 MB/scene instead of ~450 MB), collection-level SAS token (fixes HTTP 429), per-scene failure isolation, Landsat 8/9-only filter. 125/125 scenes ingested, 0 failures.
+- [x] Dataset build: terrain computed once; per-scene full-grid cubes; 20,000 trainable pixels sampled per scene with stable seeds; 150 m / 450 m neighbourhood index means; frozen split columns. 122/125 scenes usable (3 excluded at < 30% trainable); 2,440,000 rows.
+- [x] Refactor verified bit-for-bit: rebuilding `LC09_L2SP_144045_20251218_02_T1` reproduces `features_v1.parquet` exactly.
+- [x] **First Working Result:** seasonal mean LST GeoTIFFs + PNG maps for all four seasons with metadata tags (scene list, date range, CRS, masking, resolution caveat).
+- [x] Hotspot analysis: Getis-Ord Gi* (300 m distance band) with Benjamini-Hochberg FDR control (q < 0.05), exported as GeoJSON per season.
+- [x] Spearman correlations by season (table below).
+- [x] Baselines 1–3 on validation folds only (5-fold spatial-block CV, holdout blocks and 2026 untouched). Baseline 2 redefined per D11.
+- [x] Metrics module: RMSE, MAE, bias, R², Spearman, overall and per season.
 - **Measurable Exit Criteria:**
-  - [ ] Reproducible map artifacts exist for at least two contrasting seasons.
-  - [ ] Baseline 1–3 scores locked in `progress.md` as the bar to beat.
-  - [ ] D5 re-confirmed or adjusted after seeing fold sizes.
-- **Evidence:** baseline score table (metric × baseline × season).
-- **Unlocks:** the parallel API contract track (D9) may start using Baseline products tagged `model_version: "baseline"`.
+  - [x] Reproducible map artifacts exist for at least two contrasting seasons (all four produced).
+  - [x] Baseline 1–3 scores locked in `progress.md` as the bar to beat (table below).
+  - [x] D5 re-confirmed after seeing fold sizes: folds hold 376,804–421,219 rows and 28–29 blocks each, fold mean LST 37.8–38.8 °C; holdout = 36 blocks / 493,105 rows. No change to D5.
+- **Evidence (2026-11-09):** ingestion log 125 found / 0 failed; dataset summary 125 indexed / 122 used / 2,440,000 rows; ML test suites `ml/tests/{dataset,eda,models}` green; ruff + mypy clean on the new modules.
+
+##### Locked Baseline Scores (5-fold spatial-block CV, 1,946,895 validation predictions, 122 scenes)
+
+| Baseline | Overall RMSE (°C) | MAE | Bias | R² | Summer RMSE | Monsoon RMSE | Post-monsoon RMSE | Winter RMSE |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| B1 — season city mean | 5.534 | 4.303 | −0.002 | 0.622 | 6.842 | 8.154 | 3.777 | 4.274 |
+| B2 — scene city mean (D11) | 2.807 | 2.148 | −0.002 | 0.903 | 3.472 | 3.792 | 2.268 | 2.081 |
+| **B3 — OLS + IDW residuals** | **2.351** | **1.726** | **−0.053** | **0.932** | **2.121** | **2.494** | **2.406** | **2.480** |
+
+**Bar to beat (Phase 6):** Model 1 overall CV RMSE ≤ 0.85 × 2.351 = **1.998 °C**.
+
+##### Seasonal Maps & Hotspots (2019–2025, Landsat 8/9 ~10:00 local solar time)
+
+| Season | Scenes | City-wide mean LST | P5–P95 | Inside NMC vs. outside | Gi* hot / cold area (FDR q<0.05) |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| Summer (Mar–May) | 40 | 46.26 °C | 41.65–50.69 | **−2.53 °C** (city cooler) | 48.6% / 43.4% |
+| Monsoon (Jun–Sep) | 10 | 48.23 °C | 43.30–52.58 | −2.22 °C | 46.9% / 44.3% |
+| Post-monsoon (Oct–Nov) | 29 | 34.75 °C | 31.26–37.82 | +0.23 °C | 47.5% / 40.0% |
+| Winter (Dec–Feb) | 43 | 31.07 °C | 28.18–34.33 | −1.23 °C | 42.8% / 45.1% |
+
+**Findings and caveats:**
+- **Daytime surface urban cool island:** in summer the built-up NMC area is 2.5 °C *cooler* than the dry, bare agricultural periphery at the Landsat overpass. This is surface temperature at ~10:00, not air temperature or night-time conditions, and must not be read as "the city is not hot".
+- **Monsoon selection bias:** only 10 clear-sky scenes exist and they cluster in early June (pre-onset) and late September, so the monsoon composite is hotter than summer. It does not represent wet-monsoon conditions.
+- **Gi* covers large areas:** at 30 m, neighbouring cells are strongly autocorrelated; even with FDR control, ~90% of the grid is significantly hotter or cooler than the city-wide mean. The layer separates relatively hot from relatively cool zones; it does not isolate rare anomalies.
+- Lakes (Ambazari, Futala, Gorewada) are the coolest features; open water is excluded from training via the QA water flag.
+
+##### Spearman ρ between LST and drivers (training folds, ≤ 200,000 rows per season)
+
+| Driver | Summer | Monsoon | Post-monsoon | Winter |
+|:---|:---:|:---:|:---:|:---:|
+| NDVI | −0.377 | −0.504 | −0.214 | −0.307 |
+| NDBI | +0.405 | +0.719 | +0.232 | +0.419 |
+| MNDWI | −0.076 | −0.216 | +0.111 | −0.170 |
+| Elevation | +0.052 | −0.001 | −0.028 | +0.036 |
+
+p-values are < 1e-10 everywhere but are optimistic because pixels are spatially autocorrelated.
 
 ---
 

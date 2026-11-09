@@ -353,9 +353,9 @@ def test_feature_table_schema_and_missingness():
     assert is_valid is True
     assert len(errors) == 0
 
-    # Test study screening violation: LST > 62.0 C
+    # Test study screening violation: LST > 70.0 C (Decision D14)
     bad_df = valid_df.copy()
-    bad_df.loc[0, "lst_celsius"] = 65.0  # Exceeds 62.0 C
+    bad_df.loc[0, "lst_celsius"] = 72.0  # Exceeds 70.0 C
     is_bad_valid, bad_errors = FeatureTableSchema.validate(bad_df, raise_errors=False)
     assert is_bad_valid is False
     assert any("screening range" in err for err in bad_errors)
