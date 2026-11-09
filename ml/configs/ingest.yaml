@@ -27,6 +27,8 @@ stac_service:
 sources:
   landsat:
     stac_collection: "landsat-c2-l2"
+    # Landsat 8/9 only: Landsat 7 has striped SLC-off gaps and different band names
+    platforms: ["landsat-8", "landsat-9"]
     target_bands:
       lwir11: "ST_B10"       # Thermal infrared surface temperature
       qa_pixel: "QA_PIXEL"   # Pixel quality assessment

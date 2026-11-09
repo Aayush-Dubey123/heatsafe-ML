@@ -450,6 +450,151 @@ def export_feature_table(
     return out_path
 
 
+def compute_static_terrain(dem_path_or_tiles: Union[Path, List[Path]]) -> Dict[str, np.ndarray]:
+    """
+    Align the Copernicus DEM to the master grid and derive Horn slope and aspect once.
+
+    Terrain is static, so batch processing computes it a single time and reuses it
+    for every Landsat scene.
+
+    Args:
+        dem_path_or_tiles (Union[Path, List[Path]]): One DEM raster or a list of tiles to mosaic.
+
+    Returns:
+        Dict[str, np.ndarray]: 'elevation', 'slope', 'aspect' (float32) and 'valid_dem' (bool) arrays.
+    """
+    grid_spec = load_master_grid_spec()
+    if isinstance(dem_path_or_tiles, list):
+        import rasterio
+        from rasterio.merge import merge
+        from rasterio.warp import Resampling
+        from rasterio.warp import reproject as warp_reproject
+
+        opened_srcs = [rasterio.open(p) for p in dem_path_or_tiles]
+        try:
+            mosaic_arr, mosaic_trans = merge(opened_srcs)
+            aligned_dem = np.full(grid_spec["shape"], np.nan, dtype=np.float32)
+            warp_reproject(
+                source=mosaic_arr[0],
+                destination=aligned_dem,
+                src_transform=mosaic_trans,
+                src_crs=opened_srcs[0].crs,
+                dst_transform=grid_spec["transform"],
+                dst_crs=grid_spec["crs"],
+                resampling=Resampling.bilinear,
+                dst_nodata=np.nan,
+            )
+        finally:
+            for src in opened_srcs:
+                src.close()
+    else:
+        aligned_dem, _ = reproject_to_master_grid(dem_path_or_tiles, resampling_method="bilinear", fill_value=np.nan)
+
+    terrain = compute_horn_terrain_derivatives(dem=aligned_dem, cell_size=grid_spec["cell_size"])
+    return {
+        "elevation": aligned_dem,
+        "slope": terrain["slope"][0],
+        "aspect": terrain["aspect"][0],
+        "valid_dem": terrain["valid_dem"],
+    }
+
+
+def compute_scene_arrays(
+    scene_id: str,
+    landsat_bands: Dict[str, Path],
+    terrain: Dict[str, np.ndarray],
+    acquisition_datetime: str,
+) -> Tuple[Dict[str, np.ndarray], Dict[str, np.ndarray], Dict[str, Any]]:
+    """
+    Turn one Landsat scene into master-grid feature arrays, validity masks, and metadata.
+
+    Reprojects bands, decodes QA bitmasks, scales LST and reflectance, and computes
+    spectral indices; terrain comes precomputed from `compute_static_terrain`.
+
+    Args:
+        scene_id (str): Landsat scene identifier.
+        landsat_bands (Dict[str, Path]): Band alias → local GeoTIFF path.
+        terrain (Dict[str, np.ndarray]): Output of `compute_static_terrain`.
+        acquisition_datetime (str): ISO 8601 UTC acquisition time.
+
+    Returns:
+        Tuple[Dict, Dict, Dict]: (features_dict, masks_dict, metadata) ready for export.
+    """
+    grid_spec = load_master_grid_spec()
+
+    qa_pixel_raw, _ = reproject_to_master_grid(landsat_bands["QA_PIXEL"], resampling_method="nearest", fill_value=1.0)
+    qa_pixel_masks = decode_landsat_qa_pixel(qa_pixel_raw)
+
+    qa_radsat_masks: Dict[str, Any] = {
+        "terrain_occlusion_mask": None,
+        "band3_sat_mask": None,
+        "band4_sat_mask": None,
+        "band5_sat_mask": None,
+        "band6_sat_mask": None,
+    }
+    if "QA_RADSAT" in landsat_bands and Path(landsat_bands["QA_RADSAT"]).is_file():
+        qa_radsat_raw, _ = reproject_to_master_grid(
+            landsat_bands["QA_RADSAT"], resampling_method="nearest", fill_value=0.0
+        )
+        qa_radsat_masks = decode_landsat_qa_radsat(qa_radsat_raw)
+
+    st_raw, _ = reproject_to_master_grid(landsat_bands["ST_B10"], resampling_method="bilinear", fill_value=0.0)
+    scaled_lst, valid_lst = scale_landsat_lst(
+        raw_st=st_raw,
+        fill_mask=qa_pixel_masks["atmospheric_contamination_mask"],
+        terrain_occlusion_mask=qa_radsat_masks.get("terrain_occlusion_mask"),
+    )
+
+    reflectance: Dict[str, np.ndarray] = {}
+    for alias, sat_key in (("SR_B3", "band3_sat_mask"), ("SR_B4", "band4_sat_mask"),
+                           ("SR_B5", "band5_sat_mask"), ("SR_B6", "band6_sat_mask")):
+        raw, _ = reproject_to_master_grid(landsat_bands[alias], resampling_method="bilinear", fill_value=0.0)
+        reflectance[alias], _ = scale_surface_reflectance(
+            raw, fill_mask=qa_pixel_masks["fill_mask"], band_sat_mask=qa_radsat_masks.get(sat_key)
+        )
+
+    indices = compute_spectral_indices(
+        green=reflectance["SR_B3"], red=reflectance["SR_B4"], nir=reflectance["SR_B5"], swir=reflectance["SR_B6"]
+    )
+
+    cols = np.arange(grid_spec["ncols"])
+    easting_line = grid_spec["min_easting"] + (cols + 0.5) * grid_spec["cell_size"]
+    northing_mid = np.full_like(
+        easting_line, grid_spec["min_northing"] + (grid_spec["max_northing"] - grid_spec["min_northing"]) / 2.0
+    )
+    lon_line, _ = transform("EPSG:32644", "EPSG:4326", easting_line, northing_mid)
+    lon_grid = np.tile(lon_line, (grid_spec["nrows"], 1))
+    solar_temporal = compute_pixel_mean_local_solar_time(acquisition_datetime, lon_grid)
+
+    features_dict = {
+        "elevation": terrain["elevation"],
+        "slope": terrain["slope"],
+        "aspect": terrain["aspect"],
+        "ndvi": indices["ndvi"][0],
+        "ndbi": indices["ndbi"][0],
+        "mndwi": indices["mndwi"][0],
+        "lst_celsius": scaled_lst,
+    }
+    masks_dict = {
+        "valid_dem": terrain["valid_dem"],
+        "valid_ndvi": indices["ndvi"][1],
+        "valid_ndbi": indices["ndbi"][1],
+        "valid_mndwi": indices["mndwi"][1],
+        "valid_lst": valid_lst,
+        "is_water": qa_pixel_masks["water_mask"],
+        "clear_sky": ~qa_pixel_masks["atmospheric_contamination_mask"],
+    }
+    metadata = {
+        "scene_id": scene_id,
+        "date": solar_temporal["date"],
+        "season": solar_temporal["season"],
+        "sin_doy": solar_temporal["sin_doy"],
+        "cos_doy": solar_temporal["cos_doy"],
+        "utc_decimal": solar_temporal["utc_decimal"],
+    }
+    return features_dict, masks_dict, metadata
+
+
 def build_feature_table_from_scene(
     scene_id: str,
     landsat_bands: Dict[str, Path],
@@ -463,139 +608,13 @@ def build_feature_table_from_scene(
     reprojects rasters, decodes quality bitmasks, scales radiometry, calculates
     Horn's terrain derivatives and spectral indices, and exports a validated Parquet table.
     """
-    grid_spec = load_master_grid_spec()
-
-    # 1. Reproject and scale Landsat bands
-    qa_pixel_raw, _ = reproject_to_master_grid(
-        landsat_bands["QA_PIXEL"], resampling_method="nearest", fill_value=1.0
+    terrain = compute_static_terrain(dem_path_or_tiles)
+    features_dict, masks_dict, metadata = compute_scene_arrays(
+        scene_id=scene_id,
+        landsat_bands=landsat_bands,
+        terrain=terrain,
+        acquisition_datetime=acquisition_datetime,
     )
-    qa_pixel_masks = decode_landsat_qa_pixel(qa_pixel_raw)
-
-    qa_radsat_masks = {"terrain_occlusion_mask": None, "band3_sat_mask": None, "band4_sat_mask": None, "band5_sat_mask": None, "band6_sat_mask": None}
-    if "QA_RADSAT" in landsat_bands and Path(landsat_bands["QA_RADSAT"]).is_file():
-        qa_radsat_raw, _ = reproject_to_master_grid(
-            landsat_bands["QA_RADSAT"], resampling_method="nearest", fill_value=0.0
-        )
-        qa_radsat_masks = decode_landsat_qa_radsat(qa_radsat_raw)
-
-    # 2. Scale LST
-    st_raw, _ = reproject_to_master_grid(
-        landsat_bands["ST_B10"], resampling_method="bilinear", fill_value=0.0
-    )
-    scaled_lst, valid_lst = scale_landsat_lst(
-        raw_st=st_raw,
-        fill_mask=qa_pixel_masks["atmospheric_contamination_mask"],
-        terrain_occlusion_mask=qa_radsat_masks.get("terrain_occlusion_mask"),
-    )
-
-    # 3. Scale Surface Reflectance Bands
-    sr_b3_raw, _ = reproject_to_master_grid(
-        landsat_bands["SR_B3"], resampling_method="bilinear", fill_value=0.0
-    )
-    green_sr, valid_green = scale_surface_reflectance(
-        sr_b3_raw, fill_mask=qa_pixel_masks["fill_mask"], band_sat_mask=qa_radsat_masks.get("band3_sat_mask")
-    )
-
-    sr_b4_raw, _ = reproject_to_master_grid(
-        landsat_bands["SR_B4"], resampling_method="bilinear", fill_value=0.0
-    )
-    red_sr, valid_red = scale_surface_reflectance(
-        sr_b4_raw, fill_mask=qa_pixel_masks["fill_mask"], band_sat_mask=qa_radsat_masks.get("band4_sat_mask")
-    )
-
-    sr_b5_raw, _ = reproject_to_master_grid(
-        landsat_bands["SR_B5"], resampling_method="bilinear", fill_value=0.0
-    )
-    nir_sr, valid_nir = scale_surface_reflectance(
-        sr_b5_raw, fill_mask=qa_pixel_masks["fill_mask"], band_sat_mask=qa_radsat_masks.get("band5_sat_mask")
-    )
-
-    sr_b6_raw, _ = reproject_to_master_grid(
-        landsat_bands["SR_B6"], resampling_method="bilinear", fill_value=0.0
-    )
-    swir_sr, valid_swir = scale_surface_reflectance(
-        sr_b6_raw, fill_mask=qa_pixel_masks["fill_mask"], band_sat_mask=qa_radsat_masks.get("band6_sat_mask")
-    )
-
-    # 4. Compute Spectral Indices
-    indices = compute_spectral_indices(green=green_sr, red=red_sr, nir=nir_sr, swir=swir_sr)
-    ndvi_arr, valid_ndvi = indices["ndvi"]
-    ndbi_arr, valid_ndbi = indices["ndbi"]
-    mndwi_arr, valid_mndwi = indices["mndwi"]
-
-    # 5. Process DEM & Horn's Terrain Derivatives
-    if isinstance(dem_path_or_tiles, list):
-        import rasterio
-        from rasterio.merge import merge
-        from rasterio.warp import reproject as warp_reproject, Resampling
-
-        opened_srcs = [rasterio.open(p) for p in dem_path_or_tiles]
-        mosaic_arr, mosaic_trans = merge(opened_srcs)
-        aligned_dem = np.full(grid_spec["shape"], np.nan, dtype=np.float32)
-        warp_reproject(
-            source=mosaic_arr[0],
-            destination=aligned_dem,
-            src_transform=mosaic_trans,
-            src_crs=opened_srcs[0].crs,
-            dst_transform=grid_spec["transform"],
-            dst_crs=grid_spec["crs"],
-            resampling=Resampling.bilinear,
-            dst_nodata=np.nan,
-        )
-        for s in opened_srcs:
-            s.close()
-    else:
-        aligned_dem, _ = reproject_to_master_grid(
-            dem_path_or_tiles, resampling_method="bilinear", fill_value=np.nan
-        )
-
-    terrain = compute_horn_terrain_derivatives(dem=aligned_dem, cell_size=grid_spec["cell_size"])
-    slope_arr, _ = terrain["slope"]
-    aspect_arr, _ = terrain["aspect"]
-    valid_dem = terrain["valid_dem"]
-
-    # 6. Temporal Features & Solar Time
-    # Pixel center longitudes for solar time calculation
-    min_easting = grid_spec["min_easting"]
-    cell_size = grid_spec["cell_size"]
-    cols = np.arange(grid_spec["ncols"])
-    easting_line = min_easting + (cols + 0.5) * cell_size
-    northing_mid = np.full_like(easting_line, grid_spec["min_northing"] + (grid_spec["max_northing"] - grid_spec["min_northing"]) / 2.0)
-    lon_line, _ = transform("EPSG:32644", "EPSG:4326", easting_line, northing_mid)
-    lon_grid = np.tile(lon_line, (grid_spec["nrows"], 1))
-
-    solar_temporal = compute_pixel_mean_local_solar_time(acquisition_datetime, lon_grid)
-
-    # 7. Package and Export Feature Table
-    features_dict = {
-        "elevation": aligned_dem,
-        "slope": slope_arr,
-        "aspect": aspect_arr,
-        "ndvi": ndvi_arr,
-        "ndbi": ndbi_arr,
-        "mndwi": mndwi_arr,
-        "lst_celsius": scaled_lst,
-    }
-
-    masks_dict = {
-        "valid_dem": valid_dem,
-        "valid_ndvi": valid_ndvi,
-        "valid_ndbi": valid_ndbi,
-        "valid_mndwi": valid_mndwi,
-        "valid_lst": valid_lst,
-        "is_water": qa_pixel_masks["water_mask"],
-        "clear_sky": ~qa_pixel_masks["atmospheric_contamination_mask"],
-    }
-
-    metadata = {
-        "scene_id": scene_id,
-        "date": solar_temporal["date"],
-        "season": solar_temporal["season"],
-        "sin_doy": solar_temporal["sin_doy"],
-        "cos_doy": solar_temporal["cos_doy"],
-        "utc_decimal": solar_temporal["utc_decimal"],
-    }
-
     exported_path = export_feature_table(
         features_dict=features_dict,
         masks_dict=masks_dict,
@@ -603,6 +622,5 @@ def build_feature_table_from_scene(
         out_path=out_path,
         manifest_manager=manifest_manager,
     )
-
     df = pd.read_parquet(exported_path)
     return exported_path, df

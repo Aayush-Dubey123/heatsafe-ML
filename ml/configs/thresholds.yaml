@@ -13,3 +13,28 @@ freshness_rules:
 
 model_baselines:
   min_rmse_improvement_percent: 15.0  # Exit criterion vs spatial median baseline
+
+# Phase 5 — dataset building, EDA, and baselines
+dataset:
+  train_start_date: "2019-01-01"
+  train_end_date: "2025-12-31"
+  min_scene_trainable_fraction: 0.30   # scenes below this (mostly cloud/fill) are excluded
+  sample_pixels_per_scene: 20000       # random trainable pixels sampled per scene for modelling
+  random_seed: 20261109
+
+spatial_splits:
+  block_size_meters: 2000.0            # Decision D5
+  n_folds: 5                           # GroupKFold on block_id (D5)
+  holdout_fraction: 0.20               # fixed test blocks, opened once in Phase 7 (D4/D5)
+  random_seed: 20261109
+
+eda:
+  gi_star_radius_meters: 300.0         # distance band for Getis-Ord Gi*
+  gi_star_min_valid_neighbours: 20
+  gi_star_z_threshold: 1.96            # two-sided p < 0.05 (floor)
+  gi_star_fdr_alpha: 0.05              # Benjamini-Hochberg false discovery rate
+  correlation_sample_per_season: 200000
+
+baselines:
+  idw_neighbours: 12
+  idw_power: 2.0

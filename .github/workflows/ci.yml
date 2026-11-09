@@ -2,9 +2,9 @@ name: HeatSafe-ML CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, development ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, development ]
   workflow_dispatch:
 
 permissions:
@@ -16,10 +16,10 @@ env:
   RUFF_ARGS: >-
     --line-length 120 --target-version py311
     --select E,F,W,I,B,S,UP --ignore B008
-    --per-file-ignores backend/tests/*:S101
+    --per-file-ignores backend/tests/*:S101,ml/tests/*:S101
   MYPY_ARGS: >-
     --python-version 3.11 --ignore-missing-imports
-    --explicit-package-bases --exclude backend/tests/
+    --explicit-package-bases --no-site-packages --exclude backend/tests/
 
 jobs:
   quality-and-tests:
@@ -44,11 +44,11 @@ jobs:
       - name: Bytecode compilation & syntax audit
         run: python -m compileall -q backend/ ml/
 
-      - name: Ruff lint, including hardcoded-secret rules (backend)
-        run: ruff check backend $RUFF_ARGS
+      - name: Ruff lint, including hardcoded-secret rules (backend + Phase 5+ ML modules)
+        run: ruff check backend ml/src/dataset ml/src/eda ml/src/models ml/src/validation ml/tests/dataset ml/tests/eda ml/tests/models ml/tests/validation $RUFF_ARGS
 
-      - name: Mypy type check (backend)
-        run: mypy backend $MYPY_ARGS
+      - name: Mypy type check (backend + Phase 5+ ML modules)
+        run: mypy backend ml/src/dataset ml/src/eda ml/src/models ml/src/validation $MYPY_ARGS
 
       - name: Dependency vulnerability audit
         run: pip-audit -r requirements.txt --progress-spinner off

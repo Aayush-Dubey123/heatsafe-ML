@@ -47,5 +47,3100 @@
       "season": "winter",
       "crs": "EPSG:32644"
     }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20240529_02_T1",
+    "acquisition_date": "2024-05-29T05:07:31.569276Z",
+    "sha256": "4b81d6dce30550fbf8e43ab810ddc96b9f81006b2da5ebc8593ebbcf919cf829",
+    "size_bytes": 1285297,
+    "recorded_at_utc": "2026-11-09T13:09:09.991841+00:00",
+    "metadata": {
+      "cloud_cover": 5.39,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240529_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240529_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240529_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240529_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240529_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240529_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240529_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20251210_02_T1",
+    "acquisition_date": "2025-12-10T05:08:45.490340Z",
+    "sha256": "dcc4841cd3a7ed90289911c3119e1d2e8085a0cfdd349cc224339823e964caa3",
+    "size_bytes": 1220831,
+    "recorded_at_utc": "2026-11-09T13:11:11.348777+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251210_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251210_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251210_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251210_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251210_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251210_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251210_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20251124_02_T1",
+    "acquisition_date": "2025-11-24T05:08:47.307443Z",
+    "sha256": "d869eebaae225b065102051a0825095f765faba8ed9747e6395c5afa80571c58",
+    "size_bytes": 1206237,
+    "recorded_at_utc": "2026-11-09T13:11:21.496569+00:00",
+    "metadata": {
+      "cloud_cover": 2.53,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251124_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251124_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251124_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251124_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251124_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251124_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251124_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20251116_02_T1",
+    "acquisition_date": "2025-11-16T05:08:50.500530Z",
+    "sha256": "923e0666096de975c8cf69241a89ce423db3ae077d585b0fa90a1c532438729f",
+    "size_bytes": 1207243,
+    "recorded_at_utc": "2026-11-09T13:11:36.052264+00:00",
+    "metadata": {
+      "cloud_cover": 0.01,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251116_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251116_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251116_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251116_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251116_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251116_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251116_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20251108_02_T1",
+    "acquisition_date": "2025-11-08T05:08:46.322477Z",
+    "sha256": "6e9d2369e575e358b94c1570ca3c7f12afcec12357abda463fc86e4d3fd0a837",
+    "size_bytes": 1218664,
+    "recorded_at_utc": "2026-11-09T13:11:58.197500+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251108_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251108_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251108_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251108_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251108_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251108_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251108_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20251023_02_T1",
+    "acquisition_date": "2025-10-23T05:08:41.723726Z",
+    "sha256": "1164de000b772139acfc8ca9e32fb8d3e3f2b8bc0b1626988d2082b42302f8e7",
+    "size_bytes": 1244027,
+    "recorded_at_utc": "2026-11-09T13:12:09.781384+00:00",
+    "metadata": {
+      "cloud_cover": 0.27,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251023_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251023_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251023_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251023_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251023_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251023_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251023_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20251015_02_T1",
+    "acquisition_date": "2025-10-15T05:08:51.740278Z",
+    "sha256": "75232b8a4d2c64414202f6de39dd3515e6801be7bd5d5be6ad3d7c7ed7219388",
+    "size_bytes": 1245263,
+    "recorded_at_utc": "2026-11-09T13:12:20.683424+00:00",
+    "metadata": {
+      "cloud_cover": 7.38,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251015_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251015_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251015_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251015_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251015_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251015_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20251015_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20251007_02_T1",
+    "acquisition_date": "2025-10-07T05:08:44.204059Z",
+    "sha256": "302f8908de38dcd36d08a4f7636bd8dd911d95112e4835e0f4bb6a001c278e7f",
+    "size_bytes": 1254518,
+    "recorded_at_utc": "2026-11-09T13:12:34.593905+00:00",
+    "metadata": {
+      "cloud_cover": 14.64,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251007_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251007_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251007_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251007_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251007_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251007_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20251007_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20250921_02_T1",
+    "acquisition_date": "2025-09-21T05:08:42.670791Z",
+    "sha256": "da8dbc24a8d10f38a0084b7e0d567ae60352f369123b97ba6f96a0e29d1acf75",
+    "size_bytes": 1249932,
+    "recorded_at_utc": "2026-11-09T13:12:52.223903+00:00",
+    "metadata": {
+      "cloud_cover": 17.76,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250921_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250921_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250921_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250921_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250921_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250921_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250921_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20250609_02_T1",
+    "acquisition_date": "2025-06-09T05:07:57.431950Z",
+    "sha256": "bb5f3132be06e5e9082b9235cdbd5f36db09eff33f47baf6c781b7e5c51baa46",
+    "size_bytes": 1258988,
+    "recorded_at_utc": "2026-11-09T13:13:07.350517+00:00",
+    "metadata": {
+      "cloud_cover": 3.71,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250609_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250609_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250609_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250609_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250609_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250609_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250609_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20250601_02_T1",
+    "acquisition_date": "2025-06-01T05:07:57.313810Z",
+    "sha256": "347484e0b67031210825a7d1c7bd0e44c3bbc1cef5a5e2af1721f202244e6f2f",
+    "size_bytes": 1216076,
+    "recorded_at_utc": "2026-11-09T13:13:19.360805+00:00",
+    "metadata": {
+      "cloud_cover": 9.03,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250601_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250601_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250601_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250601_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250601_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250601_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250601_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20250430_02_T1",
+    "acquisition_date": "2025-04-30T05:07:54.139820Z",
+    "sha256": "5d1055b7022de06a6182046886e7b7a8c6b7a48ae4b295c052198fc737e05830",
+    "size_bytes": 1269632,
+    "recorded_at_utc": "2026-11-09T13:13:38.381327+00:00",
+    "metadata": {
+      "cloud_cover": 0.05,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250430_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250430_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250430_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250430_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250430_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250430_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250430_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20250422_02_T1",
+    "acquisition_date": "2025-04-22T05:08:15.377638Z",
+    "sha256": "3fa447ebfd920e36366f64affe6873c3d4a72dc1534480d29116253ffbe85f08",
+    "size_bytes": 1270167,
+    "recorded_at_utc": "2026-11-09T13:13:53.762190+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250422_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250422_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250422_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250422_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250422_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250422_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250422_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20250406_02_T1",
+    "acquisition_date": "2025-04-06T05:08:19.788296Z",
+    "sha256": "0bc880ed197c94993c720842842f3fa9c970c7185f35d3dce632e93a14ff1390",
+    "size_bytes": 1261889,
+    "recorded_at_utc": "2026-11-09T13:14:12.287220+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250406_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250406_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250406_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250406_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250406_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250406_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250406_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20250329_02_T1",
+    "acquisition_date": "2025-03-29T05:08:08.304629Z",
+    "sha256": "cad107062e73c8ad5119c0c4df98e2297fc84a592eab4becbedb4a198cb48ce3",
+    "size_bytes": 1240614,
+    "recorded_at_utc": "2026-11-09T13:14:28.020673+00:00",
+    "metadata": {
+      "cloud_cover": 0.33,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250329_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250329_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250329_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250329_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250329_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250329_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250329_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20250313_02_T1",
+    "acquisition_date": "2025-03-13T05:08:17.884832Z",
+    "sha256": "f7f3b3756daeb8c4a8b07c279b58ff7a2f67edbe49ccf5bf87477b0cb05b85df",
+    "size_bytes": 1260852,
+    "recorded_at_utc": "2026-11-09T13:14:46.115425+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250313_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250313_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250313_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250313_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250313_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250313_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250313_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20250305_02_T1",
+    "acquisition_date": "2025-03-05T05:08:33.351087Z",
+    "sha256": "048f5609793e28b5c7e8988d60c9855e3df05b8f056fc5a96aeb0cf42b3da32c",
+    "size_bytes": 1254399,
+    "recorded_at_utc": "2026-11-09T13:15:01.289582+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250305_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250305_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250305_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250305_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250305_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250305_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250305_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20250225_02_T1",
+    "acquisition_date": "2025-02-25T05:08:20.620114Z",
+    "sha256": "f8927d09137205a408375c8c7fecf065b286aa5f176952b4730179f30ccd4722",
+    "size_bytes": 1237709,
+    "recorded_at_utc": "2026-11-09T13:15:18.937579+00:00",
+    "metadata": {
+      "cloud_cover": 0.01,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250225_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250225_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250225_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250225_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250225_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250225_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250225_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20250217_02_T1",
+    "acquisition_date": "2025-02-17T05:08:40.317675Z",
+    "sha256": "853b8fa9f7804a3eb34008350062d96f44386be260b4230238985f3cddd0b228",
+    "size_bytes": 1253302,
+    "recorded_at_utc": "2026-11-09T13:15:31.039790+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250217_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250217_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250217_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250217_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250217_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250217_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250217_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20250209_02_T1",
+    "acquisition_date": "2025-02-09T05:08:31.374599Z",
+    "sha256": "79fc49091ca8225b3ac00783a5c9e6ad07965ebfe9d2779214361b5866083bd8",
+    "size_bytes": 1233874,
+    "recorded_at_utc": "2026-11-09T13:15:50.200743+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250209_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250209_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250209_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250209_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250209_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250209_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250209_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20250201_02_T1",
+    "acquisition_date": "2025-02-01T05:08:35.554971Z",
+    "sha256": "577ae824410ff0cc0c14c1a085391da0e30475705de560e58fd53be6b9521697",
+    "size_bytes": 1223499,
+    "recorded_at_utc": "2026-11-09T13:16:07.526298+00:00",
+    "metadata": {
+      "cloud_cover": 0.45,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250201_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250201_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250201_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250201_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250201_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250201_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20250201_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20250124_02_T1",
+    "acquisition_date": "2025-01-24T05:08:27.647719Z",
+    "sha256": "0727ffc469cec8a8b17985ffff386529751032a7f7c224f8fcda64c7d00d68ff",
+    "size_bytes": 1230535,
+    "recorded_at_utc": "2026-11-09T13:16:22.450696+00:00",
+    "metadata": {
+      "cloud_cover": 3.14,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250124_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250124_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250124_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250124_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250124_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250124_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250124_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20250108_02_T1",
+    "acquisition_date": "2025-01-08T05:08:33.972393Z",
+    "sha256": "fc8630f771f3b68005b018983b46c278c5c89a369f785b10792fb8ccbd8ff2c0",
+    "size_bytes": 1214911,
+    "recorded_at_utc": "2026-11-09T13:16:35.780829+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250108_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250108_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250108_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250108_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250108_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250108_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20250108_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20241231_02_T1",
+    "acquisition_date": "2024-12-31T05:08:36.561527Z",
+    "sha256": "ea68e6742231c81b983ce43031bef7feac899797ef44acd668342545098471f1",
+    "size_bytes": 1206072,
+    "recorded_at_utc": "2026-11-09T13:16:53.654489+00:00",
+    "metadata": {
+      "cloud_cover": 0.87,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241231_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241231_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241231_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241231_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241231_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241231_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241231_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20241215_02_T1",
+    "acquisition_date": "2024-12-15T05:08:37.531543Z",
+    "sha256": "91ec0818a10853528f5dbccef09c8779d25b4270b124d442b272c8d5ae2257bf",
+    "size_bytes": 1219435,
+    "recorded_at_utc": "2026-11-09T13:17:10.304263+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241215_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241215_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241215_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241215_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241215_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241215_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241215_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20241129_02_T1",
+    "acquisition_date": "2024-11-29T05:08:45.024586Z",
+    "sha256": "d62f6ce3ae1086049dcee71d905a48de06d5e1dfde54e2d746ed52964d70ac4d",
+    "size_bytes": 1213720,
+    "recorded_at_utc": "2026-11-09T13:17:25.339718+00:00",
+    "metadata": {
+      "cloud_cover": 0.01,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241129_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241129_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241129_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241129_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241129_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241129_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241129_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20241113_02_T1",
+    "acquisition_date": "2024-11-13T05:08:29.736356Z",
+    "sha256": "2040d99676ad85abac36b46986a476c052fbec8387e07bd79697f9bb23c2abe7",
+    "size_bytes": 1236403,
+    "recorded_at_utc": "2026-11-09T13:17:36.919846+00:00",
+    "metadata": {
+      "cloud_cover": 0.01,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241113_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241113_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241113_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241113_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241113_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241113_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241113_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20241105_02_T1",
+    "acquisition_date": "2024-11-05T05:08:28.766674Z",
+    "sha256": "3a5b798616851e0973fa4b3014477364f25da9da9a9c78f9fa91e24931a5e345",
+    "size_bytes": 1235757,
+    "recorded_at_utc": "2026-11-09T13:17:51.586601+00:00",
+    "metadata": {
+      "cloud_cover": 0.04,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241105_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241105_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241105_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241105_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241105_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241105_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241105_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20241028_02_T1",
+    "acquisition_date": "2024-10-28T05:08:38.408206Z",
+    "sha256": "f70217f63e84bb9b3df737e04161aad5e1d44d08d3f22915caf7af897b1c9dd0",
+    "size_bytes": 1267741,
+    "recorded_at_utc": "2026-11-09T13:18:02.603468+00:00",
+    "metadata": {
+      "cloud_cover": 11.07,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241028_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241028_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241028_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241028_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241028_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241028_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20241028_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20241004_02_T1",
+    "acquisition_date": "2024-10-04T05:08:21.131372Z",
+    "sha256": "225a638b11d447a379cf9f4c97299a6f00674b9d78f1341189cfa1bdc47ade51",
+    "size_bytes": 1233520,
+    "recorded_at_utc": "2026-11-09T13:18:14.056599+00:00",
+    "metadata": {
+      "cloud_cover": 0.62,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241004_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241004_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241004_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241004_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241004_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241004_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20241004_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20240606_02_T1",
+    "acquisition_date": "2024-06-06T05:07:50.450173Z",
+    "sha256": "7ca02a65b43340f82c88af72d4978f022e080380edcfeaccf444613e3ea0047f",
+    "size_bytes": 1272048,
+    "recorded_at_utc": "2026-11-09T13:18:28.086649+00:00",
+    "metadata": {
+      "cloud_cover": 6.41,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240606_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240606_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240606_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240606_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240606_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240606_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240606_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20240505_02_T1",
+    "acquisition_date": "2024-05-05T05:08:05.178993Z",
+    "sha256": "6b5414277024a007d125bc350ed30f1d33fda54e9de2e52773e8c6894296e1ac",
+    "size_bytes": 1267258,
+    "recorded_at_utc": "2026-11-09T13:18:46.895325+00:00",
+    "metadata": {
+      "cloud_cover": 0.78,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240505_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240505_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240505_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240505_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240505_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240505_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240505_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20240419_02_T1",
+    "acquisition_date": "2024-04-19T05:08:16.521904Z",
+    "sha256": "49eca27756ad7da0789c4fa65f9ce949467e27854f42a830be036d71b6653d2f",
+    "size_bytes": 1337870,
+    "recorded_at_utc": "2026-11-09T13:18:56.199509+00:00",
+    "metadata": {
+      "cloud_cover": 4.24,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240419_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240419_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240419_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240419_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240419_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240419_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240419_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20240403_02_T1",
+    "acquisition_date": "2024-04-03T05:08:29.360438Z",
+    "sha256": "38cd5a4e0fb02cdf46b51dbe91ebba80e86cea726cfe73d9c97221ea366ce112",
+    "size_bytes": 1264131,
+    "recorded_at_utc": "2026-11-09T13:19:12.546942+00:00",
+    "metadata": {
+      "cloud_cover": 0.05,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240403_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240403_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240403_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240403_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240403_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240403_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240403_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20240326_02_T1",
+    "acquisition_date": "2024-03-26T05:08:06.698226Z",
+    "sha256": "ac2e16890ce2a3a8afb3f5399bf90cf43e9adc56b1c708fd8c458266d9567d74",
+    "size_bytes": 1259436,
+    "recorded_at_utc": "2026-11-09T13:19:24.914987+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240326_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240326_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240326_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240326_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240326_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240326_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240326_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20240318_02_T1",
+    "acquisition_date": "2024-03-18T05:08:38.270849Z",
+    "sha256": "0f590049c73888501eb66a1e48405035b631a8346f3c26df4e3a5bc7959fcea4",
+    "size_bytes": 1180377,
+    "recorded_at_utc": "2026-11-09T13:19:49.546835+00:00",
+    "metadata": {
+      "cloud_cover": 4.97,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240318_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240318_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240318_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240318_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240318_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240318_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240318_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20240310_02_T1",
+    "acquisition_date": "2024-03-10T05:08:20.441870Z",
+    "sha256": "754459ab82efaed6b13081387becc8897c295129a949aec407cf5a247b03917c",
+    "size_bytes": 1247449,
+    "recorded_at_utc": "2026-11-09T13:19:59.020619+00:00",
+    "metadata": {
+      "cloud_cover": 0.1,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240310_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240310_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240310_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240310_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240310_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240310_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240310_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20240223_02_T1",
+    "acquisition_date": "2024-02-23T05:08:31.929639Z",
+    "sha256": "42471810de5f10e68b44d8891474cd6b99e197ec1e2f5dd902ac39775bce0a01",
+    "size_bytes": 1250589,
+    "recorded_at_utc": "2026-11-09T13:20:09.729198+00:00",
+    "metadata": {
+      "cloud_cover": 0.05,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240223_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240223_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240223_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240223_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240223_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240223_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240223_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20240215_02_T1",
+    "acquisition_date": "2024-02-15T05:08:43.648217Z",
+    "sha256": "9f32b724206c6402c218006ca4dd9b20b6e3f4575bf7673e351c982f219ff0a7",
+    "size_bytes": 1292879,
+    "recorded_at_utc": "2026-11-09T13:20:30.829300+00:00",
+    "metadata": {
+      "cloud_cover": 17.73,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240215_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240215_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240215_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240215_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240215_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240215_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240215_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20240207_02_T1",
+    "acquisition_date": "2024-02-07T05:08:35.144601Z",
+    "sha256": "48fb2c96044ab4352d241389bb22fb6a349f1f1aa28c2b2ea51c47de4969fd71",
+    "size_bytes": 1237513,
+    "recorded_at_utc": "2026-11-09T13:20:39.946657+00:00",
+    "metadata": {
+      "cloud_cover": 1.16,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240207_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240207_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240207_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240207_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240207_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240207_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240207_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20240130_02_T1",
+    "acquisition_date": "2024-01-30T05:08:45.854462Z",
+    "sha256": "654932a37cf0004a5e8dfec94f36aec75b32c02ba0efd3bc4e41c55e0c36bd87",
+    "size_bytes": 1219068,
+    "recorded_at_utc": "2026-11-09T13:21:00.374453+00:00",
+    "metadata": {
+      "cloud_cover": 0.24,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240130_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240130_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240130_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240130_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240130_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240130_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240130_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20240122_02_T1",
+    "acquisition_date": "2024-01-22T05:08:33.133387Z",
+    "sha256": "442357e9803c6ee3bef1c9b25fe9518c9c7d06be0a91a231e6e768a45dde72de",
+    "size_bytes": 1182797,
+    "recorded_at_utc": "2026-11-09T13:21:12.555942+00:00",
+    "metadata": {
+      "cloud_cover": 7.63,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240122_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240122_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240122_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240122_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240122_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240122_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20240122_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20240114_02_T1",
+    "acquisition_date": "2024-01-14T05:08:45.921947Z",
+    "sha256": "2954ba1956a46b6d07de8c5375d9be5873c1ecb827cbc6e36a215b4a5e7349d1",
+    "size_bytes": 1220015,
+    "recorded_at_utc": "2026-11-09T13:21:22.724468+00:00",
+    "metadata": {
+      "cloud_cover": 0.53,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240114_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240114_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240114_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240114_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240114_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240114_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20240114_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20231213_02_T1",
+    "acquisition_date": "2023-12-13T05:08:46.362715Z",
+    "sha256": "945500a1daeabfb4c9c8ff583c5e07fa90f80da9bf14ed74cb2e9d9062a478ca",
+    "size_bytes": 1205562,
+    "recorded_at_utc": "2026-11-09T13:21:39.016433+00:00",
+    "metadata": {
+      "cloud_cover": 2.01,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231213_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231213_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231213_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231213_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231213_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231213_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231213_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20231119_02_T1",
+    "acquisition_date": "2023-11-19T05:08:42.729084Z",
+    "sha256": "466c2398cb08ceda22b496d017a2fd7c1c37ed665a17067d9f39b1593062717b",
+    "size_bytes": 1240847,
+    "recorded_at_utc": "2026-11-09T13:22:02.214214+00:00",
+    "metadata": {
+      "cloud_cover": 1.72,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231119_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231119_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231119_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231119_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231119_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231119_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231119_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20231111_02_T1",
+    "acquisition_date": "2023-11-11T05:08:39.701947Z",
+    "sha256": "5337a9d8c7e6ff5967550b951f525bf60fd4197b37641546f00aded820f9d7cb",
+    "size_bytes": 1244966,
+    "recorded_at_utc": "2026-11-09T13:22:19.331829+00:00",
+    "metadata": {
+      "cloud_cover": 0.53,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231111_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231111_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231111_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231111_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231111_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231111_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231111_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20231103_02_T1",
+    "acquisition_date": "2023-11-03T05:08:41.410821Z",
+    "sha256": "4c19c707b7b24440bbd576d1ffd5151581988de8568c39f5df8b36e46f3f0914",
+    "size_bytes": 1269713,
+    "recorded_at_utc": "2026-11-09T13:22:38.067211+00:00",
+    "metadata": {
+      "cloud_cover": 7.38,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231103_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231103_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231103_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231103_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231103_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231103_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231103_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20231026_02_T1",
+    "acquisition_date": "2023-10-26T05:08:42.335014Z",
+    "sha256": "838d1baa0813d286f431e0b0ebc81821c2db5b727f08e62af3ab46cd1e7c21d5",
+    "size_bytes": 1249880,
+    "recorded_at_utc": "2026-11-09T13:23:04.654173+00:00",
+    "metadata": {
+      "cloud_cover": 0.12,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231026_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231026_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231026_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231026_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231026_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231026_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231026_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20231018_02_T1",
+    "acquisition_date": "2023-10-18T05:08:37.795836Z",
+    "sha256": "833ea718b2861869366e96b956206bfb2cb0ceb7b24eace42c6f07193ddb45ba",
+    "size_bytes": 1259598,
+    "recorded_at_utc": "2026-11-09T13:23:17.218960+00:00",
+    "metadata": {
+      "cloud_cover": 1.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231018_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231018_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231018_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231018_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231018_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231018_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20231018_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20231010_02_T1",
+    "acquisition_date": "2023-10-10T05:08:38.677655Z",
+    "sha256": "efb733c4e4da9582b4406a1dcbbf20e09bba858998c4ba34b66b15f4eb6bb4d4",
+    "size_bytes": 1263893,
+    "recorded_at_utc": "2026-11-09T13:23:30.222686+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231010_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231010_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231010_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231010_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231010_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231010_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20231010_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20230620_02_T1",
+    "acquisition_date": "2023-06-20T05:07:48.531515Z",
+    "sha256": "2b02b00dc05a508d97386e0dd4d2bec36c520e91b37207dbcced2a8e44471023",
+    "size_bytes": 1284928,
+    "recorded_at_utc": "2026-11-09T13:23:47.619535+00:00",
+    "metadata": {
+      "cloud_cover": 14.15,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230620_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230620_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230620_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230620_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230620_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230620_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230620_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20230612_02_T1",
+    "acquisition_date": "2023-06-12T05:07:55.324924Z",
+    "sha256": "7739e7217a065a30b14236540b84fa22a67d1fb75bee891773c7281f646bc0b8",
+    "size_bytes": 1276425,
+    "recorded_at_utc": "2026-11-09T13:24:00.341585+00:00",
+    "metadata": {
+      "cloud_cover": 1.72,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230612_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230612_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230612_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230612_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230612_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230612_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230612_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20230604_02_T1",
+    "acquisition_date": "2023-06-04T05:07:56.334730Z",
+    "sha256": "24d9cbdfdeba78ccef609e2634af71fb9bd1cf3ee282b20ed6fdf140c70935c6",
+    "size_bytes": 1275618,
+    "recorded_at_utc": "2026-11-09T13:24:13.180461+00:00",
+    "metadata": {
+      "cloud_cover": 0.21,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230604_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230604_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230604_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230604_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230604_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230604_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230604_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20230527_02_T1",
+    "acquisition_date": "2023-05-27T05:07:47.569515Z",
+    "sha256": "1f7a7936606686b1d1fc7a2af7b9bff03162788b9cdb5fa938ec509004b041c2",
+    "size_bytes": 1286314,
+    "recorded_at_utc": "2026-11-09T13:24:27.310951+00:00",
+    "metadata": {
+      "cloud_cover": 0.37,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230527_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230527_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230527_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230527_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230527_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230527_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230527_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20230519_02_T1",
+    "acquisition_date": "2023-05-19T05:08:02.845004Z",
+    "sha256": "e499fbe5285865880fe65afd2ff533f19895e1f7244fb50573577b95e7a8cea9",
+    "size_bytes": 1322182,
+    "recorded_at_utc": "2026-11-09T13:25:06.564223+00:00",
+    "metadata": {
+      "cloud_cover": 1.38,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230519_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230519_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230519_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230519_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230519_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230519_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230519_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20230511_02_T1",
+    "acquisition_date": "2023-05-11T05:07:47.677696Z",
+    "sha256": "37dbc009d77e8f36feb61730f809166a6992950765b9e35e0949bc7309ab5c52",
+    "size_bytes": 1273512,
+    "recorded_at_utc": "2026-11-09T13:25:16.150833+00:00",
+    "metadata": {
+      "cloud_cover": 6.43,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230511_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230511_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230511_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230511_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230511_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230511_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230511_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20230417_02_T1",
+    "acquisition_date": "2023-04-17T05:08:20.118755Z",
+    "sha256": "35db33a1d7fe0eb9c92abd8f0a4e38eb49c44bc6810e217a5eab08f841d1be21",
+    "size_bytes": 1326867,
+    "recorded_at_utc": "2026-11-09T13:25:43.933383+00:00",
+    "metadata": {
+      "cloud_cover": 16.21,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230417_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230417_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230417_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230417_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230417_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230417_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230417_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20230409_02_T1",
+    "acquisition_date": "2023-04-09T05:08:05.175567Z",
+    "sha256": "e647a0618a7f128fed3834916155bba0f27118df10f3e2beb49fa88d514112fd",
+    "size_bytes": 1203945,
+    "recorded_at_utc": "2026-11-09T13:26:06.820183+00:00",
+    "metadata": {
+      "cloud_cover": 5.38,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230409_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230409_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230409_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230409_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230409_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230409_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230409_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20230401_02_T1",
+    "acquisition_date": "2023-04-01T05:08:26.400731Z",
+    "sha256": "6eb547b30f80b6d4a9812538ea6e173996601df923def63cfa9bb5093ac6d189",
+    "size_bytes": 1257146,
+    "recorded_at_utc": "2026-11-09T13:26:42.346451+00:00",
+    "metadata": {
+      "cloud_cover": 10.16,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230401_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230401_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230401_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230401_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230401_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230401_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230401_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20230324_02_T1",
+    "acquisition_date": "2023-03-24T05:08:19.008454Z",
+    "sha256": "3e8cc5985838a8ae8ce5305e4776bd46e99e52e14fabb446a1fea955067d87ae",
+    "size_bytes": 1256384,
+    "recorded_at_utc": "2026-11-09T13:26:57.241911+00:00",
+    "metadata": {
+      "cloud_cover": 2.29,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230324_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230324_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230324_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230324_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230324_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230324_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230324_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20230220_02_T1",
+    "acquisition_date": "2023-02-20T05:08:39.234477Z",
+    "sha256": "7e270c1b6e4efe6b5941ab92554a8c7e6c9c5c02505f2dee511a7d9da251a5ce",
+    "size_bytes": 1252567,
+    "recorded_at_utc": "2026-11-09T13:27:22.920566+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230220_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230220_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230220_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230220_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230220_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230220_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230220_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20230212_02_T1",
+    "acquisition_date": "2023-02-12T05:08:58.759200Z",
+    "sha256": "5ef9dad2d3991e97162ebed9abf45ef770b153667388d42019190e587a7c6240",
+    "size_bytes": 1240018,
+    "recorded_at_utc": "2026-11-09T13:27:34.318072+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230212_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230212_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230212_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230212_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230212_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230212_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230212_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20230204_02_T1",
+    "acquisition_date": "2023-02-04T05:08:51.636196Z",
+    "sha256": "e873dde06de4387772220c05bdd2b656d272cda9bb07c72767df53c4e0e9e9ef",
+    "size_bytes": 1242624,
+    "recorded_at_utc": "2026-11-09T13:27:58.056095+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230204_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230204_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230204_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230204_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230204_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230204_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230204_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20230119_02_T1",
+    "acquisition_date": "2023-01-19T05:08:46.593990Z",
+    "sha256": "e594ce049dfa7bc93a3893dc7ea3a51c18c5bd8009e8e762106955fde4dc59bb",
+    "size_bytes": 1215449,
+    "recorded_at_utc": "2026-11-09T13:28:11.261647+00:00",
+    "metadata": {
+      "cloud_cover": 4.24,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230119_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230119_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230119_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230119_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230119_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230119_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230119_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20230111_02_T1",
+    "acquisition_date": "2023-01-11T05:08:54.692351Z",
+    "sha256": "9b289fb8d024d5e683793ffecf17b0f430f21163296c689ac952f8169a53e724",
+    "size_bytes": 1224802,
+    "recorded_at_utc": "2026-11-09T13:28:32.347495+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230111_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230111_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230111_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230111_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230111_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230111_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20230111_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20230103_02_T1",
+    "acquisition_date": "2023-01-03T05:08:53.956105Z",
+    "sha256": "0b70d977886cc723746ecd9b298e7533c8fe09da64e9ab1799da71feac6a3ebc",
+    "size_bytes": 1200525,
+    "recorded_at_utc": "2026-11-09T13:28:56.077765+00:00",
+    "metadata": {
+      "cloud_cover": 12.69,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230103_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230103_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230103_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230103_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230103_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230103_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20230103_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20221226_02_T1",
+    "acquisition_date": "2022-12-26T05:08:53.662913Z",
+    "sha256": "2ca8d2d91c528f956eb1a2de4bb954503c8f0fe684917309de1bc96a169e5fb4",
+    "size_bytes": 1216083,
+    "recorded_at_utc": "2026-11-09T13:29:12.025241+00:00",
+    "metadata": {
+      "cloud_cover": 5.19,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221226_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221226_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221226_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221226_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221226_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221226_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221226_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20221218_02_T1",
+    "acquisition_date": "2022-12-18T05:08:55.651068Z",
+    "sha256": "d03634514548146a4b0410b5602b78116446ac4213e3570ae904f643ba05e491",
+    "size_bytes": 1210045,
+    "recorded_at_utc": "2026-11-09T13:29:26.158364+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221218_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221218_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221218_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221218_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221218_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221218_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221218_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20221202_02_T1",
+    "acquisition_date": "2022-12-02T05:09:02.768460Z",
+    "sha256": "0748e2062f62aa73ef93151bd31ab075ff4cc6cd93e50ee78b07dcfa05c4cb7f",
+    "size_bytes": 1219622,
+    "recorded_at_utc": "2026-11-09T13:29:36.774629+00:00",
+    "metadata": {
+      "cloud_cover": 0.29,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221202_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221202_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221202_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221202_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221202_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221202_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221202_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20221124_02_T1",
+    "acquisition_date": "2022-11-24T05:08:56.306381Z",
+    "sha256": "c4b7dd74cc84b2eb2db00449178ec869f22919b2e424045eb55620ba37bbd439",
+    "size_bytes": 1235449,
+    "recorded_at_utc": "2026-11-09T13:29:57.125540+00:00",
+    "metadata": {
+      "cloud_cover": 0.06,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221124_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221124_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221124_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221124_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221124_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221124_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221124_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20221116_02_T1",
+    "acquisition_date": "2022-11-16T05:09:00.992819Z",
+    "sha256": "e445442919a26967338a2f98d52cac579487c5a6e2751ca2866a03ac78b8d97d",
+    "size_bytes": 1242918,
+    "recorded_at_utc": "2026-11-09T13:30:13.158793+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221116_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221116_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221116_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221116_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221116_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221116_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221116_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20221108_02_T1",
+    "acquisition_date": "2022-11-08T05:08:55.653260Z",
+    "sha256": "1d1b07f6be982975e9f2fe97276d7c505e3bcdfc22e7c2b7298c1985a79512ed",
+    "size_bytes": 1252701,
+    "recorded_at_utc": "2026-11-09T13:30:38.383984+00:00",
+    "metadata": {
+      "cloud_cover": 0.01,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221108_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221108_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221108_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221108_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221108_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221108_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221108_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20221023_02_T1",
+    "acquisition_date": "2022-10-23T05:08:56.401750Z",
+    "sha256": "0684aec4269c55df6586a65f3065f229fd10aae7712ce7c184038799a2ba1c08",
+    "size_bytes": 1235006,
+    "recorded_at_utc": "2026-11-09T13:30:53.774338+00:00",
+    "metadata": {
+      "cloud_cover": 0.01,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221023_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221023_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221023_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221023_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221023_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221023_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20221023_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20221015_02_T1",
+    "acquisition_date": "2022-10-15T05:08:59.561579Z",
+    "sha256": "cb8fe5cc96746f6da6b1cbef2cddde4b615d10a307f62b9c0d18461af2ef961e",
+    "size_bytes": 1216848,
+    "recorded_at_utc": "2026-11-09T13:31:40.373496+00:00",
+    "metadata": {
+      "cloud_cover": 6.61,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221015_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221015_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221015_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221015_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221015_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221015_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20221015_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20220929_02_T1",
+    "acquisition_date": "2022-09-29T05:09:07.490474Z",
+    "sha256": "cdc6775a3715676b272d585421d4cadb634c680aad2d1cdb6c36efe4a9970dde",
+    "size_bytes": 1311499,
+    "recorded_at_utc": "2026-11-09T13:32:19.125271+00:00",
+    "metadata": {
+      "cloud_cover": 10.98,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220929_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220929_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220929_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220929_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220929_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220929_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220929_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20220828_02_T2",
+    "acquisition_date": "2022-08-28T05:09:01.086733Z",
+    "sha256": "3bfef1342ed63f80c6bfcde84d25d5ea39af1b76e62e64248c8dfe0eca47063b",
+    "size_bytes": 933854,
+    "recorded_at_utc": "2026-11-09T13:32:51.230485+00:00",
+    "metadata": {
+      "cloud_cover": 5.29,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220828_02_T2_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220828_02_T2_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220828_02_T2_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220828_02_T2_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220828_02_T2_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220828_02_T2_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220828_02_T2_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20220609_02_T1",
+    "acquisition_date": "2022-06-09T05:08:35.348874Z",
+    "sha256": "08623b818d0e8588797b6b3787e18c9e68ee661d573e0bef506def179635242b",
+    "size_bytes": 1249714,
+    "recorded_at_utc": "2026-11-09T13:33:06.099010+00:00",
+    "metadata": {
+      "cloud_cover": 0.78,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220609_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220609_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220609_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220609_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220609_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220609_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220609_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20220601_02_T1",
+    "acquisition_date": "2022-06-01T05:08:00.484584Z",
+    "sha256": "16d669dff0b68a1f4a1269787c37b4525a164fcf50d98f36743a4e69a976b7a3",
+    "size_bytes": 1237154,
+    "recorded_at_utc": "2026-11-09T13:33:17.670953+00:00",
+    "metadata": {
+      "cloud_cover": 8.5,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220601_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220601_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220601_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220601_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220601_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220601_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220601_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20220508_02_T1",
+    "acquisition_date": "2022-05-08T05:08:21.303383Z",
+    "sha256": "32c666293f2f283f53124f84bc7ea31924555b52ac93bcd81dcfffbe76db3610",
+    "size_bytes": 1260275,
+    "recorded_at_utc": "2026-11-09T13:33:33.513915+00:00",
+    "metadata": {
+      "cloud_cover": 0.29,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220508_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220508_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220508_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220508_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220508_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220508_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220508_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20220430_02_T1",
+    "acquisition_date": "2022-04-30T05:08:13.656682Z",
+    "sha256": "7c7410b8fb92d68b0de0d723e960e068ed6685f6f2cb67a1fd62c9775210fc9a",
+    "size_bytes": 1275340,
+    "recorded_at_utc": "2026-11-09T13:33:46.610385+00:00",
+    "metadata": {
+      "cloud_cover": 0.02,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220430_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220430_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220430_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220430_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220430_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220430_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220430_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20220422_02_T1",
+    "acquisition_date": "2022-04-22T05:08:17.519336Z",
+    "sha256": "7f412fe2c71cb3901597b046d46fded216272ff66bc31352e3eeaabdad571dc2",
+    "size_bytes": 1242389,
+    "recorded_at_utc": "2026-11-09T13:33:57.774410+00:00",
+    "metadata": {
+      "cloud_cover": 2.97,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220422_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220422_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220422_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220422_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220422_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220422_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220422_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20220406_02_T1",
+    "acquisition_date": "2022-04-06T05:08:15.448617Z",
+    "sha256": "40cf8915d8e68eaf05723eb0b7d99e8cf34f7cac0ae9cc26c6ca77068fdf078e",
+    "size_bytes": 1232471,
+    "recorded_at_utc": "2026-11-09T13:34:11.436858+00:00",
+    "metadata": {
+      "cloud_cover": 0.06,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220406_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220406_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220406_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220406_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220406_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220406_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220406_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20220305_02_T1",
+    "acquisition_date": "2022-03-05T05:08:29.347436Z",
+    "sha256": "9aba56afe48ad2c9534da0ee32f11f1f7f182b72c043e1925dd208773adf249a",
+    "size_bytes": 1225968,
+    "recorded_at_utc": "2026-11-09T13:34:30.262196+00:00",
+    "metadata": {
+      "cloud_cover": 0.05,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220305_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220305_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220305_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220305_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220305_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220305_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220305_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20220225_02_T1",
+    "acquisition_date": "2022-02-25T05:08:33.864118Z",
+    "sha256": "b7a5b3c7069a0c8104818ec3a380d1d588816ae2ede12892bff47026f8620da6",
+    "size_bytes": 1250055,
+    "recorded_at_utc": "2026-11-09T13:34:41.609983+00:00",
+    "metadata": {
+      "cloud_cover": 0.04,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220225_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220225_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220225_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220225_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220225_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220225_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220225_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20220201_02_T1",
+    "acquisition_date": "2022-02-01T05:08:37.234730Z",
+    "sha256": "cd04cac2036fe974041b33c197bf181a82e80dafc1cd7938f3789890910d0163",
+    "size_bytes": 1240927,
+    "recorded_at_utc": "2026-11-09T13:34:53.120570+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220201_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220201_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220201_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220201_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220201_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220201_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20220201_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20220124_02_T1",
+    "acquisition_date": "2022-01-24T05:08:45.143437Z",
+    "sha256": "a7b2a3d958348290b6af8058fffe9a909d150ad6775095cffc28b43e6b68e5d7",
+    "size_bytes": 1193263,
+    "recorded_at_utc": "2026-11-09T13:35:03.923151+00:00",
+    "metadata": {
+      "cloud_cover": 10.8,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220124_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220124_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220124_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220124_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220124_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220124_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220124_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20220108_02_T1",
+    "acquisition_date": "2022-01-08T05:08:44.466956Z",
+    "sha256": "401a7964fbaf65c1362f7c29e86d4655741e3039715656c47e4472f18f0ce796",
+    "size_bytes": 1242822,
+    "recorded_at_utc": "2026-11-09T13:35:16.657813+00:00",
+    "metadata": {
+      "cloud_cover": 15.56,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220108_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220108_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220108_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220108_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220108_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220108_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20220108_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20211223_02_T1",
+    "acquisition_date": "2021-12-23T05:08:46.352116Z",
+    "sha256": "d487195a4623dd1893d65d0aa3e531be541ab1bd6844b9a81fdea3baef0456b2",
+    "size_bytes": 1217712,
+    "recorded_at_utc": "2026-11-09T13:35:28.863516+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211223_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211223_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211223_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211223_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211223_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211223_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211223_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC09_L2SP_144045_20211207_02_T1",
+    "acquisition_date": "2021-12-07T05:08:51.756194Z",
+    "sha256": "6be0953cf0708726752be6c21acce30231660afe5b2409c5a21e7b921a767881",
+    "size_bytes": 1201022,
+    "recorded_at_utc": "2026-11-09T13:35:42.564323+00:00",
+    "metadata": {
+      "cloud_cover": 7.56,
+      "platform": "landsat-9",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211207_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211207_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211207_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211207_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211207_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211207_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC09_L2SP_144045_20211207_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20211129_02_T1",
+    "acquisition_date": "2021-11-29T05:08:50.548427Z",
+    "sha256": "16c55a0e2bbe3eb1c2f72faec07c3bfb4f8adcee6a644b2ee70b3dd5badf8a14",
+    "size_bytes": 1218849,
+    "recorded_at_utc": "2026-11-09T13:35:56.670417+00:00",
+    "metadata": {
+      "cloud_cover": 0.14,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211129_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211129_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211129_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211129_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211129_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211129_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211129_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20211028_02_T1",
+    "acquisition_date": "2021-10-28T05:08:54.910087Z",
+    "sha256": "574697722a32b049c9dc8ac287303f882e41f81155221694faf6db33b7d0f539",
+    "size_bytes": 1236922,
+    "recorded_at_utc": "2026-11-09T13:36:09.881666+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211028_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211028_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211028_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211028_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211028_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211028_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211028_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20211012_02_T1",
+    "acquisition_date": "2021-10-12T05:08:53.773849Z",
+    "sha256": "6263ff262a871196ce481ca60316ccd8ffccba014c95ac4200488340d4fe4b6f",
+    "size_bytes": 1250801,
+    "recorded_at_utc": "2026-11-09T13:36:25.097804+00:00",
+    "metadata": {
+      "cloud_cover": 1.02,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211012_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211012_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211012_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211012_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211012_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211012_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20211012_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20210606_02_T1",
+    "acquisition_date": "2021-06-06T05:08:15.825387Z",
+    "sha256": "caf6cbbf0628b311ec6ff5580429257ad6e086ec4fe731aba43bba2232f836be",
+    "size_bytes": 1358742,
+    "recorded_at_utc": "2026-11-09T13:36:43.401744+00:00",
+    "metadata": {
+      "cloud_cover": 17.39,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210606_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210606_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210606_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210606_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210606_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210606_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210606_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20210521_02_T1",
+    "acquisition_date": "2021-05-21T05:08:07.811084Z",
+    "sha256": "84dba46bf8d857e47805883176a8ab142b82c8c27e122172e33a97730eb8c13c",
+    "size_bytes": 1256469,
+    "recorded_at_utc": "2026-11-09T13:36:53.288496+00:00",
+    "metadata": {
+      "cloud_cover": 0.09,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210521_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210521_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210521_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210521_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210521_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210521_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210521_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20210505_02_T1",
+    "acquisition_date": "2021-05-05T05:07:58.755703Z",
+    "sha256": "f6d74f18f4ed44c2768481887e20950d30783b1d200698aadd4aff08c6741d20",
+    "size_bytes": 1275141,
+    "recorded_at_utc": "2026-11-09T13:37:05.399376+00:00",
+    "metadata": {
+      "cloud_cover": 7.31,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210505_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210505_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210505_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210505_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210505_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210505_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210505_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20210419_02_T1",
+    "acquisition_date": "2021-04-19T05:08:08.500204Z",
+    "sha256": "564e1167b88fa0134ceb5da2d822fecdbf147b1a08185905d647665a4961533c",
+    "size_bytes": 1265948,
+    "recorded_at_utc": "2026-11-09T13:37:17.034823+00:00",
+    "metadata": {
+      "cloud_cover": 1.98,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210419_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210419_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210419_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210419_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210419_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210419_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210419_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20210403_02_T1",
+    "acquisition_date": "2021-04-03T05:08:14.847942Z",
+    "sha256": "8665a1e48760799c2e6c8440b9f48171891f48d503512b855c316bee53c2a024",
+    "size_bytes": 1259853,
+    "recorded_at_utc": "2026-11-09T13:37:28.286825+00:00",
+    "metadata": {
+      "cloud_cover": 0.07,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210403_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210403_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210403_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210403_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210403_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210403_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210403_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20210302_02_T1",
+    "acquisition_date": "2021-03-02T05:08:27.582109Z",
+    "sha256": "449395299fa3d1df558667fcafae9b814fc0fe9600283306775b8c17d05c45b1",
+    "size_bytes": 1271536,
+    "recorded_at_utc": "2026-11-09T13:37:40.170495+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210302_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210302_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210302_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210302_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210302_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210302_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210302_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20210214_02_T1",
+    "acquisition_date": "2021-02-14T05:08:33.886101Z",
+    "sha256": "92c77730ddd1f474087cd6187b71986c0b37fecc1788349a5901f76d50994940",
+    "size_bytes": 1244058,
+    "recorded_at_utc": "2026-11-09T13:37:54.962945+00:00",
+    "metadata": {
+      "cloud_cover": 2.32,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210214_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210214_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210214_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210214_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210214_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210214_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210214_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20210113_02_T1",
+    "acquisition_date": "2021-01-13T05:08:40.455241Z",
+    "sha256": "eef798940d622acac4435fb8cfa52ee386f43a12b50783b1f742ed604058ffc8",
+    "size_bytes": 1225437,
+    "recorded_at_utc": "2026-11-09T13:38:10.109654+00:00",
+    "metadata": {
+      "cloud_cover": 0.81,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210113_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210113_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210113_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210113_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210113_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210113_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20210113_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20201228_02_T1",
+    "acquisition_date": "2020-12-28T05:08:47.014233Z",
+    "sha256": "0f5417005155575d791d931b61e7fef0c80a91b47bc175ff68f5f935eec80b4f",
+    "size_bytes": 1219406,
+    "recorded_at_utc": "2026-11-09T13:38:21.217441+00:00",
+    "metadata": {
+      "cloud_cover": 0.03,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201228_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201228_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201228_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201228_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201228_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201228_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201228_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20201110_02_T1",
+    "acquisition_date": "2020-11-10T05:08:45.822332Z",
+    "sha256": "777de7063f250c581a58ae7d86ba98234e23d702742f50505b94ce5f459fe8ad",
+    "size_bytes": 1233519,
+    "recorded_at_utc": "2026-11-09T13:38:33.329805+00:00",
+    "metadata": {
+      "cloud_cover": 0.02,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201110_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201110_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201110_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201110_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201110_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201110_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201110_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20201025_02_T1",
+    "acquisition_date": "2020-10-25T05:08:48.841875Z",
+    "sha256": "94bfe10ef1058f6f557751897efae4e5d712ced10048d05490788d4b58ec378e",
+    "size_bytes": 1244224,
+    "recorded_at_utc": "2026-11-09T13:38:44.277645+00:00",
+    "metadata": {
+      "cloud_cover": 0.38,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201025_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201025_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201025_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201025_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201025_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201025_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20201025_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20200518_02_T1",
+    "acquisition_date": "2020-05-18T05:07:54.656608Z",
+    "sha256": "9d9292dcfd1446ae0e60f36e634fb1b9210172eb72e4cf4347e6cc86b5fab9dd",
+    "size_bytes": 1283896,
+    "recorded_at_utc": "2026-11-09T13:38:57.234748+00:00",
+    "metadata": {
+      "cloud_cover": 2.11,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200518_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200518_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200518_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200518_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200518_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200518_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200518_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20200502_02_T1",
+    "acquisition_date": "2020-05-02T05:07:56.212245Z",
+    "sha256": "b0bcfdebe78bcbccc32f056b69c9fb079c4b5e1b2c2e758b85c32a7ed04a7836",
+    "size_bytes": 1271660,
+    "recorded_at_utc": "2026-11-09T13:39:07.956367+00:00",
+    "metadata": {
+      "cloud_cover": 0.03,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200502_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200502_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200502_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200502_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200502_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200502_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200502_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20200416_02_T1",
+    "acquisition_date": "2020-04-16T05:08:04.493885Z",
+    "sha256": "0cffef61bfcefed27a243edcb323c2c0e7a97e804eff23a872803cf3838a836a",
+    "size_bytes": 1264101,
+    "recorded_at_utc": "2026-11-09T13:39:24.163035+00:00",
+    "metadata": {
+      "cloud_cover": 0.01,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200416_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200416_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200416_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200416_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200416_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200416_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200416_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20200331_02_T1",
+    "acquisition_date": "2020-03-31T05:08:11.226995Z",
+    "sha256": "724cf29154d73bb1d1ac5205080fd95f0b478687d9a6af9f877a6076c9ed8ef5",
+    "size_bytes": 1259639,
+    "recorded_at_utc": "2026-11-09T13:39:34.376593+00:00",
+    "metadata": {
+      "cloud_cover": 9.38,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200331_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200331_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200331_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200331_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200331_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200331_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200331_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20200315_02_T1",
+    "acquisition_date": "2020-03-15T05:08:20.493027Z",
+    "sha256": "5f0cf81e5003fbfdb372b553b43da13c6b23f862b1e3bbd40721145dee4a3d90",
+    "size_bytes": 1245012,
+    "recorded_at_utc": "2026-11-09T13:39:45.878382+00:00",
+    "metadata": {
+      "cloud_cover": 0.47,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200315_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200315_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200315_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200315_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200315_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200315_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200315_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20200228_02_T1",
+    "acquisition_date": "2020-02-28T05:08:27.308264Z",
+    "sha256": "9c0ebdd06e1df2367d0a7e6f53382485cf853bf7d5cd61a2d2b5ada9acdd8c25",
+    "size_bytes": 1250651,
+    "recorded_at_utc": "2026-11-09T13:39:57.506899+00:00",
+    "metadata": {
+      "cloud_cover": 0.18,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200228_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200228_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200228_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200228_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200228_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200228_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200228_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20200212_02_T1",
+    "acquisition_date": "2020-02-12T05:08:31.552125Z",
+    "sha256": "d2cf36ee4a9cdf8879fb63989d63ed83c7d3eae843604f922fd7b4158417037d",
+    "size_bytes": 1232494,
+    "recorded_at_utc": "2026-11-09T13:40:10.283079+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200212_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200212_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200212_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200212_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200212_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200212_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200212_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20200127_02_T1",
+    "acquisition_date": "2020-01-27T05:08:35.995497Z",
+    "sha256": "c1e4f4b77d7f6f418d82eac01966cc02a573fa9a388559057ba21976ad326de6",
+    "size_bytes": 1236336,
+    "recorded_at_utc": "2026-11-09T13:40:27.277464+00:00",
+    "metadata": {
+      "cloud_cover": 2.44,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200127_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200127_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200127_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200127_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200127_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200127_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200127_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20200111_02_T1",
+    "acquisition_date": "2020-01-11T05:08:40.320442Z",
+    "sha256": "05b16074a1151961c64a06ba535d002f3b0ddce94f9f3cf7f515e267be985d3e",
+    "size_bytes": 1200336,
+    "recorded_at_utc": "2026-11-09T13:40:43.464257+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200111_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200111_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200111_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200111_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200111_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200111_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20200111_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20191210_02_T1",
+    "acquisition_date": "2019-12-10T05:08:47.432444Z",
+    "sha256": "45f065eebc80edbc251d5a5ce271d768a617fb41fed88f882b810b9c6bcdc25a",
+    "size_bytes": 1215155,
+    "recorded_at_utc": "2026-11-09T13:40:56.423077+00:00",
+    "metadata": {
+      "cloud_cover": 0.11,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191210_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191210_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191210_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191210_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191210_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191210_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191210_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20191124_02_T1",
+    "acquisition_date": "2019-11-24T05:08:48.043803Z",
+    "sha256": "7e35a63882b8bdd8053c030ff141209bf37847839fa89d148f20180fd8c243d7",
+    "size_bytes": 1235059,
+    "recorded_at_utc": "2026-11-09T13:41:07.196543+00:00",
+    "metadata": {
+      "cloud_cover": 11.87,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191124_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191124_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191124_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191124_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191124_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191124_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191124_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20191007_02_T1",
+    "acquisition_date": "2019-10-07T05:08:51.374957Z",
+    "sha256": "47ccc721a09595cf8f8003728cbf45467eed85c1cf4171346af5fa0421824356",
+    "size_bytes": 1312592,
+    "recorded_at_utc": "2026-11-09T13:41:19.731000+00:00",
+    "metadata": {
+      "cloud_cover": 11.21,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191007_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191007_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191007_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191007_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191007_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191007_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20191007_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20190516_02_T1",
+    "acquisition_date": "2019-05-16T05:08:03.843078Z",
+    "sha256": "867239183a83140c2789613dfbe7cc435ec7e3359961e54af1004d9801609732",
+    "size_bytes": 1336144,
+    "recorded_at_utc": "2026-11-09T13:41:31.288483+00:00",
+    "metadata": {
+      "cloud_cover": 1.07,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190516_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190516_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190516_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190516_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190516_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190516_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190516_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20190430_02_T1",
+    "acquisition_date": "2019-04-30T05:07:53.882540Z",
+    "sha256": "a9390b0bf4342b12d263dafd2801501d16270d9d984f09063d899a07f1bbb48b",
+    "size_bytes": 1265917,
+    "recorded_at_utc": "2026-11-09T13:41:42.017955+00:00",
+    "metadata": {
+      "cloud_cover": 0.05,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190430_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190430_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190430_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190430_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190430_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190430_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190430_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20190414_02_T1",
+    "acquisition_date": "2019-04-14T05:07:57.143515Z",
+    "sha256": "a827d7357a9ca438dbe2c725e2ae388e464c17c6e3198d78c013ccfac2df669b",
+    "size_bytes": 1263137,
+    "recorded_at_utc": "2026-11-09T13:41:54.409967+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190414_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190414_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190414_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190414_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190414_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190414_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190414_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20190329_02_T1",
+    "acquisition_date": "2019-03-29T05:08:02.208436Z",
+    "sha256": "4a201d31d0ac0e64ec8924dfcbb51f1617f5a457abace79026a18d8f3b6d4677",
+    "size_bytes": 1279263,
+    "recorded_at_utc": "2026-11-09T13:42:10.794012+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190329_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190329_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190329_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190329_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190329_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190329_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190329_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20190313_02_T1",
+    "acquisition_date": "2019-03-13T05:08:05.312467Z",
+    "sha256": "73cbb0283c28c42f232e3d9c7ff364f7688ead11df20a5d9531abf3f4b226685",
+    "size_bytes": 1255779,
+    "recorded_at_utc": "2026-11-09T13:42:26.025417+00:00",
+    "metadata": {
+      "cloud_cover": 3.73,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190313_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190313_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190313_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190313_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190313_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190313_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190313_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20190225_02_T1",
+    "acquisition_date": "2019-02-25T05:08:11.096149Z",
+    "sha256": "6f34620ec9599836fba96796932261cf1c56758750b58926487daba7c7cefed6",
+    "size_bytes": 1247775,
+    "recorded_at_utc": "2026-11-09T13:42:40.458119+00:00",
+    "metadata": {
+      "cloud_cover": 0.5,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190225_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190225_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190225_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190225_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190225_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190225_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190225_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20190209_02_T1",
+    "acquisition_date": "2019-02-09T05:08:14.359612Z",
+    "sha256": "efe527a592df402c33a7a8cc4866d8e1b781fee8fa582943e48eb63e5a7c6d7c",
+    "size_bytes": 1228469,
+    "recorded_at_utc": "2026-11-09T13:42:50.416987+00:00",
+    "metadata": {
+      "cloud_cover": 0.0,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190209_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190209_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190209_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190209_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190209_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190209_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190209_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20190124_02_T1",
+    "acquisition_date": "2019-01-24T05:08:16.689042Z",
+    "sha256": "7181ad90c90857b272b03bb956c31b1c9cf6dc4d77d585f9fb9abf33f4b43d83",
+    "size_bytes": 1213026,
+    "recorded_at_utc": "2026-11-09T13:43:03.126503+00:00",
+    "metadata": {
+      "cloud_cover": 8.36,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190124_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190124_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190124_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190124_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190124_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190124_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190124_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "USGS_Landsat_C2L2",
+    "scene_id": "LC08_L2SP_144045_20190108_02_T1",
+    "acquisition_date": "2019-01-08T05:08:20.502637Z",
+    "sha256": "7fb3a84a10b101ea42642b9e45149b7c952e593f689b87f8decd93f26255a27e",
+    "size_bytes": 1221120,
+    "recorded_at_utc": "2026-11-09T13:43:15.824264+00:00",
+    "metadata": {
+      "cloud_cover": 0.04,
+      "platform": "landsat-8",
+      "wrs_path": "144",
+      "wrs_row": "045",
+      "bands": {
+        "ST_B10": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190108_02_T1_ST_B10.tif",
+        "QA_PIXEL": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190108_02_T1_QA_PIXEL.tif",
+        "QA_RADSAT": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190108_02_T1_QA_RADSAT.tif",
+        "SR_B3": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190108_02_T1_SR_B3.tif",
+        "SR_B4": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190108_02_T1_SR_B4.tif",
+        "SR_B5": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190108_02_T1_SR_B5.tif",
+        "SR_B6": "ml\\data\\raw\\landsat\\LC08_L2SP_144045_20190108_02_T1_SR_B6.tif"
+      },
+      "cropped_to_study_area": true
+    }
+  },
+  {
+    "source": "heatsafe_dataset_v2",
+    "scene_id": "training_v2",
+    "acquisition_date": "2026-11-09T00:00:00Z",
+    "sha256": "99822146c014298e29d2fcdc78f73471726c1e16812d2e0210c866941eac2990",
+    "size_bytes": 155384292,
+    "recorded_at_utc": "2026-11-09T13:46:33.524545+00:00",
+    "metadata": {
+      "rows": 2440000,
+      "scenes_used": 122,
+      "scenes_indexed": 125,
+      "include_test_year": false,
+      "sample_pixels_per_scene": 20000
+    }
+  },
+  {
+    "source": "heatsafe_eda_v1",
+    "scene_id": "lst_summer_2019_2025",
+    "acquisition_date": "2025-04-30T00:00:00Z",
+    "sha256": "9d60411f6c8cab766e4735cb2b6de8ffa8e50eae24af9b8470753cbfe0f752d6",
+    "size_bytes": 2407473,
+    "recorded_at_utc": "2026-11-09T13:48:15.681603+00:00",
+    "metadata": {
+      "type": "seasonal_mean_lst",
+      "season": "summer",
+      "scene_count": 40
+    }
+  },
+  {
+    "source": "heatsafe_eda_v1",
+    "scene_id": "hotspots_summer",
+    "acquisition_date": "2025-04-30T00:00:00Z",
+    "sha256": "de7b0a492c70c8745b97c91d88544aba04a1e73350c9906a00a2aa6b5aa2c0b2",
+    "size_bytes": 712424,
+    "recorded_at_utc": "2026-11-09T13:48:15.715021+00:00",
+    "metadata": {
+      "type": "gi_star_hotspots",
+      "season": "summer",
+      "scene_count": 40
+    }
+  },
+  {
+    "source": "heatsafe_eda_v1",
+    "scene_id": "lst_monsoon_2019_2025",
+    "acquisition_date": "2025-09-21T00:00:00Z",
+    "sha256": "54561f3a62700643e6740d700f6a05cbb6888e26f32b272a383796c888abaa3f",
+    "size_bytes": 2297422,
+    "recorded_at_utc": "2026-11-09T13:48:17.025432+00:00",
+    "metadata": {
+      "type": "seasonal_mean_lst",
+      "season": "monsoon",
+      "scene_count": 10
+    }
+  },
+  {
+    "source": "heatsafe_eda_v1",
+    "scene_id": "hotspots_monsoon",
+    "acquisition_date": "2025-09-21T00:00:00Z",
+    "sha256": "36d734ce342b013da75f1c8a3d173881a755cb94c1b75abc8cb49747b08583f3",
+    "size_bytes": 726242,
+    "recorded_at_utc": "2026-11-09T13:48:17.101573+00:00",
+    "metadata": {
+      "type": "gi_star_hotspots",
+      "season": "monsoon",
+      "scene_count": 10
+    }
+  },
+  {
+    "source": "heatsafe_eda_v1",
+    "scene_id": "lst_post-monsoon_2019_2025",
+    "acquisition_date": "2025-11-24T00:00:00Z",
+    "sha256": "cfab977ceba64b9348be70e69b36ef544e6d07b0706ad09523cac8f77d41e725",
+    "size_bytes": 2375251,
+    "recorded_at_utc": "2026-11-09T13:48:18.462796+00:00",
+    "metadata": {
+      "type": "seasonal_mean_lst",
+      "season": "post-monsoon",
+      "scene_count": 29
+    }
+  },
+  {
+    "source": "heatsafe_eda_v1",
+    "scene_id": "hotspots_post-monsoon",
+    "acquisition_date": "2025-11-24T00:00:00Z",
+    "sha256": "147149e40d638792ca659f5fe6ae768c5cd8d5ed3bdab52dbbdafc9dfa4d116b",
+    "size_bytes": 1152117,
+    "recorded_at_utc": "2026-11-09T13:48:18.522958+00:00",
+    "metadata": {
+      "type": "gi_star_hotspots",
+      "season": "post-monsoon",
+      "scene_count": 29
+    }
+  },
+  {
+    "source": "heatsafe_eda_v1",
+    "scene_id": "lst_winter_2019_2025",
+    "acquisition_date": "2025-12-18T00:00:00Z",
+    "sha256": "a187f3a25dacf4c818f4dcdc6c817f438f21802eeaa4f4f1856c8715238ee80b",
+    "size_bytes": 2449433,
+    "recorded_at_utc": "2026-11-09T13:48:19.972363+00:00",
+    "metadata": {
+      "type": "seasonal_mean_lst",
+      "season": "winter",
+      "scene_count": 43
+    }
+  },
+  {
+    "source": "heatsafe_eda_v1",
+    "scene_id": "hotspots_winter",
+    "acquisition_date": "2025-12-18T00:00:00Z",
+    "sha256": "b11b3437ad474fb55318c10a2c67d2113e0657fe2642ba8182f4974448bfe268",
+    "size_bytes": 1075206,
+    "recorded_at_utc": "2026-11-09T13:48:20.043559+00:00",
+    "metadata": {
+      "type": "gi_star_hotspots",
+      "season": "winter",
+      "scene_count": 43
+    }
   }
 ]

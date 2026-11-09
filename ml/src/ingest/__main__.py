@@ -2,7 +2,7 @@ import argparse
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 from ml.src.commons.logger import get_ml_logger
 from ml.src.commons.manifest import DataManifestManager
 from ml.src.ingest.sources import STACIngestionClient
@@ -84,9 +84,14 @@ def run_landsat_ingestion(
     max_cloud: Optional[float] = None,
     limit: Optional[int] = None,
     dry_run: bool = False,
+    crop_bounds: Optional[Tuple[float, float, float, float]] = None,
+    crop_crs: str = "EPSG:32644",
 ) -> Dict[str, Any]:
     """
     Execute Landsat Collection 2 Level-2 search and incremental asset download pipeline.
+
+    With `crop_bounds`, only the study-area window of each band is read from the
+    remote COG (~2 MB instead of ~90 MB per band); otherwise full scenes are downloaded.
 
     Args:
         client (STACIngestionClient): Initialized STAC ingestion client.
@@ -96,6 +101,9 @@ def run_landsat_ingestion(
         max_cloud (Optional[float]): Cloud cover percentage threshold.
         limit (Optional[int]): Cap on number of scenes to query or download.
         dry_run (bool): If True, queries catalog and audits inventory without downloading.
+        crop_bounds (Optional[Tuple[float, float, float, float]]): (left, bottom, right, top)
+            window to keep, in `crop_crs`; None downloads full scenes.
+        crop_crs (str): CRS of `crop_bounds`.
 
     Returns:
         Dict[str, Any]: Execution summary with scene counts, bytes downloaded, and status.
@@ -138,55 +146,69 @@ def run_landsat_ingestion(
     skipped_scenes = 0
     total_bytes = 0
 
+    collection = client.config["sources"]["landsat"]["stac_collection"]
+    failed_scenes: List[str] = []
+
     for scene in scenes:
-        scene_id = scene["id"]
-        # Idempotency check: skip already registered scenes
-        if STACIngestionClient.is_scene_ingested(scene_id, manifest):
-            logging.info(f"Scene {scene_id} already registered in manifest; skipping download (0 bytes)")
-            skipped_scenes += 1
-            continue
-
-        logging.info(f"Ingesting new scene: {scene_id}")
-        assets = scene.get("assets", {})
-        band_paths: Dict[str, str] = {}
-        primary_band_path: Optional[Path] = None
-
-        for band_key, band_alias in target_bands.items():
-            if band_key not in assets:
-                logging.warning(f"Band {band_key} ({band_alias}) missing in assets for {scene_id}")
+        try:
+            scene_id = scene["id"]
+            # Idempotency check: skip already registered scenes
+            if STACIngestionClient.is_scene_ingested(scene_id, manifest):
+                logging.info(f"Scene {scene_id} already registered in manifest; skipping download (0 bytes)")
+                skipped_scenes += 1
                 continue
 
-            raw_href = assets[band_key]["href"]
-            signed_url = client.sign_asset_url(raw_href)
-            dest_file = target_dir / f"{scene_id}_{band_alias}.tif"
+            logging.info(f"Ingesting new scene: {scene_id}")
+            assets = scene.get("assets", {})
+            band_paths: Dict[str, str] = {}
+            primary_band_path: Optional[Path] = None
 
-            # Check if file exists on disk
-            if dest_file.is_file() and dest_file.stat().st_size > 0:
-                logging.info(f"Band file {dest_file.name} already exists on disk; skipping")
-            else:
-                downloaded_file = client.download_asset_with_retry(signed_url, dest_file)
-                total_bytes += downloaded_file.stat().st_size
+            for band_key, band_alias in target_bands.items():
+                if band_key not in assets:
+                    logging.warning(f"Band {band_key} ({band_alias}) missing in assets for {scene_id}")
+                    continue
 
-            band_paths[band_alias] = str(dest_file)
-            if band_key == "lwir11":
-                primary_band_path = dest_file
+                raw_href = assets[band_key]["href"]
+                signed_url = client.sign_asset_url(raw_href, collection=collection)
+                dest_file = target_dir / f"{scene_id}_{band_alias}.tif"
 
-        if primary_band_path and primary_band_path.is_file():
-            # Register in manifest
-            manifest.record_entry(
-                source="USGS_Landsat_C2L2",
-                scene_id=scene_id,
-                acquisition_date=scene.get("properties", {}).get("datetime", ""),
-                file_path=primary_band_path,
-                metadata={
-                    "cloud_cover": scene.get("properties", {}).get("eo:cloud_cover"),
-                    "platform": scene.get("properties", {}).get("platform"),
-                    "wrs_path": scene.get("properties", {}).get("landsat:wrs_path"),
-                    "wrs_row": scene.get("properties", {}).get("landsat:wrs_row"),
-                    "bands": band_paths,
-                },
-            )
-            downloaded_scenes += 1
+                # Check if file exists on disk
+                if dest_file.is_file() and dest_file.stat().st_size > 0:
+                    logging.info(f"Band file {dest_file.name} already exists on disk; skipping")
+                elif crop_bounds is not None:
+                    downloaded_file = client.download_asset_window_with_retry(
+                        signed_url, dest_file, bounds=crop_bounds, bounds_crs=crop_crs
+                    )
+                    total_bytes += downloaded_file.stat().st_size
+                else:
+                    downloaded_file = client.download_asset_with_retry(signed_url, dest_file)
+                    total_bytes += downloaded_file.stat().st_size
+
+                band_paths[band_alias] = str(dest_file)
+                if band_key == "lwir11":
+                    primary_band_path = dest_file
+
+            if primary_band_path and primary_band_path.is_file():
+                # Register in manifest
+                manifest.record_entry(
+                    source="USGS_Landsat_C2L2",
+                    scene_id=scene_id,
+                    acquisition_date=scene.get("properties", {}).get("datetime", ""),
+                    file_path=primary_band_path,
+                    metadata={
+                        "cloud_cover": scene.get("properties", {}).get("eo:cloud_cover"),
+                        "platform": scene.get("properties", {}).get("platform"),
+                        "wrs_path": scene.get("properties", {}).get("landsat:wrs_path"),
+                        "wrs_row": scene.get("properties", {}).get("landsat:wrs_row"),
+                        "bands": band_paths,
+                        "cropped_to_study_area": crop_bounds is not None,
+                    },
+                )
+                downloaded_scenes += 1
+        except Exception as e:
+            # Isolate failures: log, remember, and continue with the next scene.
+            logging.error(f"Error ingesting scene {scene.get('id')}: {e}")
+            failed_scenes.append(str(scene.get("id")))
 
     return {
         "status": "completed",
@@ -194,7 +216,9 @@ def run_landsat_ingestion(
         "audit": audit,
         "scenes_downloaded": downloaded_scenes,
         "scenes_skipped": skipped_scenes,
+        "scenes_failed": failed_scenes,
         "bytes_downloaded": total_bytes,
+        "status_detail": "all scenes ingested" if not failed_scenes else f"{len(failed_scenes)} scenes failed; re-run to resume",
     }
 
 
@@ -309,6 +333,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Maximum number of scenes to ingest",
     )
     parser.add_argument(
+        "--full-scene",
+        action="store_true",
+        help="Download complete Landsat scenes instead of the study-area window (default: cropped)",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Audit available catalog scenes without downloading rasters",
@@ -338,6 +367,11 @@ def main() -> None:
     logging.info(f"Initiating ingestion workflow: source={args.source}, dry_run={args.dry_run}")
 
     if args.source in ("landsat", "all"):
+        crop_bounds = None
+        if not args.full_scene:
+            from ml.src.preprocess.align import load_master_grid_spec
+
+            crop_bounds = tuple(load_master_grid_spec()["bounds"])
         res = run_landsat_ingestion(
             client=client,
             manifest=manifest,
@@ -346,6 +380,7 @@ def main() -> None:
             max_cloud=args.max_cloud,
             limit=args.limit,
             dry_run=args.dry_run,
+            crop_bounds=crop_bounds,  # type: ignore[arg-type]
         )
         print(f"Landsat Ingestion Result: {res}")
 

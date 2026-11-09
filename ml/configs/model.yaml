@@ -1,0 +1,54 @@
+# ==============================================================================
+# HeatSafe-ML — Model 1 configuration (Phase 6)
+# Target: 30 m land-surface temperature (°C), Decision D1. Modelled as the anomaly
+# from the scene's training-fold mean LST (scene anchor, Decision D12).
+# ==============================================================================
+
+model1:
+  features:
+    terrain: [elevation, slope, aspect_sin, aspect_cos]
+    spectral: [ndvi, ndbi, mndwi]
+    context: [ndvi_150m, ndvi_450m, ndbi_150m, ndbi_450m, mndwi_150m, mndwi_450m]
+    temporal: [sin_doy, cos_doy, mean_solar_hour]
+    scene: [scene_anchor_lst]
+
+  lightgbm_defaults:
+    n_estimators: 800
+    learning_rate: 0.05
+    num_leaves: 127
+    min_child_samples: 100
+    feature_fraction: 0.8
+    bagging_fraction: 0.8
+    bagging_freq: 1
+    lambda_l2: 1.0
+    n_jobs: -1
+    verbosity: -1
+
+  tuning:
+    n_trials: 30
+    sample_rows: 400000
+    inner_folds: 3
+    search_space:
+      num_leaves: [31, 63, 127, 255]
+      learning_rate: [0.03, 0.05, 0.08]
+      min_child_samples: [50, 100, 200, 400]
+      feature_fraction: [0.6, 0.8, 1.0]
+      lambda_l2: [0.0, 1.0, 5.0]
+
+  intervals:
+    lower_quantile: 0.05
+    upper_quantile: 0.95
+    target_coverage: 0.90
+
+  residual_kriging:
+    enabled_candidates: [false, true]   # chosen by CV RMSE
+    idw_neighbours: 12
+    idw_power: 2.0
+
+  random_forest_comparison:
+    sample_rows: 300000
+    n_estimators: 150
+    max_depth: 24
+    min_samples_leaf: 5
+
+  random_seed: 20261109
