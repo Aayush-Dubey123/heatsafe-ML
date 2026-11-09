@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+
 from backend.core import logger
-from backend.core.database.database import get_db
-from backend.core.controllers.health_controller import HealthController
 from backend.core.apis.schemas.requests.health_request import HealthPingRequest
 from backend.core.apis.schemas.responses.health_response import HealthResponse
+from backend.core.controllers.health_controller import HealthController
+from backend.core.database.database import get_db
 
 logging = logger(__name__)
 
@@ -42,7 +43,7 @@ def get_health_status(db: Session = Depends(get_db)) -> HealthResponse:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal Server Error during health verification",
-        )
+        ) from error
 
 
 @router.post(
@@ -80,4 +81,4 @@ def ping_service(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal Server Error during diagnostic ping",
-        )
+        ) from error

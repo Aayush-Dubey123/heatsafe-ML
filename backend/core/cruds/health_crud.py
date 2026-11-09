@@ -1,6 +1,7 @@
-from datetime import datetime, timezone
-from typing import Optional
+from datetime import UTC, datetime
+
 from sqlalchemy.orm import Session
+
 from backend.core import logger
 from backend.core.models.health_model import HealthCheckRecord, ServiceStatus
 
@@ -37,7 +38,7 @@ class HealthCRUD:
             record = HealthCheckRecord(
                 service_name=service_name,
                 status=status.value,
-                checked_at=datetime.now(timezone.utc),
+                checked_at=datetime.now(UTC),
             )
             db.add(record)
             db.commit()
@@ -49,7 +50,7 @@ class HealthCRUD:
             raise err
 
     @staticmethod
-    def get_latest_heartbeat(db: Session) -> Optional[HealthCheckRecord]:
+    def get_latest_heartbeat(db: Session) -> HealthCheckRecord | None:
         """
         Retrieve the most recent heartbeat record persisted in storage.
 

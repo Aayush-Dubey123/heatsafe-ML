@@ -1,5 +1,6 @@
 import platform
-from typing import Dict, Any
+from typing import Any
+
 from backend.core import logger
 
 logging = logger(__name__)
@@ -12,7 +13,7 @@ class SystemService:
     """
 
     @staticmethod
-    def get_system_telemetry() -> Dict[str, Any]:
+    def get_system_telemetry() -> dict[str, Any]:
         """
         Gather host runtime operating system and interpreter platform metrics.
 

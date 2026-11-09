@@ -7,17 +7,17 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 2. **Branch 2 (Frontend)** is **LOCKED**. It opens only when BOTH conditions are met:
    - The Backend Acceptance Gate (end of Branch 1) is fully ticked, AND
    - The project owner explicitly issues the command: *"move to frontend"*.
-3. **Strict Gate Closure:** A phase closes only when **every measurable exit criterion** is ticked and its evidence is logged in the phase's *Evidence* line. No skipping ahead.
+3. **Strict Gate Closure:** A phase closes only when **every measurable exit criterion** is ticked and its evidence is logged in the phase's *Evidence* line. No skipping ahead — with one logged exception: the API contract track (D9) may run in parallel once Phase 5 baselines exist.
 4. **Three Inviolable Structural Rules:**
    - Strict 2-file-per-folder limit for executable code (`.py`, `.jsx`, `.tsx`). Never create `.gitkeep` files or placeholder directories. Tests follow the same rule.
    - Strictly 1 root [`.gitignore`](.gitignore) and 1 root [`requirements.txt`](requirements.txt).
    - Absolute freeze on new markdown files; all documentation stays in [README.md](README.md), [agent.md](agent.md), and [progress.md](progress.md).
-5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 4, and the final value is written into the Decision Log. After that they do not move without a logged decision.
+5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 4 (First Working Result, EDA & Baseline Models) — Phase 3 Closed  
+**Current phase:** Phase 4 (Backend Foundation Hardening) — verified locally incl. Docker Postgres; awaiting first CI run; Plan v2 adopted (D8)  
 **Frontend status:** 🔒 LOCKED  
-**Last updated:** 2026-11-03  
+**Last updated:** 2026-11-09  
 
 ---
 
@@ -28,10 +28,37 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | D1 | What does Model 1 predict? | 30 m land-surface temperature (LST, °C) on the master grid, from static spatial features (NDVI, NDBI, MNDWI, elevation, slope, aspect) plus season/date features. Air temperature and heat index are NOT predicted by Model 1. | Locked in Phase 1 (2026-10-27) |
 | D2 | How is "freshness" defined? | Two separate ages are reported: `scene_age_days` (age of latest valid Landsat scene) and `weather_age_hours` (age of weather input, once weather exists). Flag `stale` when `scene_age_days > 16` (two missed combined L8/L9 revisits) or `weather_age_hours > 24`. The tracker's old "≤ 24 h source staleness" applies to weather only, not Landsat. | Locked in Phase 1 (2026-10-27) |
 | D3 | Same-day "now" heat | Branch 1 serves the latest valid scene product plus modelled spatial pattern, with its age shown. True same-day estimates need weather covariates (ERA5-Land / IMD) and belong to post-gate Models 2 and 3. | Locked in Phase 1 (2026-10-27) |
-| D4 | Training / validation / test windows | Train + tune: 2019-01-01 → 2025-12-31. Held-out **test year: 2026** (scenes to date). The test set is opened **once**, in Phase 6. | Locked in Phase 1 (2026-10-27) |
+| D4 | Training / validation / test windows | Train + tune: 2019-01-01 → 2025-12-31. Held-out **test year: 2026** (scenes to date). The test set is opened **once**, in Phase 7 (Phase 6 before Plan v2 renumbering). | Locked in Phase 1 (2026-10-27) |
 | D5 | Spatial split design | Origin-anchored 2 km × 2 km spatial blocks ($B_{cc\_rr}$) relative to master grid origin (`min_easting: 285960.0`, `min_northing: 2328030.0`) -> `GroupKFold` (5 folds) on block ID. Final test also holds out a fixed 20% of blocks. | Locked in Phase 3 (2026-11-03) |
 | D6 | Resolution claim | 30 m is the analytical grid. Landsat thermal is natively ~100 m resampled to 30 m by USGS, so published accuracy is stated per cell on the 30 m grid, never as "street-level accuracy". | Locked in Phase 1 (2026-10-27) |
 | D7 | Minimum scene bar | At least 40 usable scenes in the training window, with at least 8 in each season (summer Mar–May, monsoon Jun–Sep, post-monsoon Oct–Nov, winter Dec–Feb) (default). If missed, widen the window or loosen cloud cover before modelling. | Phase 2 |
+| D8 | Roadmap v2 for a public app | Phases 4–10 replaced by Phases 4–12 (Plan v2): new Phase 4 Foundation Hardening, new Phase 9 Data Products & Publishing; former Phases 4–10 renumbered 5–8 and 10–12. Target: public-facing app, citizens first. | Locked 2026-11-09 |
+| D9 | Parallel API contract track | API skeleton and OpenAPI v1 contract may be built in parallel once Phase 5 baselines exist, serving products tagged `model_version: "baseline"`. Phase 11 still closes only after the Phase 7 Go decision. | Locked 2026-11-09 |
+| D10 | Zero-cost infrastructure | Recurring cost must be ₹0 (resume project). Free-tier exit criteria: p95 measured on a warm instance with cold start documented separately; "unattended" = 14 consecutive green scheduled GitHub Actions runs plus uptime monitor healthy whenever awake; restore test = `pg_dump` artifact restored into a fresh Neon branch or local Postgres. Free-tier limits re-verified at sign-up and recorded here. | Locked 2026-11-09 |
+
+### Technology Decision Log (Plan v2, locked 2026-11-09)
+
+| ID | Topic | Decision |
+|:---|:---|:---|
+| T1 | Audience | Citizens first, with a read-only planner view. No citizen accounts. |
+| T2 | Hosting (zero cost) | API on Hugging Face Spaces (Docker), Render free tier as fallback; frontend later on Vercel / Netlify / Cloudflare Pages free tier. Free `*.hf.space` subdomain. |
+| T3 | Where the pipeline runs | Historical 2019–2025 backfill on the dev laptop; live new-scene runs on a scheduled GitHub Actions workflow. |
+| T4 | Alerts / notifications | Not in v1 (non-official system; avoids legal and SMS/push cost). |
+| T5 | Build order | Parallel API contract track allowed (see D9). |
+| T6 | Auth | Public read endpoints are anonymous; admin endpoints use JWT / API key with secret from `.env`. No hardcoded secret defaults. |
+| T7 | Database | PostgreSQL 16 + PostGIS: Docker Compose locally, Neon free tier in production. SQLite only in unit tests. |
+| T8 | Migrations | Alembic replaces `create_all`; `versions/` squashed to ≤ 2 files until v1 (Rule A). |
+| T9 | DB access style | Synchronous SQLAlchemy 2.0 (queries are small; async not needed). |
+| T10 | Model serving | No per-request inference; API reads batch-published products only. |
+| T11 | Map tiles | Pre-rendered PNG XYZ tiles (zoom 10–16) generated by the pipeline; no TiTiler / vector tiles in v1. |
+| T12 | Caching & rate limiting | In-process for a single instance; Redis (Upstash free) only if scaled to multiple instances. |
+| T13 | Background jobs | CLI job + cron / GitHub Actions schedule; no Celery. |
+| T14 | Experiment tracking | Local JSON run logs; no MLflow / DVC for now. |
+| T15 | Error format | Uniform envelope `{error: {code, message, details}}` on every endpoint. |
+| T16 | Languages | Backend returns codes (e.g. `exposure_level: "very_high"`); the app localises to English / Hindi / Marathi. |
+| T17 | Runtime & dependencies | Python 3.11; exact version pins in the single root `requirements.txt`. |
+| T18 | Administrative units | 10 NMC zones for v1; wards when boundaries are openly released. |
+| — | Free supporting services | Product storage: Hugging Face Dataset repo / GitHub Releases. CI & scans: GitHub Actions, Dependabot, `pip-audit`. Monitoring: UptimeRobot, Sentry free tier (optional). Backups: nightly `pg_dump` via GitHub Actions. Load test: Locust / k6 locally. |
 
 ---
 
@@ -80,7 +107,7 @@ heatsafe-ML/
 
 ---
 
-# BRANCH 1 — BACKEND & ML (Phases 0–10)
+# BRANCH 1 — BACKEND & ML (Phases 0–12)
 **Goal:** A scientifically validated, robust, documented backend and inference engine for Nagpur urban heat intelligence, fully verifiable without a UI via Swagger docs, curl, and Python clients.
 
 ---
@@ -160,7 +187,7 @@ heatsafe-ML/
 
 - **Status:** `[BLOCKED - WARD BOUNDARIES PENDING AUTHORITATIVE OPEN RELEASE]`
 - **Root Cause:** Detailed municipal ward polygons are restricted to commercial data vendors (Princeton / ML Infomap 2011) or distributed exclusively as non-georeferenced scanned PDF maps by the State Election Commission (`election.nagpurnmc.in`).
-- **Mitigation & Unblocked Path:** Nagpur Municipal Corporation's 10 official Administrative Zones (Laxmi Nagar, Dharampeth, Hanuman Nagar, Dhantoli, Nehru Nagar, Gandhibagh, Satranjipura, Lakadganj, Ashi Nagar, Mangalwari) have been ingested as `ml/data/raw/boundary/nagpur_zones.geojson` and cryptographically registered in `data_manifest.json`. Citywide 30 m master grid modeling and 2 km spatial cross-validation blocks (Decision D5) are fully unblocked. Ward-level prioritization will be revisited in Phase 7 upon authoritative public release.
+- **Mitigation & Unblocked Path:** Nagpur Municipal Corporation's 10 official Administrative Zones (Laxmi Nagar, Dharampeth, Hanuman Nagar, Dhantoli, Nehru Nagar, Gandhibagh, Satranjipura, Lakadganj, Ashi Nagar, Mangalwari) have been ingested as `ml/data/raw/boundary/nagpur_zones.geojson` and cryptographically registered in `data_manifest.json`. Citywide 30 m master grid modeling and 2 km spatial cross-validation blocks (Decision D5) are fully unblocked. Ward-level prioritization will be revisited in Phase 8 (Plan v2) upon authoritative public release.
 
 ---
 
@@ -259,14 +286,55 @@ heatsafe-ML/
 | **Valid DEM & Terrain** | 745,436 cells | 99.54% | Copernicus GLO-30 DEM valid (0.46% NaN on outer 1-cell perimeter). |
 | **Valid Vegetation (NDVI)** | 748,890 cells | 100.00% | 100.0% finite, unclipped physical reflectance values. |
 | **Trainable Terrestrial LST** | **737,416 cells** | **98.47%** | Meets Model 1 selection criteria (`valid_lst & valid_features & ~is_water`). |
-| **Representative Pipeline Status** | **VERIFIED** | **PASS** | Validated representative sample; multi-scene batch scaling executes in Phase 4/5. |
+| **Representative Pipeline Status** | **VERIFIED** | **PASS** | Validated representative sample; multi-scene batch scaling executes in Phases 5–6 (Plan v2). |
 
 ---
 
-### Milestone 4: First Working Result & Baselines
+### Plan v2 — Production Backend for a Public App (adopted 2026-11-09, see D8–D10)
 
-#### Phase 4 — First Working Result, EDA & Baseline Models `[ ]`
-**Concrete assets:** `src/eda/maps.py`, `src/eda/stats.py`, `src/models/baseline/baselines.py`, `src/models/baseline/metrics.py`; `data/processed/maps/lst_{summer,postmonsoon}_YYYY.tif` + PNG previews; locked baseline score table.
+Phases 0–3 are unchanged and closed. From Phase 4 onward, the roadmap is rebuilt so the backend can serve a real, public-facing app (citizens first, read-only planner view — T1) at **zero recurring cost** (D10). The API never runs the model per request: the ML pipeline publishes versioned products, and the API only reads them (T10).
+
+```
+Landsat / DEM (Planetary Computer) → ingest → preprocess → Model 1 (batch) → published products (COG, tiles, zone tables)
+                                                                                     ↓ publish
+                                                     Neon Postgres + PostGIS  ←──────┤
+                                                                                     ↓
+                                                    FastAPI on Hugging Face Spaces (read-only) → app
+```
+
+**Rule A note for the API layers:** every layer folder (`routes/`, `controllers/`, `cruds/`, `services/`, `models/`, `schemas/*`) holds at most 2 code files, so new domains get their own subfolder per layer (e.g. `backend/core/apis/routes/heat/heat.py`). Alembic `versions/` is squashed to ≤ 2 migration files until the v1 release.
+
+---
+
+### Milestone 4: Foundation Hardening
+
+#### Phase 4 — Backend Foundation Hardening `[~]`
+**Why:** the Phase 0 skeleton had gaps that blocked production use: `backend/commons/auth.py` imported `jwt` (PyJWT missing from `requirements.txt`) and carried a hardcoded fallback secret; CORS was `allow_origins=["*"]` with `allow_credentials=True`; the database silently fell back to SQLite; tables were created with `create_all` instead of migrations; `requirements.txt` was unpinned (`>=`).
+**Concrete assets:** `backend/core/config/settings.py`, `backend/core/apis/middleware.py`, `backend/core/apis/schemas/responses/error_response.py`, `backend/alembic.ini`, `backend/migrations/` (`env.py`, `versions/0001_initial_schema.py`), `backend/tests/conftest.py`, `backend/tests/platform/{test_config.py, test_api_hardening.py}`, root `docker-compose.yml`, root `.env.example`, `.github/dependabot.yml`, updated `.github/workflows/ci.yml`, `backend/core/apis/api.py`, `backend/core/database/database.py`, `backend/commons/{auth.py, logger.py}`, `backend/main.py`.
+- [x] Typed `Settings` (`HEATSAFE_*` env vars / root `.env`); startup fails without `HEATSAFE_DATABASE_URL`; SQLite rejected outside `test`; production requires a ≥ 32-char JWT secret and no `*` CORS origin; zero secret defaults in code
+- [x] Postgres 16 + PostGIS 3.4 via `docker-compose.yml` (localhost-bound, password from `.env`); `psycopg` 3 driver (T7)
+- [x] Alembic migrations replace `create_all`; `0001` enables PostGIS on PostgreSQL and creates `health_check_records` (`checked_at` now timezone-aware); tests run upgrade → downgrade and assert models match migrations (T8)
+- [x] Uniform error envelope `{error: {code, message, details, request_id}}` for HTTP errors, 422 validation errors (input values never echoed), and unhandled 500s (no internals leaked) (T15)
+- [x] Request-ID middleware (reuses safe inbound `X-Request-ID`, else UUID4); request ID on every log line
+- [x] CORS origins from settings, credentials disabled; security headers (`nosniff`, `DENY`, `no-referrer`, API CSP; HSTS in production only)
+- [x] Auth (T6): JWT secret from settings, no fallback; algorithm pinned on decode; PyJWT added
+- [x] Exact version pins; vulnerable web/test packages upgraded (FastAPI 0.162.2 / Starlette 1.10.0, PyJWT 2.15.1, python-multipart 0.0.33, python-dotenv 1.2.4, pydantic-settings 2.16.2, pytest 9.2.0); ML/geospatial pins unchanged (T17)
+- [x] CI: ruff (incl. bandit `S` hardcoded-secret rules) + mypy on `backend/`, `pip-audit`, and a second job running backend tests + migrations against a PostGIS service; Dependabot weekly
+- **Measurable Exit Criteria:**
+  - [x] Clean clone → `docker compose up` → `alembic upgrade head` → `pytest` green. *(Verified locally 2026-11-09 on Docker `postgis/postgis:16-3.4`.)*
+  - [ ] CI green with ruff + mypy + tests. *(All steps green locally; awaiting first CI run.)*
+  - [x] Secret scan finds 0 hardcoded keys or connection strings (ruff `S` rules clean on `backend/`).
+- **Evidence (2026-11-09, local, Python 3.13):** `pytest` 44 passed (25 existing + 19 new); `ruff check backend` all checks passed; `mypy backend` no issues in 19 files; `pip-audit -r requirements.txt` no known vulnerabilities; `alembic upgrade head --sql` renders valid PostgreSQL DDL incl. `CREATE EXTENSION postgis`; Rule A check: no folder exceeds 2 `.py` files.
+- **Evidence (2026-11-09, local Docker PostgreSQL 16.4 + PostGIS 3.4.3):** `docker compose up -d db` healthy; `alembic upgrade head` → `0001 (head)`, `checked_at` is `timestamp with time zone`; downgrade → upgrade round-trip clean; `alembic check` → "No new upgrade operations detected"; backend tests against Postgres 21/21 passed on two consecutive runs; live `uvicorn` smoke test: `/api/v1/health` 200 with heartbeat persisted, 404/422 return the error envelope, disallowed-origin CORS preflight refused (400), request IDs present on route and controller log lines.
+- **Bugs found and fixed during Docker verification:** (1) `localhost` on Windows resolves to IPv6 first and psycopg stalled with no timeout → `.env.example` uses `127.0.0.1`, and both the app engine and Alembic now set a 10 s `connect_timeout`; (2) Alembic autogenerate would have tried to drop PostGIS-owned tables (`spatial_ref_sys`, plus tiger/topology tables the Docker image installs) → `migration_name_filter` in `base_class.py` excludes extension-owned tables, looked up from `pg_depend` lazily so it never holds an open transaction.
+- **Known follow-ups:** `GET /health` writes a heartbeat row per call (table growth under uptime monitoring — revisit in Phase 11/12); `starlette.testclient` warns that `httpx` support is deprecated; ruff/mypy cover `backend/` only — `ml/` is linted from Phase 5.
+
+---
+
+### Milestone 5: First Working Result & Baselines
+
+#### Phase 5 — First Working Result, EDA & Baseline Models `[ ]`
+**Concrete assets:** `ml/src/eda/maps.py`, `ml/src/eda/stats.py`, `ml/src/models/baseline/baselines.py`, `ml/src/models/baseline/metrics.py`; `ml/data/processed/maps/lst_{summer,postmonsoon}_YYYY.tif` + PNG previews; locked baseline score table.
 - [ ] **First Working Result:** seasonal mean LST GeoTIFFs and PNG maps for summer vs. post-monsoon/winter, with metadata (scene list, date range, CRS, masking summary)
 - [ ] Hotspot analysis: Getis-Ord Gi* (distance band or queen contiguity), significant clusters at p < 0.05, exported as a GeoJSON layer
 - [ ] Correlations (Spearman): LST vs. NDVI, NDBI, MNDWI, elevation, by season
@@ -280,18 +348,19 @@ heatsafe-ML/
   - [ ] Baseline 1–3 scores locked in `progress.md` as the bar to beat.
   - [ ] D5 re-confirmed or adjusted after seeing fold sizes.
 - **Evidence:** baseline score table (metric × baseline × season).
+- **Unlocks:** the parallel API contract track (D9) may start using Baseline products tagged `model_version: "baseline"`.
 
 ---
 
-### Milestone 5: Scientific Validation & Model Development
+### Milestone 6: Scientific Validation & Model Development
 
-#### Phase 5 — Model Development (Single ML Model First) `[ ]`
-**Concrete assets:** `src/models/core/train.py`, `src/models/core/evaluate.py`, `src/models/explain/shap_analysis.py`, `src/models/explain/intervals.py`; `configs/model.yaml`; `data/processed/models/model1_v1.*`; `data/processed/experiments/*.json`.
+#### Phase 6 — Model 1 Development (Single ML Model First) `[ ]`
+**Concrete assets:** `ml/src/models/core/train.py`, `ml/src/models/core/evaluate.py`, `ml/src/models/explain/shap_analysis.py`, `ml/src/models/explain/intervals.py`; `ml/configs/model.yaml`; model registry `ml/models/registry/<version>/` (LightGBM native format + SHA-256, git-ignored, published per Phase 9); `ml/data/processed/experiments/*.json`.
 - [ ] Spatial-block CV (D5) with a unit test proving no `block_id` appears in both train and validation within any fold (zero leakage)
-- [ ] Model 1: LightGBM first, Random Forest as a comparison, small tuning budget (e.g., 30 trials), seeds fixed
+- [ ] Model 1: LightGBM first, Random Forest as a comparison, small tuning budget (e.g., 30 trials), seeds fixed, CPU only
 - [ ] SHAP global and per-season importance plots
 - [ ] 90% prediction intervals via quantile regression (5th/95th percentile models); report empirical coverage and mean width
-- [ ] Each run logs parameters, metrics, data version, git commit into a local JSON file
+- [ ] Each run logs parameters, metrics, data version, git commit into a local JSON file (T14)
 - [ ] Secondary models (air-temp transfer, forecast offsets) deferred until Model 1 passes
 - **Measurable Exit Criteria:**
   - [ ] Model 1 reduces RMSE by ≥ 15% versus Baseline 3 on held-out spatial blocks.
@@ -299,80 +368,107 @@ heatsafe-ML/
   - [ ] Leakage test is green and part of the test suite.
 - **Evidence:** CV table (per fold, per season); experiment log file names.
 
-#### Phase 6 — Ground-Truth Validation & Model Cards `[ ]`
+#### Phase 7 — Ground-Truth Validation & Model Cards `[ ]`
 **Concrete assets:** final evaluation report section in `README.md`; test-set metrics with 95% CIs; Model Card for LST in `README.md`; station comparison table.
 - [ ] Open the test set once: 2026 scenes and the fixed 20% held-out blocks; no re-tuning afterwards
 - [ ] Station comparison: LST at the station pixel vs. station air temperature, reported as a correlation/offset with an explicit caveat that these are different variables
 - [ ] Error breakdown by land-cover class, NDVI tiers (e.g., terciles), and season
 - [ ] Bootstrap 95% confidence intervals (≥ 1000 resamples by block) on RMSE, MAE, bias
 - [ ] Model Card in `README.md`: scope, data, resolution statement (D6), failure modes (cloud-free days only, daytime only), confidence bounds
-- [ ] Go / No-Go review by the project owner. A No-Go sends work back to Phase 3 or 5 with a logged reason.
+- [ ] Go / No-Go review by the project owner. A No-Go sends work back to Phase 3 or 6 with a logged reason.
 - **Measurable Exit Criteria:**
-  - [ ] Test-set RMSE ≤ 0.85 × Baseline 3 RMSE, and an absolute RMSE target of ≤ 2.5 °C (default; confirm after Phase 4 baselines).
+  - [ ] Test-set RMSE ≤ 0.85 × Baseline 3 RMSE, and an absolute RMSE target of ≤ 2.5 °C (default; confirm after Phase 5 baselines).
   - [ ] Model Card published in `README.md`.
   - [ ] Written Go decision from the owner.
-- **Evidence:** metrics table with CIs; Go/No-Go entry in the change log.
+- **Evidence:** metrics table with CIs; Go/No-Go entry in the Decision Log.
 
 ---
 
-### Milestone 6: Evidence-Based Layers
+### Milestone 7: Evidence-Based Layers & Data Products
 
-#### Phase 7 — Heat Exposure & Vulnerability Layer `[ ]`
-**Concrete assets:** `src/exposure/index.py`, `src/exposure/vulnerability.py`; `data/processed/exposure/{exposure_ward.parquet, cooling_assets.geojson}`.
+#### Phase 8 — Heat Exposure, Vulnerability & Cooling Assets `[ ]`
+**Concrete assets:** `ml/src/exposure/index.py`, `ml/src/exposure/vulnerability.py`; `ml/data/processed/exposure/{exposure_zone.parquet, cooling_assets.geojson}`.
 - [ ] Heat Exposure Index (0–100) as a documented transform of validated LST (e.g., percentile rank within Nagpur per season), never from unvalidated outputs
-- [ ] Ward-level vulnerability from census/open data: population density, share aged 60+, green-space deficit (1 − mean NDVI percentile); aggregated at ward level only
-- [ ] Cooling assets: parks, water bodies, hospitals, designated shelters, with source and date
-- [ ] Ward risk score and rank, with uncertainty intervals from bootstrapping the underlying LST error
+- [ ] Zone-level vulnerability (10 NMC zones for v1 — T18; wards once boundaries are openly released): population density, share aged 60+, green-space deficit (1 − mean NDVI percentile); aggregated only
+- [ ] Cooling assets from OpenStreetMap (parks, water bodies, hospitals, designated shelters) with source and extraction date
+- [ ] Zone risk score and rank, with uncertainty intervals from bootstrapping the underlying LST error
+- [ ] Exposure levels exposed as codes (`low` … `very_high`), not display text, so the app can localise (T16)
 - **Measurable Exit Criteria:**
   - [ ] A schema test confirms zero individual-level fields in any output file.
-  - [ ] Ward ranking method documented with rank intervals for every ward.
+  - [ ] Zone ranking method documented with rank intervals for every zone.
 - **Evidence:** ranking table with intervals; schema test output.
+
+#### Phase 9 — Versioned Data Products & Publishing `[ ]`
+**Concrete assets:** `ml/src/publish/products.py`, `ml/src/publish/tiles.py`; PostGIS tables `products`, `zone_metrics`, `cooling_assets`; Hugging Face Dataset repo (or GitHub Releases) holding product bundles.
+- [ ] One product bundle per scene/season: COGs for LST, p05, p95, exposure (EPSG:32644 source, served in EPSG:4326)
+- [ ] Pre-rendered PNG XYZ tiles, zoom 10–16, for each published layer (T11)
+- [ ] Zone metrics and cooling assets loaded into PostGIS (zone geometries simplified for the API)
+- [ ] `products` table: version, scene ID, model version, created_at, SHA-256; atomic "latest" pointer so the API never reads a half-written bundle
+- [ ] Bundles uploaded to free storage (HF Dataset / GitHub Releases); API fetches the latest bundle at startup
+- **Measurable Exit Criteria:**
+  - [ ] Publishing the same product twice is idempotent (0 changes on re-run).
+  - [ ] 100% of published files listed in the manifest with re-verifiable hashes.
+  - [ ] Tiles cover the full study-area extent at every published zoom.
+- **Evidence:** publish log; manifest verification output; tile count per zoom.
 
 ---
 
-### Milestone 7: Production Backend & Hardening
+### Milestone 8: Live Pipeline, Public API & Deployment
 
-#### Phase 8 — Resilient Inference Pipeline (Historical to Live) `[ ]`
-**Concrete assets:** `src/pipeline/run_batch.py`, `src/pipeline/fallback.py`, `src/storage/cog.py`, `src/storage/postgis.py`; COGs in `data/processed/cog/`; PostGIS tables `heat_products`, `ward_metrics`, `cooling_assets`, `pipeline_runs`; failure-injection tests.
-- [ ] Batch job: detect new scene, then ingest, preprocess, predict, write COG and database rows, and record the run in `pipeline_runs`
+#### Phase 10 — Automated Inference Pipeline (Historical to Live) `[ ]`
+**Concrete assets:** `ml/src/pipeline/run_batch.py`, `ml/src/pipeline/fallback.py`; `.github/workflows/pipeline.yml` (scheduled); PostGIS table `pipeline_runs`; failure-injection tests.
+- [ ] Batch job: detect new scene → ingest (bbox-cropped) → preprocess → predict → publish (Phase 9) → record run in `pipeline_runs`
+- [ ] Historical 2019–2025 backfill runs once on the dev laptop; live runs on a free GitHub Actions cron (T3, T13); cron enabled only after run durations are measured over the historical replay
 - [ ] Freshness fields per D2 stored with each product (`scene_age_days`, `stale` flag)
 - [ ] Fallback logic: on corrupt input, empty pass, or upstream timeout, serve the last good product flagged `stale` and log the cause
 - [ ] Retry with backoff for upstream calls; run lock to prevent overlapping runs
 - [ ] Failure-injection tests: network outage, corrupt raster, no new pass, database down
-- [ ] Scheduler (cron/Task Scheduler) added only after run durations are measured over the historical replay
 - **Measurable Exit Criteria:**
-  - [ ] Pipeline runs unattended for 7 consecutive days with 0 unhandled exceptions.
+  - [ ] 14 consecutive daily scheduled runs with 0 unhandled exceptions (D10).
   - [ ] Every injected failure results in a fallback plus a stale-data warning flag (all 4 tests green).
-- **Evidence:** 7-day run log; failure-injection test report.
+- **Evidence:** Actions run history; failure-injection test report.
 
-#### Phase 9 — Production Backend API `[ ]`
-**Concrete assets:** `backend/main.py`, `backend/deps.py`, `backend/core/{routers,controllers,services,repositories}/<domain>/`; OpenAPI at `/docs`; `postman_collection.json` under `tests/`.
-- [ ] FastAPI app in four layers. Build order: `/health`, `/metadata`, `/heat`, `/wards` and `/ward/{id}`, `/cooling-spots`, `/tiles/{z}/{x}/{y}`, `/forecast` (clean `501` until a forecast model is validated)
-- [ ] `GET /heat?lat&lon` returns LST (°C), 90% interval, `scene_age_days`, `stale` flag, model version; air temperature and heat index are NOT returned until their models exist
-- [ ] Pydantic v2 request/response schemas; one uniform error schema; out-of-boundary coordinates return a documented `422`/`404`
-- [ ] Rate limiting and response caching
+#### Phase 11 — Public API v1 `[ ]`
+**Concrete assets:** per-domain subfolders under each backend layer (`routes/`, `controllers/`, `cruds/`, `services/`, `models/`, `schemas/`); in-memory raster service for point lookups; OpenAPI snapshot test; `backend/tests/postman_collection.json`.
+- [ ] Endpoints under `/api/v1` (output in EPSG:4326):
+  - `GET /health`, `GET /metadata` (model version, products, coverage extent, disclaimers)
+  - `GET /heat?lat&lon&season` → LST (°C), 90% interval, exposure level, zone, `scene_age_days`, `stale`, model version; air temperature and heat index are NOT returned until their models exist
+  - `GET /zones`, `GET /zones/{id}` → simplified GeoJSON, zone stats and rank
+  - `GET /cooling-spots?lat&lon&type&limit` → nearest spots via PostGIS KNN
+  - `GET /tiles/{product}/{z}/{x}/{y}.png` → pre-rendered tiles with cache headers
+  - `GET /hotspots?season` → Gi* clusters as GeoJSON
+  - `GET /forecast` → clean `501` until a forecast model is validated
+  - `POST /admin/products/{version}/publish|rollback` (auth required — T6)
+- [ ] Point lookups served from in-memory NumPy arrays loaded at startup (942 × 795 float32 ≈ 3 MB per layer)
+- [ ] Pydantic v2 request/response schemas; uniform error envelope; out-of-boundary coordinates return a documented `422`
+- [ ] In-process rate limiting and response caching (T12); no Redis unless scaled to multiple instances
+- [ ] OpenAPI v1 contract frozen by a snapshot test — this is the contract the frontend will build against
 - [ ] Google-style docstrings on all functions and methods; central logging in `backend/commons/logger.py`
 - [ ] Swagger docs, curl examples, and a Postman collection
-- [ ] Load test: 50 concurrent requests per endpoint, p95 measured and logged
+- [ ] Load test with Locust or k6 (local, free): 50 concurrent requests per endpoint
 - **Measurable Exit Criteria:**
-  - [ ] p95 latency ≤ 200 ms at 50 concurrent requests.
-  - [ ] Branch coverage ≥ 85% across routers, controllers, and services.
-  - [ ] 100% of endpoints return the documented error schema on invalid input.
-- **Evidence:** load-test output; coverage report summary.
+  - [ ] Warm-instance p95 latency ≤ 200 ms at 50 concurrent requests; cold-start time measured and documented separately (D10).
+  - [ ] Branch coverage ≥ 85% across routes, controllers, and services.
+  - [ ] 100% of endpoints return the documented error envelope on invalid input.
+  - [ ] OpenAPI snapshot test green.
+- **Evidence:** load-test output; coverage report summary; OpenAPI snapshot hash.
 
-#### Phase 10 — Backend Hardening, Monitoring & Deployment `[ ]`
-**Concrete assets:** `.github/workflows/ci.yml`, `Dockerfile`, `.env.example`; drift report outputs; the backup/rollback plan inside `README.md`.
-- [ ] CI pipeline: lint (ruff), type check (mypy), unit + integration tests, coverage gate at 85%
-- [ ] Docker image: pinned base image, non-root user, no secrets baked in
-- [ ] Secrets only via `.env`; a CI check fails on hardcoded keys or connection strings
-- [ ] Data drift (feature distribution shift vs. training) and model drift (error vs. new observed scenes) monitoring with alert thresholds in `configs/thresholds.yaml`
-- [ ] Disaster recovery: database backup schedule, restore test, and rollback of model version
+#### Phase 12 — Hardening, Monitoring & Zero-Cost Deployment `[ ]`
+**Concrete assets:** root `Dockerfile`, `.env.example`, `.github/workflows/{ci.yml, pipeline.yml, backup.yml}`; drift report outputs; backup/rollback runbook inside `README.md`.
+- [ ] Deploy API to Hugging Face Spaces (Docker); Render free tier as fallback (T2)
+- [ ] Production database on Neon free tier (Postgres + PostGIS)
+- [ ] Docker image: pinned base image, non-root user, no secrets baked in; secrets via HF Space / GitHub Actions secrets
+- [ ] CI coverage gate at 85%; a CI check fails on hardcoded keys or connection strings
+- [ ] Data drift (feature distribution shift vs. training) and model drift (error vs. new observed scenes) monitoring with thresholds in `ml/configs/thresholds.yaml`
+- [ ] Uptime monitoring with UptimeRobot (free); error tracking with Sentry free tier (optional)
+- [ ] Disaster recovery: nightly `pg_dump` via GitHub Actions saved as artifact/release asset; model-version rollback via `/admin` endpoint
 - **Measurable Exit Criteria:**
-  - [ ] Staging runs 14+ consecutive days unattended.
+  - [ ] 14 consecutive days of green scheduled pipeline runs, and the uptime monitor reports the API healthy whenever awake (D10).
   - [ ] CI 100% green on all PRs.
   - [ ] Dependency scan reports 0 high/critical vulnerabilities.
-  - [ ] Restore from backup tested once successfully.
-- **Evidence:** staging uptime log; scan report; restore-test note.
+  - [ ] A `pg_dump` artifact restored once into a fresh Neon branch or local Postgres.
+  - [ ] Recurring infrastructure cost = ₹0.
+- **Evidence:** Actions history; uptime report; scan report; restore-test note.
 
 ---
 
@@ -387,11 +483,13 @@ heatsafe-ML/
 
 ## 🚦 BACKEND ACCEPTANCE GATE
 All items must be checked before Branch 2 (Frontend) can be proposed:
-- [ ] Phases 0–10 all closed with every exit criterion ticked and evidence logged.
+- [ ] Phases 0–12 all closed with every exit criterion ticked and evidence logged.
 - [ ] Validated ML accuracy beats simple baselines by ≥ 15% on independent spatial hold-outs.
-- [ ] API p95 latency ≤ 200 ms verified under benchmark load.
+- [ ] API p95 latency ≤ 200 ms verified under benchmark load (warm instance; cold start documented, per D10).
 - [ ] Test coverage ≥ 85% verified green across the backend test suite.
-- [ ] Live inference pipeline tested against missing data, job failures, and stale results (14 days unattended on staging).
+- [ ] Live inference pipeline tested against missing data, job failures, and stale results (14 consecutive green scheduled runs, per D10).
+- [ ] OpenAPI v1 contract frozen (snapshot test green) — the frontend builds against this contract.
+- [ ] Recurring infrastructure cost verified at ₹0 (D10).
 - [ ] Backend fully verified end-to-end via Swagger / Postman / Python client alone, including a rehearsal from a clean clone.
 - [ ] Essential scientific distinction documented: separate targets, metrics, and model cards for LST vs. air temperature vs. heat index.
 - [ ] Known limitations documented in [README.md](README.md).
@@ -404,11 +502,15 @@ All items must be checked before Branch 2 (Frontend) can be proposed:
 | Risk | Impact | Early check | Mitigation |
 |:---|:---|:---|:---|
 | Too few cloud-free scenes (monsoon) | Weak seasonal coverage | D7 audit in Phase 2 | Widen window, relax cloud filter, report seasonal gaps |
-| Station data unavailable or low quality | Phase 6 validation limited | Station inventory in Phase 1 | Use LST-only validation, state the limit in the Model Card |
-| Spatial autocorrelation inflates accuracy | False confidence | Leakage test in Phase 5 | Block CV, test set opened once |
+| Station data unavailable or low quality | Phase 7 validation limited | Station inventory in Phase 1 | Use LST-only validation, state the limit in the Model Card |
+| Spatial autocorrelation inflates accuracy | False confidence | Leakage test in Phase 6 | Block CV, test set opened once |
 | Landsat 100 m thermal resampled to 30 m | Overclaimed precision | D6 | State resolution limits in docs and API metadata |
 | 2-file rule leads to awkward module splits | Slower development | Folder design in Phase 0 | Split by responsibility; revisit layout only via a logged decision |
 | Heat index needs humidity and wind | Heat index not available in Branch 1 | Target spec in Phase 1 | Post-gate Models 2/3 with ERA5-Land/IMD data |
+| Free-tier host sleeps when idle | Slow first request (cold start) | Measure in Phase 11 | Document cold start; keep Docker-based so hosts can be swapped |
+| Free-tier limits or terms change | Hosting or DB disruption | Re-check limits at sign-up (D10) | Docker Compose + `pg_dump` backups make migration to another free host quick |
+| GitHub disables cron after 60 days of repo inactivity | Live pipeline stops silently | Uptime / freshness monitor (`stale` flag) | Any commit re-enables; stale flag surfaces it to users |
+| Rule A (2 files per folder) vs. many API domains and migrations | Awkward layout | Folder design in Phase 4 | Per-domain subfolders per layer; squash migrations to ≤ 2 files |
 
 ---
 
@@ -436,7 +538,7 @@ All items must be checked before Branch 2 (Frontend) can be proposed:
 #### Phase F4 — Usability Testing, Hardening & v1.0 Release `[ ]`
 - [ ] Usability testing on desktop and mobile viewports
 - [ ] Frontend automated tests (component rendering, API mock tests, E2E user flow)
-- [ ] Production build optimization, CI/CD deployment, and v1.0 release tag
+- [ ] Production build optimization, CI/CD deployment on a free tier (T2), and v1.0 release tag
 - **Exit:** Public release with published release notes; transition to maintenance.
 
 ---

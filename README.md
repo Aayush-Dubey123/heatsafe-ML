@@ -7,10 +7,11 @@ HeatSafe-ML is an end-to-end geospatial machine learning platform and environmen
 By integrating multispectral and thermal satellite observations from **Landsat 8/9 Collection 2 Level-2**, digital surface elevation from **Copernicus DEM GLO-30**, and machine-learned spatial feature representations, HeatSafe-ML surfaces granular thermal patterns across urban morphology to empower researchers, urban planners, public health authorities, and civic communities with verifiable, reproducible climate intelligence.
 
 > **Current Operational Status (Branch 1 - Backend & ML):**  
-> - **Active Phase:** Phase 3 (Preprocessing, QA Masking & Feature Engineering)  
-> - **Completed Milestones:** Phase 0 (Foundation Architecture), Phase 1 (Study Area & Master Grid), Phase 2 (STAC Ingestion Pipeline)  
+> - **Roadmap:** Plan v2 (adopted 2026-11-09) — production backend for a public-facing app, citizens first, at zero recurring cost (Decisions D8–D10, T1–T18 in [`progress.md`](progress.md)).  
+> - **Active Phase:** Phase 4 (Backend Foundation Hardening) — verified locally on SQLite and Docker PostGIS; first CI run pending  
+> - **Completed Milestones:** Phase 0 (Foundation Architecture), Phase 1 (Study Area & Master Grid), Phase 2 (STAC Ingestion Pipeline), Phase 3 (Preprocessing, QA Masking & Feature Engineering)  
 > - **Branch 2 (Frontend UI):** 🔒 **LOCKED** under Two-Branch Governance until full Backend Acceptance Gate verification.  
-> - **Live Test Suite:** 15/15 unit & integration tests passing (`python -m pytest -v`).
+> - **Live Test Suite:** 44/44 unit & integration tests passing (`python -m pytest -v`, verified 2026-11-09).
 
 ---
 
@@ -112,7 +113,16 @@ flowchart TD
         ML --> ML_INGEST["src/ingest/ (STAC Query, SAS Signing, Tile Download)"]
         ML --> ML_COMMONS["src/commons/ (manifest.py SHA-256, logger.py)"]
         ML --> ML_DATA["data/ (data_manifest.json, raw boundaries & rasters)"]
-        ML --> ML_PREPROC["src/preprocessing/ (Phase 3: Masking & Features)"]
+        ML --> ML_PREPROC["src/preprocess/ (Phase 3: Alignment, QA Masking & Features)"]
+        ML --> ML_VALID["src/validate/ (Phase 3: Feature Table Schema Checks)"]
+    end
+
+    subgraph ServingPlan ["Plan v2 Serving Path (PLANNED, zero cost)"]
+        ML_PREPROC --> PUB["Published Products (Phase 9: COGs, tiles, zone tables)"]
+        PUB --> PG["Neon Postgres + PostGIS (free tier)"]
+        PUB --> API["Public API v1 on Hugging Face Spaces (Phase 11)"]
+        PG --> API
+        CRON["GitHub Actions scheduled pipeline (Phase 10)"] --> PUB
     end
 
     subgraph GovernanceTriad ["The Root Triad"]
@@ -190,6 +200,8 @@ heatsafe-ML/
     ├── data/
     │   ├── manifest/
     │   │   └── data_manifest.json         # Cryptographic SHA-256 data provenance manifest
+    │   ├── processed/
+    │   │   └── features_v1.parquet        # Phase 3 training table (git-ignored, hash in manifest)
     │   └── raw/
     │       ├── boundary/
     │       │   ├── nagpur_nmc.geojson     # Official NMC municipal boundary vector
@@ -199,14 +211,21 @@ heatsafe-ML/
     │   ├── commons/
     │   │   ├── logger.py                  # ML structured logging utility
     │   │   └── manifest.py                # Atomic DataManifestManager with SHA-256 hashing
-    │   └── ingest/
-    │       ├── sources.py                 # STAC Planetary Computer client with SAS signing
-    │       └── __main__.py                # Ingestion CLI orchestrator with seasonal audit
+    │   ├── ingest/
+    │   │   ├── sources.py                 # STAC Planetary Computer client with SAS signing
+    │   │   └── __main__.py                # Ingestion CLI orchestrator with seasonal audit
+    │   ├── preprocess/
+    │   │   ├── align.py                   # Reprojection / resampling onto the 30 m master grid
+    │   │   └── features.py                # QA masking, LST scaling, spectral indices, terrain & temporal features
+    │   └── validate/
+    │       └── schema.py                  # FeatureTableSchema dtype, range, and missingness checks
     └── tests/
         ├── test_smoke.py                  # Configuration and logger smoke tests
         ├── test_study_area.py             # GeoJSON geometry, CRS, and grid snapping tests
-        └── ingest/
-            └── test_ingest.py             # STAC client, retry, and manifest audit tests
+        ├── ingest/
+        │   └── test_ingest.py             # STAC client, retry, and manifest audit tests
+        └── preprocess/
+            └── test_preprocess.py         # Grid alignment, masking, and feature table tests
 ```
 
 ---
@@ -258,21 +277,38 @@ All agent operations, developer modifications, and roadmap tracking adhere to th
 
 ## 🗺️ Development Roadmap & Phasewise Milestones
 
-Progress is strictly gated across eleven defined phases in [`progress.md`](file:///C:/Users/aayus/heatsafe-ML/progress.md):
+Progress is strictly gated across thirteen defined phases (Plan v2, Decision D8) in [`progress.md`](file:///C:/Users/aayus/heatsafe-ML/progress.md):
 
 | Phase | Description | Focus Area | Status | Key Deliverables & Exit Criteria |
 | :---: | :--- | :--- | :---: | :--- |
 | **0** | **Foundation Architecture** | Backend / Governance | **`[x]` DONE** | 4-layer structure, test runner, CI workflow, single requirements & gitignore |
 | **1** | **Study Area & Data Audit** | Geospatial / ML | **`[x]` DONE** | NMC boundary & 10 zones in EPSG:4326/32644, master 30 m grid, data catalog audit |
 | **2** | **Incremental Ingestion** | Ingestion Engine | **`[x]` DONE** | Planetary Computer STAC client, SAS signing, retry backoff, SHA-256 manifest |
-| **3** | **Preprocessing & Features** | Feature Pipeline | **`[~]` ACTIVE** | QA pixel cloud/shadow masking, NDVI, NDBI, MNDWI, Copernicus DEM slope/aspect |
-| **4** | **First Working Result & EDA** | Analysis & Baseline | `[ ]` PLANNED | Empirical spatial EDA, spatial median baseline, seasonal thermal anomaly maps |
-| **5** | **ML Model Development** | Machine Learning | `[ ]` PLANNED | Single tabular CPU model (LightGBM/RF), 2 km × 2 km spatial block cross-validation |
-| **6** | **Validation & Model Cards** | Verification | `[ ]` PLANNED | Held-out 2026 test evaluation, RMSE $\ge 15\%$ improvement over baselines, Model Card |
-| **7** | **Heat Exposure & Vulnerability**| Risk Analytics | `[ ]` PLANNED | Zone-level exposure mapping, green cover deficiency index, cooling priority map |
-| **8** | **Resilient Inference Pipeline** | Inference Serving | `[ ]` PLANNED | Batch-to-live inference, freshness monitors (`scene_age_days \le 16`), cache layers |
-| **9** | **Production Backend API** | FastAPI Endpoints | `[ ]` PLANNED | Heat intelligence endpoints, p95 latency $\le 200$ ms, full typed OpenAPI docs |
-| **10**| **Hardening & Release** | Deployment | `[ ]` PLANNED | Coverage $\ge 85\%$, security audit, containerization, final owner release sign-off |
+| **3** | **Preprocessing & Features** | Feature Pipeline | **`[x]` DONE** | QA pixel cloud/shadow masking, NDVI, NDBI, MNDWI, Copernicus DEM slope/aspect, `features_v1.parquet` |
+| **4** | **Backend Foundation Hardening** | Backend / Security | **`[~]` ACTIVE** | Typed settings, Postgres + PostGIS, Alembic migrations, error envelope, CORS & secrets fixed, pinned deps, ruff + mypy |
+| **5** | **First Working Result & Baselines** | Analysis & Baseline | `[ ]` PLANNED | Seasonal LST maps, Gi* hotspots, Baselines 1–3 locked as the bar to beat |
+| **6** | **Model 1 Development** | Machine Learning | `[ ]` PLANNED | LightGBM/RF on CPU, 2 km spatial-block CV, leakage test, 90% quantile intervals, RMSE ≥ 15% better than Baseline 3 |
+| **7** | **Validation & Model Card** | Verification | `[ ]` PLANNED | Held-out 2026 test opened once, bootstrap CIs, Model Card, owner Go/No-Go |
+| **8** | **Exposure, Vulnerability & Cooling Assets** | Risk Analytics | `[ ]` PLANNED | Exposure Index 0–100, zone vulnerability & ranks with intervals, OSM cooling assets |
+| **9** | **Versioned Data Products** | Publishing | `[ ]` PLANNED | COGs, pre-rendered tiles, PostGIS zone tables, atomic "latest" pointer, hashed bundles |
+| **10** | **Automated Inference Pipeline** | Pipeline | `[ ]` PLANNED | Scheduled GitHub Actions run, freshness flags (`scene_age_days ≤ 16`), fallback, 4 failure-injection tests |
+| **11** | **Public API v1** | FastAPI Endpoints | `[ ]` PLANNED | `/heat`, `/zones`, `/cooling-spots`, `/tiles`, `/hotspots`; warm p95 ≤ 200 ms, coverage ≥ 85%, frozen OpenAPI contract |
+| **12** | **Hardening & Zero-Cost Deployment** | Deployment | `[ ]` PLANNED | Hugging Face Spaces + Neon, Docker, monitoring, backups & restore test, ₹0 recurring cost |
+
+### Zero-Cost Infrastructure (Decision D10)
+HeatSafe-ML is built and operated at ₹0 recurring cost. The API never runs the model per request; the pipeline publishes versioned products and the API only reads them.
+
+| Need | Free service |
+| :--- | :--- |
+| API hosting | Hugging Face Spaces (Docker); Render free tier as fallback |
+| Database | Neon free tier (PostgreSQL + PostGIS); Docker Compose Postgres locally |
+| Live pipeline scheduler | GitHub Actions scheduled workflow |
+| Product storage | Hugging Face Dataset repo / GitHub Releases |
+| CI, dependency & security scans | GitHub Actions, Dependabot, `pip-audit` |
+| Monitoring | UptimeRobot; Sentry free tier (optional) |
+| Backups | Nightly `pg_dump` via GitHub Actions |
+
+**Known free-tier limitation:** the hosted API sleeps when idle, so the first request after a quiet period is slow (cold start). Latency targets are measured on a warm instance and cold-start time is documented separately.
 
 ---
 
@@ -287,7 +323,7 @@ Progress is strictly gated across eleven defined phases in [`progress.md`](file:
 Clone the repository and create an isolated virtual environment:
 ```bash
 # Clone the repository
-git clone https://github.com/aayush/heatsafe-ML.git
+git clone https://github.com/Aayush-Dubey123/heatsafe-ML.git
 cd heatsafe-ML
 
 # Create virtual environment
@@ -307,7 +343,15 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 3. Running the Backend API Server
+### 3. Configure Environment & Database
+Settings come only from `HEATSAFE_*` environment variables or a root `.env` file (git-ignored); the app refuses to start without a valid configuration.
+```bash
+cp .env.example .env               # then set HEATSAFE_DB_PASSWORD and matching HEATSAFE_DATABASE_URL
+docker compose up -d db            # PostgreSQL 16 + PostGIS on 127.0.0.1:5432
+alembic -c backend/alembic.ini upgrade head
+```
+
+### 4. Running the Backend API Server
 Start the FastAPI server via the ASGI Uvicorn runner:
 ```bash
 python backend/main.py
@@ -321,7 +365,7 @@ Once launched, explore the interactive OpenAPI documentation:
 - **ReDoc Documentation:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
 - **Service Health Check:** [http://127.0.0.1:8000/api/v1/health](http://127.0.0.1:8000/api/v1/health)
 
-### 4. Running the Geospatial Ingestion CLI
+### 5. Running the Geospatial Ingestion CLI
 The ingestion CLI provides commands for auditing and downloading satellite rasters:
 ```bash
 # Perform a dry-run audit of available Landsat scenes without downloading
@@ -346,6 +390,20 @@ Run pytest from the repository root:
 python -m pytest -v
 ```
 
+Backend tests use a throwaway SQLite database by default and run all Alembic migrations first (and roll them back afterwards). To run them against PostgreSQL + PostGIS, use a separate test database so your dev data is untouched:
+```bash
+docker exec heatsafe-db createdb -U heatsafe heatsafe_test
+HEATSAFE_TEST_DATABASE_URL=postgresql+psycopg://heatsafe:<password>@127.0.0.1:5432/heatsafe_test python -m pytest backend -v
+```
+Use `127.0.0.1` rather than `localhost`: on Windows, `localhost` tries IPv6 first and connections stall.
+
+### Lint, Type Check & Dependency Audit
+```bash
+ruff check backend --line-length 120 --target-version py311 --select E,F,W,I,B,S,UP --ignore B008 --per-file-ignores "backend/tests/*:S101"
+mypy backend --python-version 3.11 --ignore-missing-imports --explicit-package-bases --exclude backend/tests/
+pip-audit -r requirements.txt
+```
+
 ### Run Tests with Coverage Report
 Verify line and branch coverage:
 ```bash
@@ -358,6 +416,7 @@ python -m pytest --cov=backend --cov=ml -v
 - [x] Master projected grid coordinates perfectly snapped to 30 m increments in EPSG:32644
 - [x] STAC ingestion retry policies, exponential backoff, and seasonal inventory categorization verified
 - [x] Cryptographic SHA-256 data manifest manager atomic writes verified
+- [x] Phase 3 grid alignment, QA masking, and `features_v1.parquet` schema checks verified (0.16% missingness)
 
 ---
 

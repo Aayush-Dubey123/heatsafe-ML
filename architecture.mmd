@@ -32,13 +32,17 @@ flowchart TD
     P1["<b>Phase 1</b><br/>Study Area and Feasibility<br/>- Verify Nagpur (NMC) boundary<br/>- Master 30 m grid (748,890 cells)<br/>- Station inventory and D1-D4, D6 locked<br/>- Assess data availability and licenses<br/>[PASS] Completed and Verified"]
     P2["<b>Phase 2</b><br/>Data Ingestion and Management<br/>- Download and organize Landsat and DEM<br/>- Validate scenes (quality, date, coverage)<br/>- Exponential backoff retry resilience<br/>- Register assets in data_manifest.json<br/>[PASS] Completed and Verified (173 scenes)"]
     P3["<b>Phase 3</b><br/>Preprocessing and Feature Engg.<br/>- Reproject to 30 m grid (EPSG:32644)<br/>- QA masking (cloud, shadow, snow, water)<br/>- Scale LST (deg C) and surface reflectance<br/>- Derive NDVI, NDBI, MNDWI indices<br/>- Compute slope and aspect (Horn 3x3)<br/>- Temporal and 2 km spatial blocks (D5)<br/>- Export features_v1.parquet (39.4 MB)<br/>[PASS] Completed and Verified (Sample Scene)"]
-    P4["<b>Phase 4</b><br/>ML Modeling and Analysis<br/>- Train seasonal LST / heat baselines<br/>- Spatial-block cross-validation (D5)<br/>- Baseline evaluation (RMSE, MAE, R2)<br/>- Getis-Ord Gi* hotspot clustering<br/>[PLANNED] Next Planned Milestone"]
-    P5["<b>Phase 5</b><br/>Insights and Delivery<br/>- Primary Model 1 (LightGBM/RF)<br/>- Generate seasonal mean heat maps<br/>- Build FastAPI /v1/heat endpoints<br/>- Summarize city-level heat risk<br/>[PLANNED] Future Delivery"]
+    P5["<b>Phase 5</b><br/>First Working Result and Baselines<br/>- Seasonal mean LST GeoTIFF and PNG maps<br/>- Getis-Ord Gi* hotspot clusters (p under 0.05)<br/>- Spearman LST vs NDVI, NDBI, MNDWI, elevation<br/>- Baselines 1-3 on validation folds only<br/>[PLANNED] Next ML Milestone"]
+    P6["<b>Phase 6</b><br/>Model 1 Development<br/>- LightGBM first, Random Forest comparison (CPU)<br/>- 2 km spatial-block CV and leakage test (D5)<br/>- 90% intervals via quantile models<br/>- SHAP drivers and JSON run logs<br/>[PLANNED] Must beat Baseline 3 by 15%"]
+    P7["<b>Phase 7</b><br/>Validation and Model Card<br/>- 2026 test set opened once (D4)<br/>- Station comparison as a separate variable<br/>- Bootstrap 95% confidence intervals<br/>- Model Card and owner Go/No-Go<br/>[PLANNED] Science Gate"]
+    P8["<b>Phase 8</b><br/>Exposure, Vulnerability and Cooling<br/>- Heat Exposure Index 0-100 from validated LST<br/>- 10 NMC zone vulnerability and ranks (T18)<br/>- OSM parks, water, hospitals, shelters<br/>- Aggregated only, no personal data<br/>[PLANNED] Risk Layers"]
 
     P1 --> P2
     P2 --> P3
-    P3 --> P4
-    P4 --> P5
+    P3 -- "features_v1.parquet" --> P5
+    P5 -- "Baseline scores to beat" --> P6
+    P6 -- "Trained model and intervals" --> P7
+    P7 -- "Go decision and validated LST" --> P8
   end
 
   S_PIPE --> S_STRUCT
@@ -54,21 +58,42 @@ flowchart TD
 
     BOX_OUTPUTS["<b>Pipeline System Outputs</b><br/>- <b>Clean feature dataset:</b> Parquet table<br/>- <b>Quality masks:</b> cloud, shadow, snow, water<br/>- <b>Derived indices:</b> NDVI, NDBI, MNDWI<br/>- <b>Terrain features:</b> elevation, slope, aspect<br/>- <b>Spatial and temporal:</b> 2 km blocks and solar time<br/>- Status: OPERATIONAL (Phase 3)"]
 
-    BOX_VERIF["<b>Key Verification (Phase 3)</b><br/>[PASS] <b>Grid size:</b> 795 x 942 (30 m analytical grid)<br/>[PASS] <b>CRS:</b> EPSG:32644 (UTM Zone 44N)<br/>[PASS] <b>LST screening:</b> 0 deg C to 62 deg C valid range<br/>[PASS] <b>Missingness:</b> 0.16% (under 2% target)<br/>[PASS] <b>QA masks:</b> cloud, shadow, snow, water<br/>[PASS] <b>Tests:</b> 25/25 passed repository-wide<br/>[PASS] <b>Registered:</b> features_v1.parquet (SHA-256)"]
+    BOX_VERIF["<b>Key Verification (Phase 3)</b><br/>[PASS] <b>Grid size:</b> 795 x 942 (30 m analytical grid)<br/>[PASS] <b>CRS:</b> EPSG:32644 (UTM Zone 44N)<br/>[PASS] <b>LST screening:</b> 0 deg C to 62 deg C valid range<br/>[PASS] <b>Missingness:</b> 0.16% (under 2% target)<br/>[PASS] <b>QA masks:</b> cloud, shadow, snow, water<br/>[PASS] <b>Tests:</b> 44/44 passed repository-wide<br/>[PASS] <b>Registered:</b> features_v1.parquet (SHA-256)"]
 
     BOX_REPO ~~~ BOX_STORAGE ~~~ BOX_OUTPUTS ~~~ BOX_VERIF
   end
 
-  S_STRUCT --> S_DELIVERY
+  S_STRUCT -- "Validated LST, exposure layers and cooling assets (Phase 8 output)" --> S_SERVE
+
+  %% -------------------------------------------------------------------------
+  %% Tier 3b: Plan v2 Production Serving Path (Zero-Cost, D8-D10)
+  %% -------------------------------------------------------------------------
+  subgraph S_SERVE ["Plan v2 Production Serving Path (Zero Cost, Decisions D8-D10)"]
+    direction LR
+    P4["<b>Phase 4</b><br/>Backend Foundation Hardening<br/>- Typed settings, no secret defaults<br/>- Postgres + PostGIS and Alembic migrations<br/>- Uniform error envelope and request IDs<br/>- Strict CORS, pinned deps, ruff and mypy<br/>- 44/44 tests (SQLite), 21/21 on Docker PostGIS<br/>[IMPLEMENTED & TESTED] First CI run pending"]
+    P9["<b>Phase 9</b><br/>Versioned Data Products<br/>- COGs: LST, p05, p95, exposure<br/>- Pre-rendered PNG tiles (zoom 10-16)<br/>- Zone metrics and cooling assets in PostGIS<br/>- Atomic latest pointer and SHA-256<br/>[PLANNED] Publishing"]
+    P10["<b>Phase 10</b><br/>Automated Inference Pipeline<br/>- GitHub Actions scheduled run (free)<br/>- New scene to ingest, predict, publish<br/>- scene_age_days and stale flag (D2)<br/>- Fallback to last good product<br/>[PLANNED] Live Pipeline"]
+    P11["<b>Phase 11</b><br/>Public API v1 (/api/v1)<br/>- /heat, /zones, /cooling-spots<br/>- /tiles, /hotspots, /metadata<br/>- In-memory raster lookups, no live inference<br/>- Frozen OpenAPI contract for the frontend<br/>[PLANNED] Warm p95 under 200 ms"]
+    P12["<b>Phase 12</b><br/>Hardening and Zero-Cost Deployment<br/>- Hugging Face Spaces API (Docker)<br/>- Neon Postgres + PostGIS (free)<br/>- UptimeRobot, pg_dump backups, pip-audit<br/>- Coverage gate 85%, Rs 0 recurring cost<br/>[PLANNED] Release"]
+    INFRA_STORE[("<b>Free Product Storage</b><br/>- Hugging Face Dataset repo / GitHub Releases<br/>- Versioned COGs, tiles, model files<br/>- Status: [PLANNED]")]
+
+    P4 -- "Secure config, DB schema, error contract" --> P11
+    P9 -- "Product bundles" --> INFRA_STORE
+    P10 -- "Publishes each new scene" --> P9
+    INFRA_STORE -- "Latest bundle loaded at API startup" --> P11
+    P11 -- "Deployable Docker image" --> P12
+  end
+
+  S_SERVE -- "Deployed, monitored backend (Phase 12 output)" --> S_DELIVERY
 
   %% -------------------------------------------------------------------------
   %% Tier 4: Acceptance Gates and Delivery Milestones
   %% -------------------------------------------------------------------------
   subgraph S_DELIVERY ["Acceptance Gates and Delivery Milestones"]
     direction LR
-    GATE_BE{"<b>Backend Gate Certified?</b><br/>- p95 under 200 ms | Cov 85% plus<br/>- Phase 10 verification"}
+    GATE_BE{"<b>Backend Gate Certified?</b><br/>- Warm p95 under 200 ms | Cov 85% plus<br/>- OpenAPI v1 frozen | Rs 0 cost<br/>- Phase 12 verification"}
     GATE_FE{"<b>Frontend Unlocked?</b><br/>- Explicit owner command<br/>- Status: [LOCKED]"}
-    FE_DASH["<b>Frontend Web Dashboard (frontend/)</b><br/>- Next.js/React app with Deck.gl 30 m heat map viewer<br/>- Ward heat vulnerability scorecards and cooling shelter tools<br/>- Consumes backend REST API endpoints<br/>- Status: [LOCKED - Awaiting Gate Exit]"]
+    FE_DASH["<b>Frontend Web Dashboard (frontend/)</b><br/>- Next.js/React app with Deck.gl 30 m heat map viewer<br/>- Zone heat exposure scorecards and cooling spot finder<br/>- Consumes frozen /api/v1 OpenAPI contract<br/>- Free hosting (Vercel / Netlify / Cloudflare Pages)<br/>- Status: [LOCKED - Awaiting Gate Exit]"]
 
     GATE_BE -- "Owner Command: 'move to frontend'" --> GATE_FE
     GATE_FE -- "Unlocks Branch 2" --> FE_DASH
@@ -86,8 +111,18 @@ flowchart TD
   style P1 fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px;
   style P2 fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px;
   style P3 fill:#fef3c7,stroke:#d97706,stroke-width:1.5px;
-  style P4 fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px;
-  style P5 fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px;
+  style P5 fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px;
+  style P6 fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px;
+  style P7 fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px;
+  style P8 fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px;
+
+  style S_SERVE fill:#f8fafc,stroke:#cbd5e1,stroke-width:1.5px;
+  style P4 fill:#fef3c7,stroke:#d97706,stroke-width:1.5px;
+  style P9 fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px;
+  style P10 fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px;
+  style P11 fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px;
+  style P12 fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px;
+  style INFRA_STORE fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px;
 
   style BOX_REPO fill:#f1f5f9,stroke:#64748b,stroke-width:1.5px;
   style BOX_STORAGE fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px;

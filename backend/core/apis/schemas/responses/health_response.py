@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -20,6 +20,6 @@ class HealthResponse(BaseModel):
     version: str = Field(default="0.1.0", description="Application semantic version.")
     timestamp: datetime = Field(description="UTC timestamp of generated status.")
     database: str = Field(default="connected", description="Persistence engine status.")
-    echo: Optional[str] = Field(default=None, description="Optional diagnostic echo string.")
+    echo: str | None = Field(default=None, description="Optional diagnostic echo string.")
 
     model_config = {"from_attributes": True}

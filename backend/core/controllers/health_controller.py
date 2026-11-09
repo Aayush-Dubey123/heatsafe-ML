@@ -1,12 +1,13 @@
-from datetime import datetime, timezone
-from typing import Optional
+from datetime import UTC, datetime
+
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
+
 from backend.core import logger
+from backend.core.apis.schemas.requests.health_request import HealthPingRequest
+from backend.core.apis.schemas.responses.health_response import HealthResponse
 from backend.core.cruds.health_crud import HealthCRUD
 from backend.core.models.health_model import ServiceStatus
-from backend.core.apis.schemas.responses.health_response import HealthResponse
-from backend.core.apis.schemas.requests.health_request import HealthPingRequest
 
 logging = logger(__name__)
 
@@ -19,7 +20,7 @@ class HealthController:
     @staticmethod
     def evaluate_health(
         db: Session,
-        request_payload: Optional[HealthPingRequest] = None,
+        request_payload: HealthPingRequest | None = None,
     ) -> HealthResponse:
         """
         Evaluate and certify operational health of the backend API and persistence layer.
@@ -48,7 +49,7 @@ class HealthController:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="Database connectivity check failed",
-            )
+            ) from err
 
         echo_val = request_payload.echo_message if request_payload else None
 
@@ -56,7 +57,7 @@ class HealthController:
             status=ServiceStatus.HEALTHY.value,
             service="heatsafe-backend",
             version="0.1.0",
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
             database=db_status,
             echo=echo_val,
         )

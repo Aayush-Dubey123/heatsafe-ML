@@ -1,10 +1,12 @@
-from datetime import datetime, timezone
-from enum import Enum
-from sqlalchemy import Column, Integer, String, DateTime
+from datetime import UTC, datetime
+from enum import StrEnum
+
+from sqlalchemy import Column, DateTime, Integer, String
+
 from backend.core.database.base_class import Base
 
 
-class ServiceStatus(str, Enum):
+class ServiceStatus(StrEnum):
     """
     Enumeration of operational service health states.
     """
@@ -28,4 +30,4 @@ class HealthCheckRecord(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     service_name = Column(String(64), nullable=False, default="heatsafe-backend")
     status = Column(String(32), nullable=False, default=ServiceStatus.HEALTHY.value)
-    checked_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    checked_at = Column(DateTime(timezone=True), default=lambda: datetime.now(UTC), nullable=False)
