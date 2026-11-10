@@ -15,7 +15,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 9 (Versioned Data Products & Publishing) — Phases 5–8 closed (Phase 8 on 2026-11-10). Phase 4 CI status: see Phase 4 evidence.  
+**Current phase:** Phase 9 (Versioned Data Products & Publishing) — Phases 0–8 closed; CI green on `development` (2026-11-10).  
 **Frontend status:** 🔒 LOCKED  
 **Last updated:** 2026-11-10  
 
@@ -315,7 +315,7 @@ Landsat / DEM (Planetary Computer) → ingest → preprocess → Model 1 (batch)
 
 ### Milestone 4: Foundation Hardening
 
-#### Phase 4 — Backend Foundation Hardening `[~]`
+#### Phase 4 — Backend Foundation Hardening `[x]`
 **Why:** the Phase 0 skeleton had gaps that blocked production use: `backend/commons/auth.py` imported `jwt` (PyJWT missing from `requirements.txt`) and carried a hardcoded fallback secret; CORS was `allow_origins=["*"]` with `allow_credentials=True`; the database silently fell back to SQLite; tables were created with `create_all` instead of migrations; `requirements.txt` was unpinned (`>=`).
 **Concrete assets:** `backend/core/config/settings.py`, `backend/core/apis/middleware.py`, `backend/core/apis/schemas/responses/error_response.py`, `backend/alembic.ini`, `backend/migrations/` (`env.py`, `versions/0001_initial_schema.py`), `backend/tests/conftest.py`, `backend/tests/platform/{test_config.py, test_api_hardening.py}`, root `docker-compose.yml`, root `.env.example`, `.github/dependabot.yml`, updated `.github/workflows/ci.yml`, `backend/core/apis/api.py`, `backend/core/database/database.py`, `backend/commons/{auth.py, logger.py}`, `backend/main.py`.
 - [x] Typed `Settings` (`HEATSAFE_*` env vars / root `.env`); startup fails without `HEATSAFE_DATABASE_URL`; SQLite rejected outside `test`; production requires a ≥ 32-char JWT secret and no `*` CORS origin; zero secret defaults in code
@@ -329,7 +329,7 @@ Landsat / DEM (Planetary Computer) → ingest → preprocess → Model 1 (batch)
 - [x] CI: ruff (incl. bandit `S` hardcoded-secret rules) + mypy on `backend/`, `pip-audit`, and a second job running backend tests + migrations against a PostGIS service; Dependabot weekly
 - **Measurable Exit Criteria:**
   - [x] Clean clone → `docker compose up` → `alembic upgrade head` → `pytest` green. *(Verified locally 2026-11-09 on Docker `postgis/postgis:16-3.4`.)*
-  - [ ] CI green with ruff + mypy + tests. *(All steps green locally; awaiting first CI run.)*
+  - [x] CI green with ruff + mypy + pip-audit + tests: run 42814984846 on commit `fbc1b8e` (2026-11-10), both jobs passed (SQLite job and PostgreSQL + PostGIS job). The first run (42810508353) failed at dependency install because `rasterio==1.5.2` has no Python 3.11 build; CI moved to Python 3.13 (T17).
   - [x] Secret scan finds 0 hardcoded keys or connection strings (ruff `S` rules clean on `backend/`).
 - **Evidence (2026-11-09, local, Python 3.13):** `pytest` 44 passed (25 existing + 19 new); `ruff check backend` all checks passed; `mypy backend` no issues in 19 files; `pip-audit -r requirements.txt` no known vulnerabilities; `alembic upgrade head --sql` renders valid PostgreSQL DDL incl. `CREATE EXTENSION postgis`; Rule A check: no folder exceeds 2 `.py` files.
 - **Evidence (2026-11-09, local Docker PostgreSQL 16.4 + PostGIS 3.4.3):** `docker compose up -d db` healthy; `alembic upgrade head` → `0001 (head)`, `checked_at` is `timestamp with time zone`; downgrade → upgrade round-trip clean; `alembic check` → "No new upgrade operations detected"; backend tests against Postgres 21/21 passed on two consecutive runs; live `uvicorn` smoke test: `/api/v1/health` 200 with heartbeat persisted, 404/422 return the error envelope, disallowed-origin CORS preflight refused (400), request IDs present on route and controller log lines.

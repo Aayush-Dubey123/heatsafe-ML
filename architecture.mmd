@@ -70,7 +70,7 @@ flowchart TD
   %% -------------------------------------------------------------------------
   subgraph S_SERVE ["Plan v2 Production Serving Path (Zero Cost, Decisions D8-D10)"]
     direction LR
-    P4["<b>Phase 4</b><br/>Backend Foundation Hardening<br/>- Typed settings, no secret defaults<br/>- Postgres + PostGIS and Alembic migrations<br/>- Uniform error envelope and request IDs<br/>- Strict CORS, pinned deps, ruff and mypy<br/>- 44/44 tests (SQLite), 21/21 on Docker PostGIS<br/>[IMPLEMENTED & TESTED] First CI run pending"]
+    P4["<b>Phase 4</b><br/>Backend Foundation Hardening<br/>- Typed settings, no secret defaults<br/>- Postgres + PostGIS and Alembic migrations<br/>- Uniform error envelope and request IDs<br/>- Strict CORS, pinned deps, ruff and mypy<br/>- 44/44 tests (SQLite), 21/21 on Docker PostGIS<br/>[IMPLEMENTED & TESTED] CI green 2026-11-10 (Python 3.13)"]
     P9["<b>Phase 9</b><br/>Versioned Data Products<br/>- COGs: LST, p05, p95, exposure<br/>- Pre-rendered PNG tiles (zoom 10-16)<br/>- Zone metrics and cooling assets in PostGIS<br/>- Atomic latest pointer and SHA-256<br/>[PLANNED] Publishing"]
     P10["<b>Phase 10</b><br/>Automated Inference Pipeline<br/>- GitHub Actions scheduled run (free)<br/>- New scene to ingest, predict, publish<br/>- scene_age_days and stale flag (D2)<br/>- Fallback to last good product<br/>[PLANNED] Live Pipeline"]
     P11["<b>Phase 11</b><br/>Public API v1 (/api/v1)<br/>- /heat, /zones, /cooling-spots<br/>- /tiles, /hotspots, /metadata<br/>- In-memory raster lookups, no live inference<br/>- Frozen OpenAPI contract for the frontend<br/>[PLANNED] Warm p95 under 200 ms"]
