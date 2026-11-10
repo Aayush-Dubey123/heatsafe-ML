@@ -3025,21 +3025,6 @@
     }
   },
   {
-    "source": "heatsafe_dataset_v2",
-    "scene_id": "training_v2",
-    "acquisition_date": "2026-11-09T00:00:00Z",
-    "sha256": "99822146c014298e29d2fcdc78f73471726c1e16812d2e0210c866941eac2990",
-    "size_bytes": 155384292,
-    "recorded_at_utc": "2026-11-09T13:46:33.524545+00:00",
-    "metadata": {
-      "rows": 2440000,
-      "scenes_used": 122,
-      "scenes_indexed": 125,
-      "include_test_year": false,
-      "sample_pixels_per_scene": 20000
-    }
-  },
-  {
     "source": "heatsafe_eda_v1",
     "scene_id": "lst_summer_2019_2025",
     "acquisition_date": "2025-04-30T00:00:00Z",
@@ -3849,6 +3834,21 @@
     "metadata": {
       "model_version": "m1-20261109T150313Z",
       "sha256": "88f0e082db82ddb2eb5d3d8fd3d68b55b3e861c6f3866c3ca6b9b4aadda53083"
+    }
+  },
+  {
+    "source": "heatsafe_dataset_v2",
+    "scene_id": "training_v2",
+    "acquisition_date": "2026-11-10T00:00:00Z",
+    "sha256": "c185b07c71aacf3a2533af6097a95f23373155198d5904f273742bc9e776f176",
+    "size_bytes": 186550639,
+    "recorded_at_utc": "2026-11-10T11:41:38.273331+00:00",
+    "metadata": {
+      "rows": 3000000,
+      "scenes_used": 150,
+      "scenes_indexed": 153,
+      "include_test_year": true,
+      "sample_pixels_per_scene": 20000
     }
   }
 ]

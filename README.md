@@ -8,7 +8,7 @@ By integrating multispectral and thermal satellite observations from **Landsat 8
 
 > **Current Operational Status (Branch 1 - Backend & ML):**  
 > - **Roadmap:** Plan v2 (adopted 2026-11-09) — production backend for a public-facing app, citizens first, at zero recurring cost (Decisions D8–D10, T1–T18 in [`progress.md`](progress.md)).  
-> - **Active Phase:** Phase 7 (one-time final test + Go/No-Go). Phase 6 closed: Model 1 CV RMSE 1.227 °C vs Baseline 3 2.351 °C (−47.8%), 90% intervals cover 87.4%. Phase 4 first CI run pending  
+> - **Active Phase:** Phase 8 (Exposure, Vulnerability & Cooling Assets). Phase 7 closed: one-time 2026 test RMSE 1.36 °C vs Baseline 3 2.43 °C; see the Model Card. Phase 4 first CI run pending  
 > - **Completed Milestones:** Phase 0 (Foundation Architecture), Phase 1 (Study Area & Master Grid), Phase 2 (STAC Ingestion Pipeline), Phase 3 (Preprocessing, QA Masking & Feature Engineering)  
 > - **Branch 2 (Frontend UI):** 🔒 **LOCKED** under Two-Branch Governance until full Backend Acceptance Gate verification.  
 > - **Live Test Suite:** 44/44 unit & integration tests passing (`python -m pytest -v`, verified 2026-11-09).
@@ -288,8 +288,8 @@ Progress is strictly gated across thirteen defined phases (Plan v2, Decision D8)
 | **4** | **Backend Foundation Hardening** | Backend / Security | **`[~]` CI PENDING** | Typed settings, Postgres + PostGIS, Alembic migrations, error envelope, CORS & secrets fixed, pinned deps, ruff + mypy |
 | **5** | **First Working Result & Baselines** | Analysis & Baseline | **`[x]` DONE** | Seasonal LST maps, Gi* hotspots, Baselines 1–3 locked as the bar to beat |
 | **6** | **Model 1 Development** | Machine Learning | **`[x]` DONE** | LightGBM/RF on CPU, 2 km spatial-block CV, leakage test, 90% quantile intervals, RMSE ≥ 15% better than Baseline 3 |
-| **7** | **Validation & Model Card** | Verification | **`[~]` NEXT** | Held-out 2026 test opened once, bootstrap CIs, Model Card, owner Go/No-Go |
-| **8** | **Exposure, Vulnerability & Cooling Assets** | Risk Analytics | `[ ]` PLANNED | Exposure Index 0–100, zone vulnerability & ranks with intervals, OSM cooling assets |
+| **7** | **Validation & Model Card** | Verification | **`[x]` DONE** | Held-out 2026 test opened once, bootstrap CIs, Model Card, owner Go/No-Go |
+| **8** | **Exposure, Vulnerability & Cooling Assets** | Risk Analytics | **`[~]` ACTIVE** | Exposure Index 0–100, zone vulnerability & ranks with intervals, OSM cooling assets |
 | **9** | **Versioned Data Products** | Publishing | `[ ]` PLANNED | COGs, pre-rendered tiles, PostGIS zone tables, atomic "latest" pointer, hashed bundles |
 | **10** | **Automated Inference Pipeline** | Pipeline | `[ ]` PLANNED | Scheduled GitHub Actions run, freshness flags (`scene_age_days ≤ 16`), fallback, 4 failure-injection tests |
 | **11** | **Public API v1** | FastAPI Endpoints | `[ ]` PLANNED | `/heat`, `/zones`, `/cooling-spots`, `/tiles`, `/hotspots`; warm p95 ≤ 200 ms, coverage ≥ 85%, frozen OpenAPI contract |
@@ -417,6 +417,41 @@ python -m pytest --cov=backend --cov=ml -v
 - [x] STAC ingestion retry policies, exponential backoff, and seasonal inventory categorization verified
 - [x] Cryptographic SHA-256 data manifest manager atomic writes verified
 - [x] Phase 3 grid alignment, QA masking, and `features_v1.parquet` schema checks verified (0.16% missingness)
+
+---
+
+## 🧾 Model Card — Model 1 (Land Surface Temperature)
+
+| | |
+| :--- | :--- |
+| **Version** | `m1-20261109T150313Z` (LightGBM, CPU) |
+| **Predicts** | Land surface temperature (LST, °C) on the 30 m analytical grid at the Landsat overpass (~10:00 local solar time), with a 90% range. **Not** air temperature, **not** heat index (Decision D1). |
+| **How** | Gradient-boosted trees predict each pixel's difference from the scene's mean LST, then training residuals of the same scene are interpolated (IDW). Lower/upper bounds come from 5th/95th-percentile quantile models. |
+| **Inputs** | NDVI, NDBI, MNDWI at the pixel and averaged over 150 m and 450 m; elevation, slope, aspect (Copernicus DEM); day of year; mean solar time; the scene's mean LST over its observed clear pixels. |
+| **Training data** | 122 Landsat 8/9 Collection 2 Level-2 scenes, 2019-01-08 to 2025-12-18, WRS path 144 / row 45; 1.95 M sampled pixels from 144 of 180 two-kilometre blocks. Open water and cloud/shadow pixels excluded. |
+| **Tuning** | 30-trial random search with spatial-block cross-validation; seeds fixed. |
+
+### Performance
+
+Final test, opened once (2026-11-10): pixels in 36 two-kilometre blocks the model never saw.
+
+| Test group | Model 1 RMSE [95% CI] | Baseline 3 RMSE | MAE | Bias | R² | 90% range covers |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| 2026 scenes (28 scenes, 112,973 pixels) | **1.36 °C** [1.28, 1.44] | 2.43 °C | 1.00 °C | +0.05 °C | 0.975 | 87.1% |
+| 2019–2025 scenes (122 scenes, 493,105 pixels) | 1.21 °C [1.15, 1.28] | 2.49 °C | 0.87 °C | +0.01 °C | 0.982 | 88.6% |
+
+2026 RMSE by season: summer 1.42, monsoon 1.68, post-monsoon 1.20, winter 1.06 °C. By surface: built-up 1.42, bare/mixed 1.39, vegetation 1.23 °C (surface classes are an NDVI/NDBI proxy, not a land-cover map). Cross-validation estimate before the test: 1.23 °C.
+
+### Limits and failure modes
+
+- **Needs a satellite scene.** The model fills in and smooths LST for a date on which Landsat observed the city. It does not forecast, and it cannot produce a map for a day with no usable scene. The test measured unseen places within observed scenes, not unseen days without imagery.
+- **Clear-sky, daytime only.** One overpass at ~10:00 local solar time every 8 days at best; cloudy days are missing, so monsoon conditions are under-represented (10 training scenes, mostly early June and late September).
+- **Surface, not air.** In summer the surface can be 10–18 °C hotter than 2 m air temperature. At the overpass time the built-up city is on average ~2.5 °C *cooler* than the surrounding bare farmland; that says nothing about night-time or air-temperature heat stress.
+- **Resolution.** 30 m is the grid; the thermal band is natively ~100 m (Decision D6). No street-level claims.
+- **Ranges are slightly too narrow.** The "90%" range contained the truth 87% of the time.
+- **Not validated against ground stations.** IMD/CPCB station data could not be obtained automatically; validation is against Landsat LST only.
+- **Largest errors:** monsoon scenes and sparsely vegetated or built surfaces.
+- **Geography.** Trained and tested on Nagpur only.
 
 ---
 
