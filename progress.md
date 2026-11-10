@@ -61,7 +61,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | T14 | Experiment tracking | Local JSON run logs; no MLflow / DVC for now. |
 | T15 | Error format | Uniform envelope `{error: {code, message, details}}` on every endpoint. |
 | T16 | Languages | Backend returns codes (e.g. `exposure_level: "very_high"`); the app localises to English / Hindi / Marathi. |
-| T17 | Runtime & dependencies | Python 3.11; exact version pins in the single root `requirements.txt`. |
+| T17 | Runtime & dependencies | Python **3.13** (changed from 3.11 on 2026-11-10: the first CI run failed because pinned `rasterio==1.5.2` has no Python 3.11 build; all local verification had been on 3.13); exact version pins in the single root `requirements.txt`. |
 | T18 | Administrative units | 10 NMC zones for v1; wards when boundaries are openly released. |
 | — | Free supporting services | Product storage: Hugging Face Dataset repo / GitHub Releases. CI & scans: GitHub Actions, Dependabot, `pip-audit`. Monitoring: UptimeRobot, Sentry free tier (optional). Backups: nightly `pg_dump` via GitHub Actions. Load test: Locust / k6 locally. |
 

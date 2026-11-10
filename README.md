@@ -322,7 +322,7 @@ HeatSafe-ML is built and operated at ₹0 recurring cost. The API never runs the
 
 ### Prerequisites
 - **Operating System:** Windows, Linux, or macOS
-- **Python:** Version 3.11, 3.12, or 3.13
+- **Python:** Version 3.13 (used by CI and development); 3.12 also installs. 3.11 is not supported (rasterio 1.5 needs 3.12+)
 - **C/C++ Build Tools:** Required for binary wheels of geospatial libraries (`rasterio`, `shapely`) if precompiled wheels are not cached.
 
 ### 1. Environment Setup
@@ -405,8 +405,8 @@ Use `127.0.0.1` rather than `localhost`: on Windows, `localhost` tries IPv6 firs
 
 ### Lint, Type Check & Dependency Audit
 ```bash
-ruff check backend --line-length 120 --target-version py311 --select E,F,W,I,B,S,UP --ignore B008 --per-file-ignores "backend/tests/*:S101"
-mypy backend --python-version 3.11 --ignore-missing-imports --explicit-package-bases --exclude backend/tests/
+ruff check backend --line-length 120 --target-version py312 --select E,F,W,I,B,S,UP --ignore B008 --per-file-ignores "backend/tests/*:S101"
+mypy backend --python-version 3.13 --ignore-missing-imports --explicit-package-bases --no-site-packages --exclude backend/tests/
 pip-audit -r requirements.txt
 ```
 

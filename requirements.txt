@@ -1,6 +1,6 @@
 # ==============================================================================
 # HeatSafe-ML — Consolidated Requirements (single root file, Rule B)
-# Exact pins for reproducible builds (Decision T17, Python 3.11+).
+# Exact pins for reproducible builds (Decision T17, Python 3.12+; CI and dev use 3.13).
 # Upgrades arrive as Dependabot PRs and must pass CI + pip-audit.
 # ==============================================================================
 
