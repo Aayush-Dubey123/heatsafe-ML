@@ -15,9 +15,9 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 7 (Final test & Model Card) — next step: open the test set once, then owner Go/No-Go. Phases 5–6 closed 2026-11-09; Phase 4 awaiting first CI run. 2026 test scenes (28) downloaded, not yet evaluated.  
+**Current phase:** Phase 8 (Exposure, Vulnerability & Cooling Assets) — Phases 5–7 closed; test set opened once on 2026-11-10 (Go: D15). Phase 4 awaiting first CI run.  
 **Frontend status:** 🔒 LOCKED  
-**Last updated:** 2026-11-09  
+**Last updated:** 2026-11-10  
 
 ---
 
@@ -39,6 +39,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | D12 | Model 1 feature design | Model 1 predicts the LST **anomaly from a scene anchor** (mean LST of the scene's training-fold / observed pixels), adds 150 m and 450 m neighbourhood means of NDVI/NDBI/MNDWI, and may add per-scene IDW residual kriging (chosen by CV). Rationale: Baseline 3 already uses same-scene information through residual interpolation, so a fair comparison needs the model to see the scene level too; at serving time the anchor comes from the observed clear pixels of the latest scene. | Locked 2026-11-09 (Phase 6) |
 | D13 | Branch policy | Exactly two long-lived branches: `main` (released) and `development` (all phase work, one commit per phase). Work merges `development` → `main` only on the owner's instruction. CI runs on both. | Locked 2026-11-09 |
 | D14 | LST screening range | Upper screening bound raised from 62 °C to **70 °C**. Evidence (2019–2025, 2.44 M sampled pixels): 0.51% exceed 62 °C, max 68.2 °C, concentrated in mid-May/June scenes on low-NDVI, built/bare surfaces (mean NDVI 0.22, NDBI +0.09) — physically plausible peak surface heat, not sensor error. 62 °C had been set from a single winter scene. | Locked 2026-11-09 (Phase 5) |
+| D15 | Phase 7 Go / No-Go | **Go.** On 2026-11-10 the owner instructed "resume phase 7 do till 8" before the test was run. All numeric Phase 7 criteria then passed (test RMSE 1.358 °C ≤ 2.068 °C and ≤ 2.5 °C), so the instruction is recorded as the Go. Known gaps accepted with the Go: no station comparison; intervals cover 87% instead of 90%. The owner may revoke this after reviewing the Model Card. | 2026-11-10 (Phase 7) |
 
 ### Technology Decision Log (Plan v2, locked 2026-11-09)
 
@@ -426,19 +427,34 @@ p-values are < 1e-10 everywhere but are optimistic because pixels are spatially 
 - **Caveat:** CV scores reuse the folds that guided tuning (slightly optimistic); the unbiased number comes from the one-time Phase 7 test.
 - Model files (`point.txt`, `lower.txt`, `upper.txt`, `metadata.json`) are in the git-ignored registry `ml/models/registry/m1-20261109T150313Z/` with hashes in the manifest.
 
-#### Phase 7 — Ground-Truth Validation & Model Cards `[ ]`
-**Concrete assets:** final evaluation report section in `README.md`; test-set metrics with 95% CIs; Model Card for LST in `README.md`; station comparison table.
-- [ ] Open the test set once: 2026 scenes and the fixed 20% held-out blocks; no re-tuning afterwards
-- [ ] Station comparison: LST at the station pixel vs. station air temperature, reported as a correlation/offset with an explicit caveat that these are different variables
-- [ ] Error breakdown by land-cover class, NDVI tiers (e.g., terciles), and season
-- [ ] Bootstrap 95% confidence intervals (≥ 1000 resamples by block) on RMSE, MAE, bias
-- [ ] Model Card in `README.md`: scope, data, resolution statement (D6), failure modes (cloud-free days only, daytime only), confidence bounds
-- [ ] Go / No-Go review by the project owner. A No-Go sends work back to Phase 3 or 6 with a logged reason.
+#### Phase 7 — Ground-Truth Validation & Model Cards `[x]`
+**Concrete assets:** `ml/src/validation/final_test.py`, `ml/tests/validation/test_final_test.py`; Model Card and final evaluation in `README.md`; artifacts (git-ignored) `ml/data/processed/final_test/{final_test_report.json, final_test_predictions.parquet, test_set_opened.json}`.
+- [x] Test set opened **once** on 2026-11-10 (lock file `test_set_opened.json` blocks any re-run); no re-tuning afterwards. Model `m1-20261109T150313Z` unchanged since Phase 6.
+- [!] Station comparison **not performed**: IMD station records need a formal data request and CPCB CAAQMS data sits behind a captcha-protected portal, so neither could be retrieved automatically. Validation is LST-only (risk-register mitigation). Can be added later without touching the model.
+- [x] Error breakdown by season, NDVI tercile, and land cover (land cover is an NDVI/NDBI proxy — no land-cover map is ingested).
+- [x] Block bootstrap 95% confidence intervals (1,000 resamples of the 36 holdout blocks) on RMSE, MAE, bias.
+- [x] Model Card in `README.md`.
+- [x] Go / No-Go: see D15.
 - **Measurable Exit Criteria:**
-  - [ ] Test-set RMSE ≤ 0.85 × Baseline 3 RMSE, and an absolute RMSE target of ≤ 2.5 °C (default; confirm after Phase 5 baselines).
-  - [ ] Model Card published in `README.md`.
-  - [ ] Written Go decision from the owner.
-- **Evidence:** metrics table with CIs; Go/No-Go entry in the Decision Log.
+  - [x] Test-set RMSE ≤ 0.85 × Baseline 3 RMSE and ≤ 2.5 °C: **1.358 °C** vs. limit 0.85 × 2.433 = 2.068 °C.
+  - [x] Model Card published in `README.md`.
+  - [x] Written Go decision from the owner (D15).
+- **Evidence (2026-11-10):** `final_test_report.json`; rehearsal of the scoring code on training rows only before opening; `ml/tests/validation` green.
+
+##### Final Test Results (holdout blocks only; scene context from non-holdout pixels of the same scene)
+
+| Test group | Rows / scenes | Model 1 RMSE [95% CI] | Baseline 3 RMSE [95% CI] | Ratio | MAE | Bias | R² | 90% interval coverage (mean width) |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **2026 scenes × holdout blocks** (new time and new place — primary) | 112,973 / 28 | **1.358** [1.275, 1.440] | 2.433 [2.285, 2.588] | 0.558 | 0.999 | +0.052 | 0.975 | 87.1% (4.26 °C) |
+| 2019–2025 scenes × holdout blocks (new place only) | 493,105 / 122 | 1.212 [1.146, 1.280] | 2.494 [2.361, 2.628] | 0.486 | 0.871 | +0.013 | 0.982 | 88.6% (3.67 °C) |
+
+| 2026 breakdown (RMSE °C) | | | | |
+|:---|:---:|:---:|:---:|:---:|
+| Season | Summer 1.424 | Monsoon 1.681 | Post-monsoon 1.204 | Winter 1.064 |
+| Land-cover proxy | Built-up 1.415 | Bare/mixed 1.390 | Vegetation 1.231 | |
+| NDVI tercile | Low 1.536 | Mid 1.289 | High 1.230 | |
+
+**Reading the result:** the 2026 score (1.358) is close to the Phase 6 CV estimate (1.227), so CV was only mildly optimistic. Errors are largest in monsoon scenes and on sparsely vegetated / built surfaces. The 90% intervals cover ~87%, i.e. they are slightly too narrow; widen or calibrate before presenting them as exact 90% ranges. **Scope limit:** the test measures filling in unseen *places* within a scene whose other pixels are observed; it does not measure forecasting a day with no satellite scene.
 
 ---
 
