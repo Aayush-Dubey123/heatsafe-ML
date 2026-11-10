@@ -15,7 +15,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 8 (Exposure, Vulnerability & Cooling Assets) — Phases 5–7 closed; test set opened once on 2026-11-10 (Go: D15). Phase 4 awaiting first CI run.  
+**Current phase:** Phase 9 (Versioned Data Products & Publishing) — Phases 5–8 closed (Phase 8 on 2026-11-10). Phase 4 CI status: see Phase 4 evidence.  
 **Frontend status:** 🔒 LOCKED  
 **Last updated:** 2026-11-10  
 
@@ -460,17 +460,45 @@ p-values are < 1e-10 everywhere but are optimistic because pixels are spatially 
 
 ### Milestone 7: Evidence-Based Layers & Data Products
 
-#### Phase 8 — Heat Exposure, Vulnerability & Cooling Assets `[ ]`
-**Concrete assets:** `ml/src/exposure/index.py`, `ml/src/exposure/vulnerability.py`; `ml/data/processed/exposure/{exposure_zone.parquet, cooling_assets.geojson}`.
-- [ ] Heat Exposure Index (0–100) as a documented transform of validated LST (e.g., percentile rank within Nagpur per season), never from unvalidated outputs
-- [ ] Zone-level vulnerability (10 NMC zones for v1 — T18; wards once boundaries are openly released): population density, share aged 60+, green-space deficit (1 − mean NDVI percentile); aggregated only
-- [ ] Cooling assets from OpenStreetMap (parks, water bodies, hospitals, designated shelters) with source and extraction date
-- [ ] Zone risk score and rank, with uncertainty intervals from bootstrapping the underlying LST error
-- [ ] Exposure levels exposed as codes (`low` … `very_high`), not display text, so the app can localise (T16)
+#### Phase 8 — Heat Exposure, Vulnerability & Cooling Assets `[x]`
+**Concrete assets:** `ml/src/exposure/{index.py, vulnerability.py}`, `ml/tests/exposure/test_exposure.py`, Phase 8 settings in `ml/configs/thresholds.yaml`. Artifacts (git-ignored, hashed in the manifest): `ml/data/processed/exposure/{exposure_index_<season>.tif, exposure_zone.parquet, cooling_assets.geojson, phase8_summary.json}`, cropped WorldPop windows in `ml/data/raw/population/`, raw Overpass response in `ml/data/raw/osm/`.
+- [x] Heat Exposure Index (0–100): percentile rank of each pixel's seasonal mean **observed** Landsat LST (2019–2025) among land pixels inside the NMC boundary, per season. Built from observed LST only.
+- [x] Zone-level vulnerability for the 10 NMC zones: population density and share aged 60+ (WorldPop 2020, 1 km, CC BY 4.0), green-space deficit (1 − mean NDVI percentile). Aggregated only.
+- [x] Cooling assets from OpenStreetMap (Overpass, data timestamp 2026-11-10): 889 places — 582 health facilities, 194 parks/gardens, 55 water bodies, 53 shelters/community centres, 5 drinking-water points — with source and extraction date in the file.
+- [x] Zone risk score (50% exposure, 50% vulnerability) and rank with 95% rank intervals from 1,000 scene-level bootstrap resamples per season.
+- [x] Exposure levels exposed as codes (`low`, `moderate`, `high`, `very_high`, `extreme`) for localisation (T16).
 - **Measurable Exit Criteria:**
-  - [ ] A schema test confirms zero individual-level fields in any output file.
-  - [ ] Zone ranking method documented with rank intervals for every zone.
-- **Evidence:** ranking table with intervals; schema test output.
+  - [x] A schema test confirms zero individual-level fields in any output file (`assert_no_individual_fields` runs on every build; unit-tested).
+  - [x] Zone ranking method documented with rank intervals for every zone (table below).
+- **Evidence (2026-11-10):** `python -m ml.src.exposure.vulnerability` completed; `ml/tests/exposure` 9/9 passed; full suite 85 passed; ruff + mypy clean.
+
+##### Zone Risk Ranking — Summer (40 scenes, 2019–2025)
+
+| Risk rank [95% interval] | Zone | Risk score | Exposure index [95% CI] | Mean LST (°C) | Vulnerability | Density (people/km²) | Mean NDVI |
+|:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 [1–2] | Gandhibagh | 60.0 | 37.5 [33.4, 41.7] | 43.64 | 82.6 | 20,778 | 0.253 |
+| 2 [1–4] | Satranjipura | 57.9 | 36.3 [28.5, 42.0] | 43.59 | 79.4 | 20,534 | 0.265 |
+| 3 [2–4] | Nehru Nagar | 56.0 | 39.7 [32.3, 46.8] | 43.82 | 72.3 | 16,923 | 0.267 |
+| 4 [2–4] | Hanuman Nagar | 53.9 | 37.7 [31.9, 44.7] | 43.75 | 70.0 | 19,448 | 0.295 |
+| 5 [5–6] | Lakadganj | 48.8 | 55.4 [51.4, 58.7] | 44.76 | 42.2 | 6,613 | 0.300 |
+| 6 [5–7] | Laxmi Nagar | 47.9 | 64.7 [62.2, 67.6] | 46.15 | 31.1 | 10,297 | 0.381 |
+| 7 [6–7] | Ashi Nagar | 45.9 | 60.9 [55.2, 64.3] | 45.08 | 30.9 | 4,719 | 0.328 |
+| 8 [8–9] | Dhantoli | 40.7 | 28.9 [26.0, 32.8] | 43.05 | 52.6 | 21,134 | 0.386 |
+| 9 [8–9] | Dharampeth | 39.4 | 57.0 [54.6, 59.5] | 44.81 | 21.8 | 7,228 | 0.399 |
+| 10 [10–10] | Mangalwari | 37.2 | 37.5 [34.0, 41.2] | 43.39 | 36.8 | 12,645 | 0.381 |
+
+Risk ranks are stable across seasons (each zone moves by at most two places). Zone exposure levels in summer are only `moderate` or `high` because zone means average out the extremes; pixel-level rasters span the full 0–100 range.
+
+**Method:** vulnerability = equal-weight mean of min–max scaled population density, 60+ share, and green deficit (0–100 across the 10 zones). Risk = 0.5 × exposure index + 0.5 × vulnerability. Rank intervals resample which clear-sky scenes were observed; vulnerability inputs are treated as fixed. Weights are a design choice set in `thresholds.yaml`, not an empirically validated health model.
+
+**Limits (read before using the ranking):**
+- **Zone polygons are approximate.** `nagpur_zones.geojson` was generated in Phase 1 by partitioning the NMC boundary (several zones have only 5–7 vertices); it is not a surveyed official zone map. Zone statistics will shift when authoritative boundaries are available.
+- **The 60+ share does not differentiate zones.** WorldPop's 1 km age structure applies one district-level proportion everywhere, so every zone gets 10.96%. The component is kept for when better data exists but currently contributes nothing; vulnerability is in effect density plus green deficit.
+- **Exposure and vulnerability pull in opposite directions.** The dense old-city zones (Gandhibagh, Satranjipura) rank highest on risk because of density and low greenery, yet their daytime surface is cooler than the outer zones with bare ground (Laxmi Nagar, Ashi Nagar). Exposure is ~10:00 surface temperature, not night-time or air-temperature heat stress.
+- Population is a 2020 modelled 1 km grid (2.44 M people inside the zones), coarse relative to zones of 9–39 km².
+- OSM completeness is uneven; counts are places mapped by volunteers, and "shelter"/"community centre" are not designated heat shelters.
+
+---
 
 #### Phase 9 — Versioned Data Products & Publishing `[ ]`
 **Concrete assets:** `ml/src/publish/products.py`, `ml/src/publish/tiles.py`; PostGIS tables `products`, `zone_metrics`, `cooling_assets`; Hugging Face Dataset repo (or GitHub Releases) holding product bundles.
