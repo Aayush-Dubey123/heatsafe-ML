@@ -38,3 +38,33 @@ eda:
 baselines:
   idw_neighbours: 12
   idw_power: 2.0
+
+# Phase 8 — heat exposure, vulnerability, cooling assets
+exposure:
+  reference_area: "nmc_boundary"          # percentile ranks are computed among land pixels inside NMC
+  level_breaks: [25.0, 50.0, 75.0, 90.0]  # index cut-offs between the five level codes
+  level_codes: ["low", "moderate", "high", "very_high", "extreme"]
+  bootstrap_resamples: 1000               # scene-level resamples for zone rank intervals
+  random_seed: 20261110
+  risk_season: "summer"                   # season used for the headline zone risk rank
+  risk_weights: {exposure: 0.5, vulnerability: 0.5}
+  vulnerability_weights: {population_density_per_km2: 0.3333, share_age_60_plus: 0.3333, green_deficit: 0.3334}
+
+population:
+  source: "WorldPop 2020, 1 km, unconstrained, not UN-adjusted (CC BY 4.0)"
+  base_url: "https://data.worldpop.org/GIS"
+  total_path: "Population/Global_2000_2020_1km/2020/IND/ind_ppp_2020_1km_Aggregated.tif"
+  age_sex_path: "AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_{sex}_{age}_2020_1km.tif"
+  elderly_age_bands: [60, 65, 70, 75, 80]
+  window_buffer_degrees: 0.03
+
+cooling_assets:
+  source: "OpenStreetMap via Overpass API (ODbL)"
+  overpass_endpoint: "https://overpass-api.de/api/interpreter"
+  user_agent: "HeatSafeML/1.0 (research; github.com/Aayush-Dubey123/heatsafe-ML)"
+  categories:
+    green_space: {key: "leisure", values: ["park", "garden"]}
+    water_body: {key: "natural", values: ["water"]}
+    health_facility: {key: "amenity", values: ["hospital", "clinic"]}
+    public_shelter: {key: "amenity", values: ["shelter", "community_centre"]}
+    drinking_water: {key: "amenity", values: ["drinking_water"]}

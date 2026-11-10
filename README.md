@@ -8,10 +8,10 @@ By integrating multispectral and thermal satellite observations from **Landsat 8
 
 > **Current Operational Status (Branch 1 - Backend & ML):**  
 > - **Roadmap:** Plan v2 (adopted 2026-11-09) — production backend for a public-facing app, citizens first, at zero recurring cost (Decisions D8–D10, T1–T18 in [`progress.md`](progress.md)).  
-> - **Active Phase:** Phase 8 (Exposure, Vulnerability & Cooling Assets). Phase 7 closed: one-time 2026 test RMSE 1.36 °C vs Baseline 3 2.43 °C; see the Model Card. Phase 4 first CI run pending  
+> - **Active Phase:** Phase 9 (Versioned Data Products). Phases 5–8 closed: Model 1 test RMSE 1.36 °C (see Model Card); zone exposure, vulnerability, risk ranks, and 889 OSM cooling assets built  
 > - **Completed Milestones:** Phase 0 (Foundation Architecture), Phase 1 (Study Area & Master Grid), Phase 2 (STAC Ingestion Pipeline), Phase 3 (Preprocessing, QA Masking & Feature Engineering)  
 > - **Branch 2 (Frontend UI):** 🔒 **LOCKED** under Two-Branch Governance until full Backend Acceptance Gate verification.  
-> - **Live Test Suite:** 44/44 unit & integration tests passing (`python -m pytest -v`, verified 2026-11-09).
+> - **Live Test Suite:** 85/85 unit & integration tests passing (`python -m pytest -v`, verified 2026-11-10).
 
 ---
 
@@ -289,8 +289,8 @@ Progress is strictly gated across thirteen defined phases (Plan v2, Decision D8)
 | **5** | **First Working Result & Baselines** | Analysis & Baseline | **`[x]` DONE** | Seasonal LST maps, Gi* hotspots, Baselines 1–3 locked as the bar to beat |
 | **6** | **Model 1 Development** | Machine Learning | **`[x]` DONE** | LightGBM/RF on CPU, 2 km spatial-block CV, leakage test, 90% quantile intervals, RMSE ≥ 15% better than Baseline 3 |
 | **7** | **Validation & Model Card** | Verification | **`[x]` DONE** | Held-out 2026 test opened once, bootstrap CIs, Model Card, owner Go/No-Go |
-| **8** | **Exposure, Vulnerability & Cooling Assets** | Risk Analytics | **`[~]` ACTIVE** | Exposure Index 0–100, zone vulnerability & ranks with intervals, OSM cooling assets |
-| **9** | **Versioned Data Products** | Publishing | `[ ]` PLANNED | COGs, pre-rendered tiles, PostGIS zone tables, atomic "latest" pointer, hashed bundles |
+| **8** | **Exposure, Vulnerability & Cooling Assets** | Risk Analytics | **`[x]` DONE** | Exposure Index 0–100, zone vulnerability & ranks with intervals, OSM cooling assets |
+| **9** | **Versioned Data Products** | Publishing | **`[~]` NEXT** | COGs, pre-rendered tiles, PostGIS zone tables, atomic "latest" pointer, hashed bundles |
 | **10** | **Automated Inference Pipeline** | Pipeline | `[ ]` PLANNED | Scheduled GitHub Actions run, freshness flags (`scene_age_days ≤ 16`), fallback, 4 failure-injection tests |
 | **11** | **Public API v1** | FastAPI Endpoints | `[ ]` PLANNED | `/heat`, `/zones`, `/cooling-spots`, `/tiles`, `/hotspots`; warm p95 ≤ 200 ms, coverage ≥ 85%, frozen OpenAPI contract |
 | **12** | **Hardening & Zero-Cost Deployment** | Deployment | `[ ]` PLANNED | Hugging Face Spaces + Neon, Docker, monitoring, backups & restore test, ₹0 recurring cost |
@@ -309,6 +309,12 @@ HeatSafe-ML is built and operated at ₹0 recurring cost. The API never runs the
 | Backups | Nightly `pg_dump` via GitHub Actions |
 
 **Known free-tier limitation:** the hosted API sleeps when idle, so the first request after a quiet period is slow (cold start). Latency targets are measured on a warm instance and cold-start time is documented separately.
+
+### Third-Party Data Credits
+- **Landsat 8/9 Collection 2 Level-2** — USGS, via Microsoft Planetary Computer.
+- **Copernicus DEM GLO-30** — © DLR e.V. 2010–2014 and © Airbus Defence and Space GmbH 2014–2018, provided under COPERNICUS by the European Union and ESA.
+- **Population** — WorldPop (www.worldpop.org), 2020 1 km unconstrained grids, CC BY 4.0.
+- **Boundaries and cooling assets** — © OpenStreetMap contributors, ODbL.
 
 ---
 

@@ -3850,5 +3850,207 @@
       "include_test_year": true,
       "sample_pixels_per_scene": 20000
     }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_ppp_2020_1km_Aggregated_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "4109d3bb3ac1fb3feea809159d02fb74ffa5edd12484c76d13a16ab0ae9d3825",
+    "size_bytes": 5270,
+    "recorded_at_utc": "2026-11-10T11:54:13.713253+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/Population/Global_2000_2020_1km/2020/IND/ind_ppp_2020_1km_Aggregated.tif"
+    }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_f_60_2020_1km_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "e5d0465bcd80ff2e707b128b330ea155e35bc201156a2f446df678d80f235006",
+    "size_bytes": 5268,
+    "recorded_at_utc": "2026-11-10T11:54:34.451740+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_f_60_2020_1km.tif"
+    }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_f_65_2020_1km_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "7f6d277be9f50b59070d1ecd61f19e53fa6c7c878cec2b16463b66dd78c456ad",
+    "size_bytes": 5273,
+    "recorded_at_utc": "2026-11-10T11:54:51.263512+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_f_65_2020_1km.tif"
+    }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_f_70_2020_1km_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "0d88bac93344102b55adf3bb0624cdedb30dd26895b3cf02cfab7a5b48b67f16",
+    "size_bytes": 5267,
+    "recorded_at_utc": "2026-11-10T11:55:28.472623+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_f_70_2020_1km.tif"
+    }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_f_75_2020_1km_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "0d8db6de208e432d13a75ebb86e6c3974fe0ae51ccde884e45ef6af94feabad2",
+    "size_bytes": 5269,
+    "recorded_at_utc": "2026-11-10T11:56:08.312917+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_f_75_2020_1km.tif"
+    }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_f_80_2020_1km_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "666878af2670f785e09f06fe70041e1ee048bd251c5dc9f3b748ffda46a8f8eb",
+    "size_bytes": 5257,
+    "recorded_at_utc": "2026-11-10T11:56:30.670574+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_f_80_2020_1km.tif"
+    }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_m_60_2020_1km_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "46da38dd129283ac46fa5807c13b417ffab821be8e0037e51a9845ee3eb42382",
+    "size_bytes": 5269,
+    "recorded_at_utc": "2026-11-10T11:57:06.403365+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_m_60_2020_1km.tif"
+    }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_m_65_2020_1km_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "f7e85569816262ea868e929b86d70c32e4caef45b0c35d71116df832f8626d00",
+    "size_bytes": 5268,
+    "recorded_at_utc": "2026-11-10T11:57:27.723316+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_m_65_2020_1km.tif"
+    }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_m_70_2020_1km_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "bd4ec0255d650d75d493a8dd075def9c44a6324c79714aca2aef8ba008d030da",
+    "size_bytes": 5261,
+    "recorded_at_utc": "2026-11-10T11:57:56.254107+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_m_70_2020_1km.tif"
+    }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_m_75_2020_1km_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "322c61dac599cd7604f885e8d4e0bb84ea459921598e8db4a9f84b57588016f9",
+    "size_bytes": 5261,
+    "recorded_at_utc": "2026-11-10T11:58:25.056880+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_m_75_2020_1km.tif"
+    }
+  },
+  {
+    "source": "WorldPop_2020_1km",
+    "scene_id": "ind_m_80_2020_1km_nagpur",
+    "acquisition_date": "2020-07-01T00:00:00Z",
+    "sha256": "a2372f5c5a57f8e74d7d43ca08d3a636f5f7719d97b728382fd140eaa71439ed",
+    "size_bytes": 5261,
+    "recorded_at_utc": "2026-11-10T11:58:53.688374+00:00",
+    "metadata": {
+      "licence": "CC BY 4.0",
+      "url": "https://data.worldpop.org/GIS/AgeSex_structures/Global_2000_2020_1km/unconstrained/2020/IND/ind_m_80_2020_1km.tif"
+    }
+  },
+  {
+    "source": "heatsafe_exposure_v1",
+    "scene_id": "exposure_index_summer",
+    "acquisition_date": "2026-11-10T00:00:00Z",
+    "sha256": "af3ff16c668a6101046bad0e26268770105231ebf10491eacf49655a2ff47806",
+    "size_bytes": 841279,
+    "recorded_at_utc": "2026-11-10T12:03:53.229792+00:00",
+    "metadata": {
+      "season": "summer",
+      "scenes": 40
+    }
+  },
+  {
+    "source": "heatsafe_exposure_v1",
+    "scene_id": "exposure_index_monsoon",
+    "acquisition_date": "2026-11-10T00:00:00Z",
+    "sha256": "d6f953c86d1a988692dcb38988634fa661ebd20d417c8716a4a8c74978ce33ee",
+    "size_bytes": 827384,
+    "recorded_at_utc": "2026-11-10T12:06:49.228909+00:00",
+    "metadata": {
+      "season": "monsoon",
+      "scenes": 10
+    }
+  },
+  {
+    "source": "heatsafe_exposure_v1",
+    "scene_id": "exposure_index_post-monsoon",
+    "acquisition_date": "2026-11-10T00:00:00Z",
+    "sha256": "0d2c8b6ed02f2dc4c18dc7de8dbcfe76a5133c09e60a9c57e38ddc24271dfd82",
+    "size_bytes": 839915,
+    "recorded_at_utc": "2026-11-10T12:09:52.786359+00:00",
+    "metadata": {
+      "season": "post-monsoon",
+      "scenes": 29
+    }
+  },
+  {
+    "source": "heatsafe_exposure_v1",
+    "scene_id": "exposure_index_winter",
+    "acquisition_date": "2026-11-10T00:00:00Z",
+    "sha256": "00a9ecec8cf5e6951a39537576ec9b0718ac9226f92361e7b57336ed74a87c4c",
+    "size_bytes": 841163,
+    "recorded_at_utc": "2026-11-10T12:12:51.368516+00:00",
+    "metadata": {
+      "season": "winter",
+      "scenes": 43
+    }
+  },
+  {
+    "source": "heatsafe_exposure_v1",
+    "scene_id": "exposure_zone",
+    "acquisition_date": "2026-11-10T00:00:00Z",
+    "sha256": "0905fb5f0699cded6823cba40dcd7e515e020915d909b4c83849bc53e6caf548",
+    "size_bytes": 20639,
+    "recorded_at_utc": "2026-11-10T12:12:51.502726+00:00",
+    "metadata": {
+      "type": "zone_exposure_vulnerability_risk"
+    }
+  },
+  {
+    "source": "heatsafe_exposure_v1",
+    "scene_id": "cooling_assets",
+    "acquisition_date": "2026-11-10T00:00:00Z",
+    "sha256": "b114cc7356068a41faaf44c45fa9274b5cc5a0af380521f85caac2957b66f27a",
+    "size_bytes": 180624,
+    "recorded_at_utc": "2026-11-10T12:12:51.552857+00:00",
+    "metadata": {
+      "type": "cooling_assets"
+    }
   }
 ]
