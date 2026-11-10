@@ -285,7 +285,7 @@ Progress is strictly gated across thirteen defined phases (Plan v2, Decision D8)
 | **1** | **Study Area & Data Audit** | Geospatial / ML | **`[x]` DONE** | NMC boundary & 10 zones in EPSG:4326/32644, master 30 m grid, data catalog audit |
 | **2** | **Incremental Ingestion** | Ingestion Engine | **`[x]` DONE** | Planetary Computer STAC client, SAS signing, retry backoff, SHA-256 manifest |
 | **3** | **Preprocessing & Features** | Feature Pipeline | **`[x]` DONE** | QA pixel cloud/shadow masking, NDVI, NDBI, MNDWI, Copernicus DEM slope/aspect, `features_v1.parquet` |
-| **4** | **Backend Foundation Hardening** | Backend / Security | **`[~]` CI PENDING** | Typed settings, Postgres + PostGIS, Alembic migrations, error envelope, CORS & secrets fixed, pinned deps, ruff + mypy |
+| **4** | **Backend Foundation Hardening** | Backend / Security | **`[x]` DONE** | Typed settings, Postgres + PostGIS, Alembic migrations, error envelope, CORS & secrets fixed, pinned deps, ruff + mypy |
 | **5** | **First Working Result & Baselines** | Analysis & Baseline | **`[x]` DONE** | Seasonal LST maps, Gi* hotspots, Baselines 1–3 locked as the bar to beat |
 | **6** | **Model 1 Development** | Machine Learning | **`[x]` DONE** | LightGBM/RF on CPU, 2 km spatial-block CV, leakage test, 90% quantile intervals, RMSE ≥ 15% better than Baseline 3 |
 | **7** | **Validation & Model Card** | Verification | **`[x]` DONE** | Held-out 2026 test opened once, bootstrap CIs, Model Card, owner Go/No-Go |
