@@ -4,6 +4,7 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 import backend.core.models.health_model  # noqa: F401 - registers tables on Base.metadata
+import backend.core.models.product_model  # noqa: F401 - registers tables on Base.metadata
 from backend.core.config.settings import get_settings
 from backend.core.database.base_class import Base, migration_name_filter
 

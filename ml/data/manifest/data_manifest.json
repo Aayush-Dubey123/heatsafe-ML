@@ -4052,5 +4052,20 @@
     "metadata": {
       "type": "cooling_assets"
     }
+  },
+  {
+    "source": "NMC_Intention_Map_2025",
+    "scene_id": "nagpur_localities_v1",
+    "acquisition_date": "2025-06-16T00:00:00Z",
+    "sha256": "cab0bbb578294f9c09f2dfdd817ca8f481b5dfac57439f722e768e4be45b5b70",
+    "size_bytes": 113895,
+    "recorded_at_utc": "2026-11-11T05:58:00.992855+00:00",
+    "metadata": {
+      "crs": "EPSG:4326",
+      "type": "locality_boundaries",
+      "count": 55,
+      "positional_accuracy_m": 100,
+      "method": "segmented from scanned index map, fitted to OSM NMC boundary"
+    }
   }
 ]

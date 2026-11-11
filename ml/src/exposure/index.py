@@ -31,12 +31,15 @@ ZONES_PATH = BOUNDARY_DIR / "nagpur_zones.geojson"
 SEASONS = ("summer", "monsoon", "post-monsoon", "winter")
 
 
-def rasterize_zones(zones_path: Path = ZONES_PATH) -> tuple[np.ndarray, pd.DataFrame]:
+def rasterize_zones(zones_path: Path = ZONES_PATH, id_key: str = "zone_id",
+                    name_key: str = "zone_name") -> tuple[np.ndarray, pd.DataFrame]:
     """
     Burn the administrative zones onto the master grid.
 
     Args:
-        zones_path (Path): GeoJSON with `zone_id` and `zone_name` properties (EPSG:4326).
+        zones_path (Path): GeoJSON with id and name properties (EPSG:4326).
+        id_key (str): Property holding the integer area id.
+        name_key (str): Property holding the area name.
 
     Returns:
         tuple[np.ndarray, pd.DataFrame]: int16 raster of zone ids (0 = outside every zone)
@@ -47,9 +50,9 @@ def rasterize_zones(zones_path: Path = ZONES_PATH) -> tuple[np.ndarray, pd.DataF
     shapes = []
     rows = []
     for feature in collection["features"]:
-        zone_id = int(feature["properties"]["zone_id"])
+        zone_id = int(feature["properties"][id_key])
         shapes.append((transform_geom("EPSG:4326", spec["crs"], feature["geometry"]), zone_id))
-        rows.append({"zone_id": zone_id, "zone_name": str(feature["properties"]["zone_name"])})
+        rows.append({"zone_id": zone_id, "zone_name": str(feature["properties"][name_key])})
     raster = rasterize(shapes, out_shape=spec["shape"], transform=spec["transform"], fill=0, dtype="int16")
     table = pd.DataFrame(rows).sort_values("zone_id").reset_index(drop=True)
     cell_km2 = (spec["cell_size"] ** 2) / 1e6

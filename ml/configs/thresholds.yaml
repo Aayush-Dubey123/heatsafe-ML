@@ -68,3 +68,21 @@ cooling_assets:
     health_facility: {key: "amenity", values: ["hospital", "clinic"]}
     public_shelter: {key: "amenity", values: ["shelter", "community_centre"]}
     drinking_water: {key: "amenity", values: ["drinking_water"]}
+
+# Phase 9 — versioned data products and tiles
+publish:
+  published_dir: "ml/data/published"
+  tile_zoom_min: 10
+  tile_zoom_max: 16
+  tile_size: 256
+  kriging_sample_pixels: 20000
+  random_seed: 20261111
+  layers:
+    lst: {colormap: "inferno", vmin: 20.0, vmax: 60.0, unit: "deg C"}
+    exposure: {colormap: "magma", vmin: 0.0, vmax: 100.0, unit: "index 0-100"}
+
+# Phase 10 — automated pipeline
+pipeline:
+  lock_file: "ml/data/published/pipeline.lock"
+  lock_timeout_hours: 6
+  lookback_days: 40            # how far back to search for scenes newer than the last published one

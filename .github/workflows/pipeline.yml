@@ -1,0 +1,55 @@
+name: HeatSafe-ML Pipeline
+
+# Daily check for a new Landsat scene (Phase 10).
+#
+# The job needs the trained model, scene cubes, and the last published bundle,
+# which live in free storage outside git. Until that storage is configured it is
+# switched off: set the repository variable HEATSAFE_PIPELINE_ENABLED to "true"
+# and add the secrets below to enable it. Manual runs are always possible.
+on:
+  schedule:
+    - cron: "30 7 * * *"   # 13:00 IST, a few hours after the ~10:00 local overpass
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: heatsafe-pipeline
+  cancel-in-progress: false
+
+jobs:
+  run-pipeline:
+    name: Detect, process, and publish new scene
+    if: ${{ vars.HEATSAFE_PIPELINE_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONPATH: "."
+      HEATSAFE_ENVIRONMENT: production
+      HEATSAFE_DATABASE_URL: ${{ secrets.HEATSAFE_DATABASE_URL }}
+      HEATSAFE_STORAGE_TOKEN: ${{ secrets.HEATSAFE_STORAGE_TOKEN }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore model, scene cubes, and last published bundle
+        run: |
+          echo "Storage sync is not implemented yet (Phase 12): no free storage account is configured."
+          echo "Enable this job only after the restore/upload steps exist."
+          exit 1
+
+      - name: Run pipeline once
+        run: python -m ml.src.pipeline.run_batch

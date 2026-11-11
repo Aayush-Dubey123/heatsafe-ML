@@ -186,14 +186,18 @@ def test_cli_dry_run_execution() -> None:
     client = STACIngestionClient()
     manifest = DataManifestManager()
 
-    res = run_landsat_ingestion(
-        client=client,
-        manifest=manifest,
-        start_date="2024-05-01",
-        end_date="2024-05-31",
-        limit=2,
-        dry_run=True,
-    )
+    try:
+        res = run_landsat_ingestion(
+            client=client,
+            manifest=manifest,
+            start_date="2024-05-01",
+            end_date="2024-05-31",
+            limit=2,
+            dry_run=True,
+        )
+    except RuntimeError as error:
+        # This test talks to the live Planetary Computer catalogue; an outage is not a code failure.
+        pytest.skip(f"STAC catalogue unreachable: {error}")
 
     assert res["status"] == "dry_run_completed"
     assert res["bytes_downloaded"] == 0
