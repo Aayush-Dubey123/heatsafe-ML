@@ -13,7 +13,7 @@ python-multipart==0.0.33
 python-dotenv==1.2.4
 
 # Database, Migrations & Auth (PostgreSQL + PostGIS — Decisions T6–T8)
-sqlalchemy==2.0.46
+sqlalchemy==2.1.8
 alembic==1.20.1
 psycopg[binary]==3.3.8
 PyJWT==2.15.1
