@@ -513,7 +513,7 @@ Risk ranks are stable across seasons (each zone moves by at most two places). Zo
   - [x] Publishing the same product twice is idempotent (second run: "already published and intact; nothing rewritten"; database load tested twice with identical row counts).
   - [x] 100% of published files listed in the bundle manifest with re-verifiable hashes (18,827 files, 278.7 MB).
   - [x] Tiles cover the full study-area extent at every published zoom (per zoom for one layer: {'10': 2, '11': 4, '12': 15, '13': 48, '14': 156, '15': 552, '16': 2153}).
-- **Evidence (2026-11-11):** bundle `2026-11-03_LC09_L2SP_144045_20261103_02_T1_m1-20261109T150313Z` (scene 2026-11-03, age 10 days, stale=false); observed fraction 82.6%, remainder model-filled; database loader tested on SQLite (not yet run against Postgres: Docker was off); `ml/tests/publish` green.
+- **Evidence (2026-11-11):** bundle `2026-11-03_LC09_L2SP_144045_20261103_02_T1_m1-20261109T150313Z` (scene 2026-11-03, age 10 days, stale=false); observed fraction 82.6%, remainder model-filled; bundle loaded into local PostgreSQL 16 + PostGIS on 2026-11-13 (10 zones, 40 zone metrics, 55 localities, 275 locality metrics, 889 cooling assets, 1 latest product; also tested on SQLite); `ml/tests/publish` green.
 - **Still open:** free-storage upload (above). Phase stays `[~]` until then.
 
 ---
