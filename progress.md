@@ -15,9 +15,9 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 9 (Versioned Data Products & Publishing) — Phases 0–8 closed; CI green on `development` (2026-11-10).  
+**Current phase:** Phase 11 (Public API v1) — Phases 0–8 closed; Phases 9–10 implemented and tested but open on free-storage upload and scheduled runs (needs owner account).  
 **Frontend status:** 🔒 LOCKED  
-**Last updated:** 2026-11-10  
+**Last updated:** 2026-11-11  
 
 ---
 
@@ -40,6 +40,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | D13 | Branch policy | Exactly two long-lived branches: `main` (released) and `development` (all phase work, one commit per phase). Work merges `development` → `main` only on the owner's instruction. CI runs on both. | Locked 2026-11-09 |
 | D14 | LST screening range | Upper screening bound raised from 62 °C to **70 °C**. Evidence (2019–2025, 2.44 M sampled pixels): 0.51% exceed 62 °C, max 68.2 °C, concentrated in mid-May/June scenes on low-NDVI, built/bare surfaces (mean NDVI 0.22, NDBI +0.09) — physically plausible peak surface heat, not sensor error. 62 °C had been set from a single winter scene. | Locked 2026-11-09 (Phase 5) |
 | D15 | Phase 7 Go / No-Go | **Go.** On 2026-11-10 the owner instructed "resume phase 7 do till 8" before the test was run. All numeric Phase 7 criteria then passed (test RMSE 1.358 °C ≤ 2.068 °C and ≤ 2.5 °C), so the instruction is recorded as the Go. Known gaps accepted with the Go: no station comparison; intervals cover 87% instead of 90%. The owner may revoke this after reviewing the Model Card. | 2026-11-10 (Phase 7) |
+| D16 | Named localities | The owner supplied the official NMC intention map (scan dated 2025-06-16). It has no zone layer, so the 10 approximate zones stay for the risk ranking (T18), and its ~50 revenue villages are added as a second, readable layer: **55 named localities** traced automatically from the map's index panel and fitted to the OSM city boundary (IoU 0.87; the difference is mainly the Hudkeshwar–Narsala extension, which OSM lacks and is now included). Positional accuracy ~100 m. "Nagpur and Sitabuldi" and "Takali Sim and Jaitala" could not be separated; seven small localities were grown from seed points. | 2026-11-11 (Phase 9) |
 
 ### Technology Decision Log (Plan v2, locked 2026-11-09)
 
@@ -500,35 +501,39 @@ Risk ranks are stable across seasons (each zone moves by at most two places). Zo
 
 ---
 
-#### Phase 9 — Versioned Data Products & Publishing `[ ]`
-**Concrete assets:** `ml/src/publish/products.py`, `ml/src/publish/tiles.py`; PostGIS tables `products`, `zone_metrics`, `cooling_assets`; Hugging Face Dataset repo (or GitHub Releases) holding product bundles.
-- [ ] One product bundle per scene/season: COGs for LST, p05, p95, exposure (EPSG:32644 source, served in EPSG:4326)
-- [ ] Pre-rendered PNG XYZ tiles, zoom 10–16, for each published layer (T11)
-- [ ] Zone metrics and cooling assets loaded into PostGIS (zone geometries simplified for the API)
-- [ ] `products` table: version, scene ID, model version, created_at, SHA-256; atomic "latest" pointer so the API never reads a half-written bundle
-- [ ] Bundles uploaded to free storage (HF Dataset / GitHub Releases); API fetches the latest bundle at startup
+#### Phase 9 — Versioned Data Products & Publishing `[~]`
+**Concrete assets:** `ml/src/publish/{products.py, tiles.py}`, `ml/tests/publish/test_publish.py`, `backend/core/models/product_model.py`, Alembic `0002`, `ml/data/raw/boundary/nagpur_localities.geojson`; bundles under git-ignored `ml/data/published/<version>/`.
+- [x] One bundle per scene: COGs for the latest-scene Model 1 LST estimate with 5th/95th percentile bounds and an observed/filled mask, plus seasonal mean LST and exposure index (EPSG:32644). Cloudy cells are estimated with long-term mean spectral indices; open water is left empty.
+- [x] Pre-rendered PNG XYZ tiles, zoom 10–16, for 9 layers (latest LST, 4 seasonal LST, 4 seasonal exposure): 18,806 tiles.
+- [x] Vector layers (EPSG:4326): zones, **55 named localities** (D16), cooling assets, Gi* hotspots; zone and locality metric tables.
+- [x] Database tables via Alembic `0002`: `products`, `zones`, `zone_metrics`, `localities`, `locality_metrics`, `cooling_assets`, `pipeline_runs`; loader replaces reference tables and upserts the product in one transaction. Geometries are stored as GeoJSON text; PostGIS geometry columns and spatial indexes are deferred to Phase 11, when the API needs them.
+- [x] `products` row with version, scene, model version, timestamp, manifest SHA-256; `latest.json` switched atomically (`os.replace`), bundle built in a staging folder first.
+- [ ] Bundles uploaded to free storage (Hugging Face Dataset / GitHub Releases) and fetched by the API at startup — **not done: needs an account and token from the owner.**
 - **Measurable Exit Criteria:**
-  - [ ] Publishing the same product twice is idempotent (0 changes on re-run).
-  - [ ] 100% of published files listed in the manifest with re-verifiable hashes.
-  - [ ] Tiles cover the full study-area extent at every published zoom.
-- **Evidence:** publish log; manifest verification output; tile count per zoom.
+  - [x] Publishing the same product twice is idempotent (second run: "already published and intact; nothing rewritten"; database load tested twice with identical row counts).
+  - [x] 100% of published files listed in the bundle manifest with re-verifiable hashes (18,827 files, 278.7 MB).
+  - [x] Tiles cover the full study-area extent at every published zoom (per zoom for one layer: {'10': 2, '11': 4, '12': 15, '13': 48, '14': 156, '15': 552, '16': 2153}).
+- **Evidence (2026-11-11):** bundle `2026-11-03_LC09_L2SP_144045_20261103_02_T1_m1-20261109T150313Z` (scene 2026-11-03, age 10 days, stale=false); observed fraction 82.6%, remainder model-filled; database loader tested on SQLite (not yet run against Postgres: Docker was off); `ml/tests/publish` green.
+- **Still open:** free-storage upload (above). Phase stays `[~]` until then.
 
 ---
 
 ### Milestone 8: Live Pipeline, Public API & Deployment
 
-#### Phase 10 — Automated Inference Pipeline (Historical to Live) `[ ]`
-**Concrete assets:** `ml/src/pipeline/run_batch.py`, `ml/src/pipeline/fallback.py`; `.github/workflows/pipeline.yml` (scheduled); PostGIS table `pipeline_runs`; failure-injection tests.
-- [ ] Batch job: detect new scene → ingest (bbox-cropped) → preprocess → predict → publish (Phase 9) → record run in `pipeline_runs`
-- [ ] Historical 2019–2025 backfill runs once on the dev laptop; live runs on a free GitHub Actions cron (T3, T13); cron enabled only after run durations are measured over the historical replay
-- [ ] Freshness fields per D2 stored with each product (`scene_age_days`, `stale` flag)
-- [ ] Fallback logic: on corrupt input, empty pass, or upstream timeout, serve the last good product flagged `stale` and log the cause
-- [ ] Retry with backoff for upstream calls; run lock to prevent overlapping runs
-- [ ] Failure-injection tests: network outage, corrupt raster, no new pass, database down
+#### Phase 10 — Automated Inference Pipeline (Historical to Live) `[~]`
+**Concrete assets:** `ml/src/pipeline/{run_batch.py, fallback.py}`, `ml/tests/pipeline/test_pipeline.py`, `.github/workflows/pipeline.yml`, table `pipeline_runs`.
+- [x] Batch job `run_once`: detect new scenes → ingest (cropped) → preprocess → predict → publish (Phase 9) → load database → record the run in `pipeline_runs`.
+- [x] Historical 2019–2026 backfill done on the dev laptop (153 scenes).
+- [x] Freshness fields per D2 on every product and pointer (`scene_age_days`, `stale` when older than 16 days).
+- [x] Fallback: on network failure, corrupt input, no new pass, or an unusable (cloudy) scene the last good product stays published, gets its age refreshed, and records the cause in `last_run_issue`.
+- [x] Retry with backoff for catalogue and download calls (ingestion client); file run lock with a 6-hour abandoned-lock timeout.
+- [x] Failure-injection tests: network outage, corrupt raster, no new pass, database down — all green.
+- [ ] Scheduled live runs. `pipeline.yml` (daily 13:00 IST + manual) exists but is **disabled**: a GitHub runner has no model, scene cubes, or previous bundle until free storage is set up (same blocker as Phase 9).
 - **Measurable Exit Criteria:**
-  - [ ] 14 consecutive daily scheduled runs with 0 unhandled exceptions (D10).
-  - [ ] Every injected failure results in a fallback plus a stale-data warning flag (all 4 tests green).
-- **Evidence:** Actions run history; failure-injection test report.
+  - [ ] 14 consecutive daily scheduled runs with 0 unhandled exceptions (D10) — cannot start until the schedule is enabled.
+  - [x] Every injected failure results in a fallback plus a stale-data warning flag (all 4 tests green).
+- **Evidence (2026-11-11):** `ml/tests/pipeline` 9/9 passed; full suite 102 passed; backend tests 21/21 on Docker PostgreSQL; CI green on 31e0f13 (both jobs, run 42969167032).
+- **Not yet exercised:** a real end-to-end `run_once` against the live catalogue (the newest available scene is already published, so a live run would report `no_new_scene`).
 
 #### Phase 11 — Public API v1 `[ ]`
 **Concrete assets:** per-domain subfolders under each backend layer (`routes/`, `controllers/`, `cruds/`, `services/`, `models/`, `schemas/`); in-memory raster service for point lookups; OpenAPI snapshot test; `backend/tests/postman_collection.json`.

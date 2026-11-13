@@ -58,7 +58,7 @@ flowchart TD
 
     BOX_OUTPUTS["<b>Pipeline System Outputs</b><br/>- <b>Clean feature dataset:</b> Parquet table<br/>- <b>Quality masks:</b> cloud, shadow, snow, water<br/>- <b>Derived indices:</b> NDVI, NDBI, MNDWI<br/>- <b>Terrain features:</b> elevation, slope, aspect<br/>- <b>Spatial and temporal:</b> 2 km blocks and solar time<br/>- Status: OPERATIONAL (Phase 3)"]
 
-    BOX_VERIF["<b>Key Verification (Phase 3)</b><br/>[PASS] <b>Grid size:</b> 795 x 942 (30 m analytical grid)<br/>[PASS] <b>CRS:</b> EPSG:32644 (UTM Zone 44N)<br/>[PASS] <b>LST screening:</b> 0 deg C to 62 deg C valid range<br/>[PASS] <b>Missingness:</b> 0.16% (under 2% target)<br/>[PASS] <b>QA masks:</b> cloud, shadow, snow, water<br/>[PASS] <b>Tests:</b> 85/85 passed repository-wide<br/>[PASS] <b>Registered:</b> features_v1.parquet (SHA-256)"]
+    BOX_VERIF["<b>Key Verification (Phase 3)</b><br/>[PASS] <b>Grid size:</b> 795 x 942 (30 m analytical grid)<br/>[PASS] <b>CRS:</b> EPSG:32644 (UTM Zone 44N)<br/>[PASS] <b>LST screening:</b> 0 deg C to 62 deg C valid range<br/>[PASS] <b>Missingness:</b> 0.16% (under 2% target)<br/>[PASS] <b>QA masks:</b> cloud, shadow, snow, water<br/>[PASS] <b>Tests:</b> 102/102 passed repository-wide<br/>[PASS] <b>Registered:</b> features_v1.parquet (SHA-256)"]
 
     BOX_REPO ~~~ BOX_STORAGE ~~~ BOX_OUTPUTS ~~~ BOX_VERIF
   end
@@ -71,8 +71,8 @@ flowchart TD
   subgraph S_SERVE ["Plan v2 Production Serving Path (Zero Cost, Decisions D8-D10)"]
     direction LR
     P4["<b>Phase 4</b><br/>Backend Foundation Hardening<br/>- Typed settings, no secret defaults<br/>- Postgres + PostGIS and Alembic migrations<br/>- Uniform error envelope and request IDs<br/>- Strict CORS, pinned deps, ruff and mypy<br/>- 44/44 tests (SQLite), 21/21 on Docker PostGIS<br/>[IMPLEMENTED & TESTED] CI green 2026-11-10 (Python 3.13)"]
-    P9["<b>Phase 9</b><br/>Versioned Data Products<br/>- COGs: LST, p05, p95, exposure<br/>- Pre-rendered PNG tiles (zoom 10-16)<br/>- Zone metrics and cooling assets in PostGIS<br/>- Atomic latest pointer and SHA-256<br/>[PLANNED] Publishing"]
-    P10["<b>Phase 10</b><br/>Automated Inference Pipeline<br/>- GitHub Actions scheduled run (free)<br/>- New scene to ingest, predict, publish<br/>- scene_age_days and stale flag (D2)<br/>- Fallback to last good product<br/>[PLANNED] Live Pipeline"]
+    P9["<b>Phase 9</b><br/>Versioned Data Products<br/>- COGs: LST, p05, p95, exposure<br/>- Pre-rendered PNG tiles (zoom 10-16)<br/>- Zone metrics and cooling assets in PostGIS<br/>- Atomic latest pointer and SHA-256<br/>- 55 named localities (NMC map), 18,806 tiles<br/>[IMPLEMENTED & TESTED] Storage upload pending"]
+    P10["<b>Phase 10</b><br/>Automated Inference Pipeline<br/>- GitHub Actions scheduled run (free)<br/>- New scene to ingest, predict, publish<br/>- scene_age_days and stale flag (D2)<br/>- Fallback to last good product<br/>- 4 failure-injection tests green<br/>[IMPLEMENTED & TESTED] Schedule disabled until storage exists"]
     P11["<b>Phase 11</b><br/>Public API v1 (/api/v1)<br/>- /heat, /zones, /cooling-spots<br/>- /tiles, /hotspots, /metadata<br/>- In-memory raster lookups, no live inference<br/>- Frozen OpenAPI contract for the frontend<br/>[PLANNED] Warm p95 under 200 ms"]
     P12["<b>Phase 12</b><br/>Hardening and Zero-Cost Deployment<br/>- Hugging Face Spaces API (Docker)<br/>- Neon Postgres + PostGIS (free)<br/>- UptimeRobot, pg_dump backups, pip-audit<br/>- Coverage gate 85%, Rs 0 recurring cost<br/>[PLANNED] Release"]
     INFRA_STORE[("<b>Free Product Storage</b><br/>- Hugging Face Dataset repo / GitHub Releases<br/>- Versioned COGs, tiles, model files<br/>- Status: [PLANNED]")]
