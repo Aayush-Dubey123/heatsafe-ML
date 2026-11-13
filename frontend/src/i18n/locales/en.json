@@ -1,0 +1,180 @@
+{
+  "app": {
+    "name": "HeatSafe Nagpur",
+    "skip": "Skip to content",
+    "tagline": "Satellite surface heat for Nagpur"
+  },
+  "nav": {
+    "home": "Home",
+    "map": "Map",
+    "zones": "Zones",
+    "about": "About",
+    "primary": "Main navigation"
+  },
+  "lang": {
+    "label": "Language"
+  },
+  "disclaimer": {
+    "short": "Research tool, not an official warning system. It shows surface temperature, not air temperature.",
+    "advisory": "Follow IMD and NMC advisories for heat warnings."
+  },
+  "banner": {
+    "stale": "This data is {{days}} days old (limit {{limit}} days). A newer satellite image should arrive soon.",
+    "offline": "You are offline. Showing information saved on this device.",
+    "noProduct": "No heat data is published yet. Please try again later."
+  },
+  "state": {
+    "loading": "Loading…",
+    "retry": "Try again",
+    "errorTitle": "Something went wrong",
+    "network": "We could not reach the service. Check your connection and try again.",
+    "noProduct": "No heat data is published yet. Please try again later.",
+    "outside": "That place is outside the Nagpur study area.",
+    "rate": "Too many requests. Wait a moment and try again.",
+    "generic": "We could not load this. Please try again."
+  },
+  "home": {
+    "title": "How hot is your area?",
+    "intro": "Pick a place to see the ground surface temperature from satellite, how sure we are, and where to cool down nearby.",
+    "searchLabel": "Search a locality",
+    "searchPlaceholder": "For example: Dhantoli",
+    "useLocation": "Use my location",
+    "locating": "Finding your location…",
+    "denied": "Location access is blocked. Search for a locality instead.",
+    "unavailable": "This device cannot share its location. Search for a locality instead.",
+    "failed": "We could not find your location. Try again or search for a locality.",
+    "noResults": "No locality matches “{{query}}”.",
+    "yourPlace": "Your place",
+    "change": "Change",
+    "openMap": "Open on map",
+    "hottestZones": "Hottest zones",
+    "pickedOnMap": "Spot you picked"
+  },
+  "heat": {
+    "surface": "Ground surface temperature",
+    "rangeShort": "likely {{low}} to {{high}}",
+    "rangeAria": "Estimated {{value}} °C. 90% range {{low}} to {{high}} °C.",
+    "rangeLabel": "90% range",
+    "observed": "Seen by satellite",
+    "filled": "Estimated by model",
+    "filledHelp": "The satellite could not see this spot clearly on {{date}}, so the value comes from the model and is less certain.",
+    "scene": "Satellite image of {{date}}, {{days}} days ago",
+    "sceneToday": "Satellite image of {{date}}, today",
+    "notCovered": "No estimate for this spot (open water or no data).",
+    "inLocality": "Locality: {{name}}",
+    "inZone": "Zone: {{name}}",
+    "seasonsTitle": "Typical daytime heat by season",
+    "colSeason": "Season",
+    "colMean": "Mean surface °C",
+    "colExposure": "Exposure",
+    "exposureLine": "In summer, daytime surfaces here are hotter than about {{pct}}% of the city. Exposure level: {{level}}.",
+    "airNote": "This is surface temperature seen from space, not the air temperature people feel."
+  },
+  "level": {
+    "low": "Low",
+    "moderate": "Moderate",
+    "high": "High",
+    "very_high": "Very high",
+    "extreme": "Extreme"
+  },
+  "season": {
+    "summer": "Summer",
+    "monsoon": "Monsoon",
+    "post-monsoon": "Post-monsoon",
+    "winter": "Winter",
+    "latest_scene": "Latest scene",
+    "latest_lst": "Latest scene"
+  },
+  "cooling": {
+    "title": "Cool places near you",
+    "none": "No cooling places found within {{km}} km.",
+    "away": "{{distance}} away",
+    "openMap": "Open in map",
+    "unnamed": "{{type}} (unnamed)",
+    "source": "Places come from OpenStreetMap; completeness varies and shelters are not official heat shelters.",
+    "green_space": "Park or garden",
+    "water_body": "Water body",
+    "health_facility": "Health facility",
+    "public_shelter": "Public shelter",
+    "drinking_water": "Drinking water"
+  },
+  "map": {
+    "title": "Heat map",
+    "layers": "Map layers",
+    "kindTemp": "Temperature",
+    "kindExposure": "Exposure",
+    "showLocalities": "Locality outlines",
+    "showHotspots": "Hot and cold clusters",
+    "legendTemp": "Surface temperature (°C)",
+    "legendExposure": "Exposure (0–100, relative within the city)",
+    "tapHint": "Tap the map to check a spot.",
+    "loading": "Loading map…",
+    "unavailable": "The map could not be loaded. You can still use search and the Zones page.",
+    "ariaLabel": "Interactive heat map of Nagpur",
+    "pickedSpot": "Selected spot",
+    "fullDetails": "See full details and cooling places"
+  },
+  "zones": {
+    "title": "Zones and localities",
+    "viewZones": "Zones",
+    "viewLocalities": "Localities",
+    "season": "Season",
+    "rankBy": "Rank by",
+    "risk": "Risk",
+    "exposure": "Exposure",
+    "vulnerability": "Vulnerability",
+    "colRank": "Rank",
+    "colZone": "Zone",
+    "colLocality": "Locality",
+    "colRisk": "Risk",
+    "colExposure": "Exposure",
+    "colVuln": "Vulnerability",
+    "colMeanLst": "Mean °C",
+    "colArea": "Area km²",
+    "approx": "Zone boundaries are approximate (generated, not an official map). Population is a modelled 1 km grid.",
+    "intervalNote": "Ranks show a 95% interval. When intervals overlap, zones are not clearly different.",
+    "localityNote": "Localities are revenue villages traced from the NMC intention map (about 100 m accuracy).",
+    "selectPrompt": "Select a zone to see details.",
+    "mapLabel": "Zone map coloured by {{metric}}",
+    "lower": "Lower",
+    "higher": "Higher",
+    "area": "Area",
+    "population": "Population",
+    "density": "Density",
+    "perKm2": "{{n}} per km²",
+    "people": "{{n}} people",
+    "green": "Green deficit",
+    "greenHelp": "0 is greenest, 1 is least green",
+    "age60": "Aged 60+ share",
+    "age60Help": "Not zone-specific: the source uses one district-wide value.",
+    "assets": "Cooling places inside",
+    "exposureCi": "Exposure 95% range {{low}} to {{high}}",
+    "extendedLimit": "Extended limit",
+    "viewOnMap": "Check this place"
+  },
+  "about": {
+    "title": "About the data",
+    "whatTitle": "What you are seeing",
+    "what": "Satellite images (Landsat 8 and 9) show how hot the ground surface is at about 10:00 local solar time. A model fills in cloudy cells and gives a 90% range. Colours on the map are surface temperature or a relative exposure index, not the air temperature.",
+    "limitsTitle": "Know the limits",
+    "limits": [
+      "Surface temperature can be 10 to 18 °C hotter than the air in summer. It is not a heat index.",
+      "Only clear daytime satellite passes are used, so there is no night-time view and cloudy days are missing.",
+      "The grid is 30 m, but the thermal band is natively about 100 m. Do not read values as street-level accuracy.",
+      "The 90% range contained the true value about 87% of the time in testing, so treat it as slightly optimistic.",
+      "Zone boundaries are approximate and population comes from a modelled 1 km grid.",
+      "Cooling places come from OpenStreetMap volunteers and may be incomplete."
+    ],
+    "accuracyTitle": "How accurate is it?",
+    "accuracy": "On places and a year the model had never seen, the typical error was 1.4 °C, against 2.4 °C for the best simple method. This compares surface temperature with satellite data only; it was not checked against weather stations.",
+    "creditsTitle": "Data and credits",
+    "credits": [
+      "Landsat 8 and 9 Collection 2 Level-2: USGS, via Microsoft Planetary Computer.",
+      "Elevation: Copernicus DEM GLO-30, provided by the European Union and ESA.",
+      "Population: WorldPop 2020 (CC BY 4.0).",
+      "Boundaries and cooling places: © OpenStreetMap contributors (ODbL); locality names and shapes traced from the Nagpur Municipal Corporation intention map."
+    ],
+    "officialTitle": "Not an official warning system",
+    "official": "HeatSafe is a research project. It does not replace advisories from the India Meteorological Department, the National Disaster Management Authority or Nagpur Municipal Corporation."
+  }
+}

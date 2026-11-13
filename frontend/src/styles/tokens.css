@@ -1,0 +1,80 @@
+:root {
+  color-scheme: light dark;
+
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", "Nirmala UI", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  /* type scale (fixed rem, ratio about 1.2) */
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-md: 0.9375rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.375rem;
+  --fs-hero: 2.75rem;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --radius: 10px;
+  --radius-sm: 6px;
+
+  --bg: #f6f5f1;
+  --surface: #ffffff;
+  --surface-2: #efede6;
+  --text: #1b1b19;
+  --text-2: #4f4d47;
+  --text-3: #6a675f;
+  --border: #dad7ce;
+  --border-strong: #aeaa9d;
+
+  --accent: #1a5fa8;
+  --accent-bg: #e6f0fb;
+  --accent-text: #134a85;
+  --on-accent: #ffffff;
+
+  --warn-bg: #fff1cf;
+  --warn-text: #6b4300;
+  --ok-bg: #e0f1de;
+  --ok-text: #1d5518;
+  --danger-bg: #fde6e6;
+  --danger-text: #8a1c1c;
+
+  --focus: #1a5fa8;
+
+  /* heat scale: data colours, identical in both themes so the map and legend match */
+  --heat-1: #2a1a5e;
+  --heat-2: #8c2d6b;
+  --heat-3: #e0553a;
+  --heat-4: #f4a43a;
+  --heat-5: #fbe88a;
+
+  --header-h: 52px;
+  --tabbar-h: 56px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14130f;
+    --surface: #1d1c18;
+    --surface-2: #26251f;
+    --text: #f1efe8;
+    --text-2: #c7c4ba;
+    --text-3: #a6a398;
+    --border: #36342d;
+    --border-strong: #5a574c;
+    --accent: #7db4ee;
+    --accent-bg: #1c2d42;
+    --accent-text: #a8cdf5;
+    --on-accent: #0b1a2b;
+    --warn-bg: #3a2c0c;
+    --warn-text: #f5d58e;
+    --ok-bg: #1b3318;
+    --ok-text: #a9dba3;
+    --danger-bg: #3d1a1a;
+    --danger-text: #f3b4b4;
+    --focus: #7db4ee;
+  }
+}

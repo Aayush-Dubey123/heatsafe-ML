@@ -1,0 +1,36 @@
+.figure {
+  margin: var(--space-3) 0 0;
+}
+
+.track {
+  position: relative;
+  height: 8px;
+  background: var(--surface-2);
+  border-radius: 4px;
+}
+
+.range {
+  position: absolute;
+  top: 0;
+  height: 8px;
+  background: var(--heat-4);
+  border-radius: 4px;
+}
+
+.marker {
+  position: absolute;
+  top: -4px;
+  width: 3px;
+  height: 16px;
+  margin-left: -1.5px;
+  background: var(--text);
+  border-radius: 2px;
+}
+
+.caption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-1);
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}

@@ -93,7 +93,7 @@ flowchart TD
     direction LR
     GATE_BE{"<b>Backend Gate Certified?</b><br/>- Warm p95 under 200 ms | Cov 85% plus<br/>- OpenAPI v1 frozen | Rs 0 cost<br/>- Phase 12 verification"}
     GATE_FE{"<b>Frontend Unlocked?</b><br/>- Explicit owner command<br/>- Status: [UNLOCKED 2026-11-13, D20]"}
-    FE_DASH["<b>Frontend Web Dashboard (frontend/)</b><br/>- Next.js/React app with Deck.gl 30 m heat map viewer<br/>- Zone heat exposure scorecards and cooling spot finder<br/>- Consumes frozen /api/v1 OpenAPI contract<br/>- Free hosting (Vercel / Netlify / Cloudflare Pages)<br/>- Status: [PLANNED] Design direction pending owner choice"]
+    FE_DASH["<b>Frontend Web Dashboard (frontend/)</b><br/>- React + TypeScript + Vite app (Home, Map, Zones, About)<br/>- MapLibre map with API heat tiles; zone ranking; cooling places; en/hi/mr<br/>- Consumes frozen /api/v1 OpenAPI contract<br/>- Free hosting (Cloudflare Pages, planned)<br/>- Status: [BUILT] runs against the real API; deployment pending"]
 
     GATE_BE -- "Owner Command: 'move to frontend'" --> GATE_FE
     GATE_FE -- "Unlocks Branch 2" --> FE_DASH

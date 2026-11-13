@@ -1,0 +1,40 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+.table th,
+.table td {
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table thead th {
+  font-weight: 500;
+  color: var(--text-2);
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+}
+
+.table tbody th {
+  font-weight: 500;
+}
+
+.selected {
+  background: var(--accent-bg);
+}
+
+.link {
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-align: left;
+}

@@ -8,9 +8,9 @@ By integrating multispectral and thermal satellite observations from **Landsat 8
 
 > **Current Operational Status (Branch 1 - Backend & ML):**  
 > - **Roadmap:** Plan v2 (adopted 2026-11-09) — production backend for a public-facing app, citizens first, at zero recurring cost (Decisions D8–D10, T1–T18 in [`progress.md`](progress.md)).  
-> - **Active Phase:** Phase F1 (frontend design and plan). Backend Phases 0–11 closed; Phase 12 (deployment hardening) deferred. Public API v1 is frozen  
+> - **Active Phase:** Phases F2/F3 (frontend built and running; review, phone testing and deployment next). Backend Phases 0–11 closed; Phase 12 (deployment hardening) deferred. Public API v1 is frozen  
 > - **Completed Milestones:** Phase 0 (Foundation Architecture), Phase 1 (Study Area & Master Grid), Phase 2 (STAC Ingestion Pipeline), Phase 3 (Preprocessing, QA Masking & Feature Engineering)  
-> - **Branch 2 (Frontend UI):** 🔓 **OPEN for planning** (decision D20): design direction pending the owner's choice; code starts after it.  
+> - **Branch 2 (Frontend UI):** 🔓 **OPEN, built** (D20, D21): Home, Map, Zones and About pages in `frontend/`, running against the real API.  
 > - **Live Test Suite:** 128/128 unit & integration tests passing (`python -m pytest -v`, verified 2026-11-13); backend branch coverage 94%.
 
 ---
@@ -93,7 +93,7 @@ HeatSafe-ML is architected with strict separation of concerns, defensive program
 flowchart TD
     GEO["PROJECT: HeatSafe-ML (Nagpur, India)"]
 
-    GEO --> FE["Branch 2: Frontend UI (PLANNING)"]
+    GEO --> FE["Branch 2: Frontend UI (BUILT)"]
     GEO --> BE["Branch 1: Backend API (backend/) (ACTIVE)"]
     GEO --> ML["Branch 1: ML & Geospatial (ml/) (ACTIVE)"]
     GEO --> GOV["Project Governance (Triad Documents)"]
@@ -271,7 +271,7 @@ All agent operations, developer modifications, and roadmap tracking adhere to th
 
 ### Two-Branch Development Governance
 - **Branch 1 (Backend & ML):** Active branch. Covers data ingestion, preprocessing, ML feature engineering, baseline benchmarking, and the production FastAPI backend.
-- **Branch 2 (Frontend UI):** 🔓 **Open for planning** (D20, 2026-11-13). The owner commanded the move to frontend; code is written only after the owner picks a design direction. It lives on `main` and follows the frontend standards and the three structural rules.
+- **Branch 2 (Frontend UI):** 🔓 **Open, built** (D20/D21, 2026-11-13). The owner chose "Combine all three" designs; the app lives in `frontend/` (run `npm run dev` there with the API on port 8000). It lives on `main` and follows the frontend standards and the three structural rules.
 
 ---
 

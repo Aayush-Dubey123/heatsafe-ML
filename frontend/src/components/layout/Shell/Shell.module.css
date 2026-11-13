@@ -1,0 +1,114 @@
+.frame {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--tabbar-h);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: var(--header-h);
+  padding: 0 var(--space-4);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+
+.logo {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--heat-4);
+  box-shadow: 0 0 0 3px var(--heat-3);
+}
+
+/* Mobile: the nav is a bottom tab bar. */
+.nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  height: var(--tabbar-h);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--text-2);
+  text-decoration: none;
+  font-size: var(--fs-xs);
+}
+
+.active {
+  color: var(--accent-text);
+  font-weight: 600;
+  background: var(--accent-bg);
+}
+
+.banner {
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.banner:not(:empty) {
+  padding-top: var(--space-3);
+}
+
+.main {
+  flex: 1;
+  outline: none;
+}
+
+.footer {
+  padding: var(--space-4);
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+@media (min-width: 720px) {
+  .frame {
+    padding-bottom: 0;
+  }
+  .nav {
+    position: static;
+    height: auto;
+    display: flex;
+    gap: var(--space-2);
+    background: none;
+    border-top: none;
+  }
+  .tab {
+    flex-direction: row;
+    gap: var(--space-2);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-sm);
+  }
+  .header {
+    padding: 0 var(--space-5);
+  }
+}

@@ -91,3 +91,41 @@ jobs:
 
       - name: Backend tests against PostgreSQL (runs Alembic upgrade/downgrade)
         run: python -m pytest backend -v -p no:cacheprovider
+
+  frontend:
+    name: Frontend (lint, types, tests, build, bundle size)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install pinned dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Tests (includes API contract drift check)
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Bundle size budget
+        run: npm run check:bundle
+
+      - name: Dependency audit (high and critical only)
+        run: npm audit --audit-level=high

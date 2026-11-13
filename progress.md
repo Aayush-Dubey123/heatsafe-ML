@@ -15,7 +15,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase F1 (Frontend design and plan, D20) — waiting on the owner to pick a design direction. Backend: Phases 0–11 closed (Phase 10 accepted, D19); Phase 12 (deployment hardening) deferred.  
+**Current phase:** Phase F2/F3 built (frontend, D20/D21): Home + Map + Zones + About running against the real API; next is native-speaker review of hi/mr, real-phone testing (F4) and deployment. Backend: Phases 0–11 closed (Phase 10 accepted, D19); Phase 12 (deployment hardening) deferred.  
 **Frontend status:** 🔓 OPEN for planning (D20)  
 **Last updated:** 2026-11-13  
 
@@ -44,6 +44,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | D17 | API reads the bundle, not PostGIS | The API answers from the published bundle held in memory (rasters, GeoJSON, tables) instead of querying PostGIS: no database round-trip, no spatial index to maintain, the database is optional for reads, and the data and the API can never disagree about which product is current. The database tables (Phase 9) remain as the audit and future-query store. Revisit if the dataset outgrows memory (it is ~36 MB of arrays today). | 2026-11-13 (Phase 11) |
 | D18 | Frontend work on `main`; Dependabot removed | 2026-11-13: `development` was fast-forwarded into `main` on the owner's instruction (D13) and both branches now point at the same commit; frontend work continues on `main`. Dependabot was removed because its automatic pull-request branches (6 appeared within minutes, mostly major-version bumps) break the two-branch policy; vulnerabilities are still caught by `pip-audit` in CI and upgrades are done by hand. | 2026-11-13 |
 | D19 | Phase 10 check accepted | 2026-11-13: the owner confirmed the Phase 10 check as done after a green manual run of the pipeline workflow on GitHub (run 43391740222, `workflow_dispatch` on `main`) and a green local run against the live catalogue (`no_new_scene`, last product kept, run audited in `pipeline_runs`). The 14-consecutive-scheduled-runs criterion (D10) is therefore waived in favour of this evidence; the daily schedule stays on and any failure shows in the Actions tab and `pipeline_runs`. | 2026-11-13 (Phase 10) |
+| D21 | Frontend direction | 2026-11-13: the owner chose "Combine all three" design directions: Home (answer-first, phone-first), Map tab (map-first), Zones tab (planner console), plus About. Built on `main` as `frontend/` (React + TypeScript + Vite, MapLibre, TanStack Query, i18n en/hi/mr). | 2026-11-13 |
 | D20 | Frontend unlocked | 2026-11-13: the owner commanded "now we move to frontend" and chose to build it on `main` (see D18). Phase 12 (deployment hardening) is deferred until after the frontend plan; the frontend builds against the frozen OpenAPI v1 contract, so Phase 12 cannot break it. This is a logged exception to the "gate fully ticked" rule, like D9. Branch 2 is open for Phase F1 (design and plan); code is written only after the owner picks a design direction. | 2026-11-13 |
 
 ### Technology Decision Log (Plan v2, locked 2026-11-09)
@@ -649,25 +650,26 @@ All items must be checked before Branch 2 (Frontend) can be proposed:
 - **Rule B:** no new `.gitignore` or `requirements.txt`. `frontend/package.json` and `package-lock.json` are unavoidable npm manifests for a separate ecosystem (like `requirements.txt` is for Python) and are the one deliberate exception, logged here; the root `.gitignore` already covers `node_modules/` and `dist/`.
 - **Rule C:** no new `.md` files. The design skill's `PRODUCT.md` / `DESIGN.md` outputs are not created; the brief above and the tokens in `frontend/src/styles/` serve instead.
 
-#### Phase F1 — UX & Design Spec `[~]`
+#### Phase F1 — UX & Design Spec `[x]`
 - [x] Frontend brief, decisions FD1–FD11, rule fit (above).
-- [ ] Owner picks a design direction from three references (map-first, answer-first, planner console, or a combination).
+- [x] Owner picked "Combine all three" (D21).
 - [ ] Design tokens (colour, type scale, spacing, motion) with light and dark, WCAG 2.1 AA contrast verified; heat colour scale chosen to stay legible for colour-blind users.
 - [ ] Screen list and flows: Map and heat card, Zones and localities ranking, Cooling places, About the data (limits, model card summary, credits), states (loading, empty, error, offline, stale, outside study area, model-filled cell).
 - [ ] UI copy and disclaimers in English, Hindi, Marathi (reviewed by a native speaker before release).
 - **Exit:** owner approves the direction and the screen list.
 
-#### Phase F2 — Core App Architecture `[ ]`
+#### Phase F2 — Core App Architecture `[x]`
 - [ ] `frontend/` initialised per the standards; Vite + TypeScript strict; lint, typecheck, test scripts.
 - [ ] Typed API client generated from the OpenAPI snapshot, with normalised errors (`error.code`, `request_id`).
 - [ ] Map with basemap, heat tile layers, layer and season switcher, legend, locality and zone outlines.
 - [ ] "Check my location" and locality search → `/heat` → heat card.
 - **Exit:** the map and heat card work against a local API on real data; CI frontend job green.
+- **Evidence (2026-11-13):** lint, typecheck clean; 49 Vitest tests green (API client, URL state, geo/format utils, RangeBar, FreshnessBanner, HeatCard, LocationPicker, HomePage, ZonesPage, i18n key parity, OpenAPI contract-drift check); production build app JS 131.9 KB gzip (budget 250 KB; map library 289 KB lazy chunk); verified in the browser against the real local API on desktop and 375 px mobile (heat card, map with heat tiles, zones ranking and choropleth). CI `frontend` job added.
 
-#### Phase F3 — User Features & Disclaimers `[ ]`
-- [ ] Heat card: temperature with 90% range bar, observed vs model-filled badge, level code in words, scene age and stale banner, seasonal comparison.
-- [ ] Zones and localities ranking with rank intervals; hotspots layer; cooling places list with distance and "open in maps" link.
-- [ ] Persistent disclaimers; "About the data" page with limits; three languages; offline and error states.
+#### Phase F3 — User Features & Disclaimers `[~]`
+- [x] Heat card: temperature with 90% range bar, observed vs model-filled badge, level code in words, scene age and stale banner, seasonal comparison.
+- [x] Zones and localities ranking with rank intervals; hotspots layer; cooling places list with distance and "open in maps" link.
+- [x] Persistent disclaimers; "About the data" page with limits; three languages (hi/mr still need native-speaker review); offline and error states.
 - **Exit:** every API answer is surfaced accurately with its caveats and complete error handling.
 
 #### Phase F4 — Usability Testing, Hardening & v1.0 Release `[ ]`
