@@ -16,7 +16,7 @@ export function LanguageSwitch() {
           className="btn"
           aria-pressed={current === language.code}
           onClick={() => void changeLanguage(language.code as LanguageCode)}
-          style={{ minHeight: 36, padding: "0 10px", fontSize: "var(--fs-sm)" }}
+          style={{ minHeight: 40, padding: "0 10px", fontSize: "var(--fs-sm)" }}
         >
           {language.label}
         </button>

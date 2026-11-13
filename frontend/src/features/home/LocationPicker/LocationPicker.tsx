@@ -9,6 +9,8 @@ import styles from "./LocationPicker.module.css";
 
 interface LocationPickerProps {
   onPick: (lat: number, lon: number, name?: string) => void;
+  /** "pill" is the compact floating search used on the map: one rounded field with a locate button inside. */
+  variant?: "form" | "pill";
 }
 
 interface Place {
@@ -20,7 +22,8 @@ interface Place {
 const MAX_RESULTS = 8;
 
 /** Choose a place by searching the 55 locality names or by using the device location. */
-export function LocationPicker({ onPick }: LocationPickerProps) {
+export function LocationPicker({ onPick, variant = "form" }: LocationPickerProps) {
+  const pill = variant === "pill";
   const { t } = useTranslation();
   const id = useId();
   const listId = `${id}-list`;
@@ -78,10 +81,10 @@ export function LocationPicker({ onPick }: LocationPickerProps) {
   return (
     <div className="stack" style={{ gap: 12 }}>
       <div className={styles.search}>
-        <label htmlFor={`${id}-input`} className="small muted">
+        <label htmlFor={`${id}-input`} className={pill ? "sr-only" : "small muted"}>
           {t("home.searchLabel")}
         </label>
-        <div className={styles.field}>
+        <div className={pill ? `${styles.field} ${styles.pill}` : styles.field}>
           <Icon name="search" />
           <input
             id={`${id}-input`}
@@ -102,6 +105,18 @@ export function LocationPicker({ onPick }: LocationPickerProps) {
             onKeyDown={onKeyDown}
             onBlur={() => setOpen(false)}
           />
+          {pill && (
+            <button
+              type="button"
+              className={styles.locate}
+              onClick={() => locate((lat, lon) => onPick(lat, lon))}
+              disabled={status === "locating"}
+              aria-label={t("home.useLocation")}
+              title={t("home.useLocation")}
+            >
+              <Icon name="locate" size={20} />
+            </button>
+          )}
         </div>
         {showList && (
           <ul id={listId} role="listbox" className={styles.list}>
@@ -127,15 +142,17 @@ export function LocationPicker({ onPick }: LocationPickerProps) {
           </ul>
         )}
       </div>
-      <button
-        type="button"
-        className="btn"
-        onClick={() => locate((lat, lon) => onPick(lat, lon))}
-        disabled={status === "locating"}
-      >
-        <Icon name="locate" /> {t("home.useLocation")}
-      </button>
-      <div role="status" className="small muted">
+      {!pill && (
+        <button
+          type="button"
+          className="btn"
+          onClick={() => locate((lat, lon) => onPick(lat, lon))}
+          disabled={status === "locating"}
+        >
+          <Icon name="locate" /> {t("home.useLocation")}
+        </button>
+      )}
+      <div role="status" className={pill && statusMessage ? "notice notice-warn small" : "small muted"}>
         {statusMessage ? t(statusMessage) : null}
       </div>
     </div>

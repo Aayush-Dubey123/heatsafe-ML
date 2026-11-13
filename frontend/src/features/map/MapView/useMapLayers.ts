@@ -10,11 +10,18 @@ export interface MapLayerOptions {
   showLocalities: boolean;
   hotspots?: GeoData;
   showHotspots: boolean;
+  /** Cooling places as point features (properties: asset_id, category); keep the object stable between renders. */
+  cooling?: GeoData;
+  selectedSpot?: string;
 }
 
 const HEAT = "heat";
 const LOCALITIES = "localities";
 const HOTSPOTS = "hotspots";
+const COOLING = "cooling";
+
+/** Layer id of the tappable cooling-place pins. */
+export const COOLING_LAYER = `${COOLING}-circles`;
 
 function removeLayerAndSource(map: MapLibreMap, id: string, layerIds: string[]): void {
   for (const layerId of layerIds) {
@@ -29,7 +36,7 @@ function removeLayerAndSource(map: MapLibreMap, id: string, layerIds: string[]):
  * Overlays are inserted below the basemap's text labels so place names stay readable.
  */
 export function useMapLayers(map: MapLibreMap | null, styleVersion: number, options: MapLayerOptions): void {
-  const { tileUrl, bounds, localities, showLocalities, hotspots, showHotspots } = options;
+  const { tileUrl, bounds, localities, showLocalities, hotspots, showHotspots, cooling, selectedSpot } = options;
   const [west, south, east, north] = bounds;
 
   useEffect(() => {
@@ -44,7 +51,7 @@ export function useMapLayers(map: MapLibreMap | null, styleVersion: number, opti
       maxzoom: 16,
       bounds: [west, south, east, north],
     });
-    map.addLayer({ id: HEAT, type: "raster", source: HEAT, paint: { "raster-opacity": 0.78, "raster-fade-duration": 150 } }, firstLabel);
+    map.addLayer({ id: HEAT, type: "raster", source: HEAT, paint: { "raster-opacity": 0.66, "raster-fade-duration": 150 } }, firstLabel);
     return () => {
       try {
         removeLayerAndSource(map, HEAT, [HEAT]);
@@ -93,4 +100,37 @@ export function useMapLayers(map: MapLibreMap | null, styleVersion: number, opti
       }
     };
   }, [map, styleVersion, hotspots, showHotspots]);
+
+  useEffect(() => {
+    if (!map || styleVersion === 0 || !cooling) return;
+    map.addSource(COOLING, { type: "geojson", data: cooling });
+    map.addLayer({
+      id: COOLING_LAYER,
+      type: "circle",
+      source: COOLING,
+      paint: {
+        "circle-radius": ["case", ["==", ["get", "asset_id"], selectedSpot ?? ""], 12, 9],
+        "circle-color": [
+          "match",
+          ["get", "category"],
+          "health_facility",
+          "#2b78c2",
+          "public_shelter",
+          "#7a4bd6",
+          ["water_body", "drinking_water"],
+          "#1b9aaa",
+          "#1f8a5b",
+        ],
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 3,
+      },
+    });
+    return () => {
+      try {
+        removeLayerAndSource(map, COOLING, [COOLING_LAYER]);
+      } catch {
+        /* the map may already be destroyed */
+      }
+    };
+  }, [map, styleVersion, cooling, selectedSpot]);
 }

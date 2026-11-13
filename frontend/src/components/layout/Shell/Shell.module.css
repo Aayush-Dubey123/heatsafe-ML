@@ -17,6 +17,7 @@
   padding: 0 var(--space-4);
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
 }
 
 .brand {
@@ -24,6 +25,25 @@
   align-items: center;
   gap: var(--space-2);
   font-weight: 600;
+}
+
+.long {
+  display: none;
+}
+
+@media (min-width: 560px) {
+  .long {
+    display: inline;
+  }
+  .short {
+    display: none;
+  }
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .logo {

@@ -2,7 +2,6 @@
   width: 100%;
   height: 100%;
   min-height: 320px;
-  border-radius: var(--radius);
   overflow: hidden;
   background: var(--surface-2);
 }
@@ -18,4 +17,20 @@
   border-radius: var(--radius);
   background: var(--surface-2);
   color: var(--text-2);
+}
+
+/* On phones the bottom sheet covers the lower edge: hide zoom buttons (pinch works) and lift the credits above it. */
+@media (max-width: 899px) {
+  .map :global(.maplibregl-ctrl-bottom-left) {
+    display: none;
+  }
+  .map :global(.maplibregl-ctrl-bottom-right) {
+    margin-bottom: 190px;
+  }
+}
+
+@media (min-width: 900px) {
+  .map :global(.maplibregl-ctrl-bottom-left) {
+    margin-left: 424px;
+  }
 }

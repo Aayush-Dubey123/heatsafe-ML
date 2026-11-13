@@ -5,6 +5,7 @@ import { useHeat } from "../../../api/queries/queries";
 import { ErrorBlock, LoadingBlock } from "../../../components/status/StateViews/StateViews";
 import { Icon } from "../../../components/ui/Icon/Icon";
 import { locationSearch, useUrlState } from "../../../hooks/useUrlState/useUrlState";
+import { AdviceHero } from "../AdviceHero/AdviceHero";
 import { CoolingList } from "../CoolingList/CoolingList";
 import { HeatCard } from "../HeatCard/HeatCard";
 import { LocationPicker } from "../LocationPicker/LocationPicker";
@@ -53,7 +54,14 @@ export function HomePage() {
 
       {hasPoint && heat.isPending && <LoadingBlock lines={4} />}
       {hasPoint && heat.isError && <ErrorBlock error={heat.error} onRetry={() => void heat.refetch()} />}
-      <div aria-live="polite">{hasPoint && heat.data && <HeatCard heat={heat.data} />}</div>
+      <div aria-live="polite" className="stack">
+        {hasPoint && heat.data && (
+          <div className="card" style={{ background: "var(--accent-bg)", borderColor: "transparent" }}>
+            <AdviceHero heat={heat.data} />
+          </div>
+        )}
+        {hasPoint && heat.data && <HeatCard heat={heat.data} showHeadline={false} />}
+      </div>
 
       {hasPoint && heat.data && state.lat !== undefined && state.lon !== undefined && (
         <>

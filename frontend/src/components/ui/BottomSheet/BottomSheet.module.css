@@ -1,0 +1,84 @@
+/* Phone: a sheet docked to the bottom of the map. Desktop: a floating panel on the left. */
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  max-height: 82%;
+  background: var(--surface);
+  border-radius: 24px 24px 0 0;
+  box-shadow: var(--shadow-up);
+}
+
+.handle {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 28px;
+  border: 0;
+  background: none;
+  touch-action: none;
+}
+
+.grip {
+  width: 40px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--border-strong);
+}
+
+.summary {
+  flex: none;
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.body {
+  min-height: 0;
+  overflow-y: auto;
+  max-height: 0;
+  visibility: hidden;
+  padding: 0 var(--space-4);
+  transition: max-height 0.3s ease, visibility 0.3s;
+}
+
+.sheet[data-expanded="true"] .body {
+  max-height: 58dvh;
+  visibility: visible;
+  padding-bottom: var(--space-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .body {
+    transition: none;
+  }
+}
+
+@media (min-width: 900px) {
+  .sheet {
+    left: var(--space-4);
+    top: var(--space-4);
+    bottom: var(--space-4);
+    right: auto;
+    width: 392px;
+    max-height: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .handle {
+    display: none;
+  }
+  .summary {
+    padding-top: var(--space-4);
+  }
+  .body,
+  .sheet[data-expanded="true"] .body {
+    flex: 1;
+    max-height: none;
+    visibility: visible;
+    padding-bottom: var(--space-4);
+  }
+}

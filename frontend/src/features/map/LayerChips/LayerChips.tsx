@@ -29,13 +29,13 @@ export function LayerChips({ value, onChange }: LayerChipsProps) {
   const { kind, season } = describeLayer(value);
 
   return (
-    <div className="stack" style={{ gap: 8 }}>
-      <div role="group" aria-label={t("map.layers")} className="row" style={{ gap: 6 }}>
+    <div style={{ display: "flex", gap: 8, overflowX: "auto", flexWrap: "nowrap", paddingBottom: 6, scrollbarWidth: "none" }}>
+      <div role="group" aria-label={t("map.layers")} style={{ display: "flex", gap: 6, flex: "none" }}>
         {(["temp", "exposure"] as const).map((option) => (
           <button
             key={option}
             type="button"
-            className="btn"
+            className="btn chip"
             aria-pressed={kind === option}
             onClick={() => onChange(layerFor(option, option === "exposure" ? (season ?? "summer") : season))}
           >
@@ -43,9 +43,9 @@ export function LayerChips({ value, onChange }: LayerChipsProps) {
           </button>
         ))}
       </div>
-      <div role="group" aria-label={t("zones.season")} className="row" style={{ gap: 6 }}>
+      <div role="group" aria-label={t("zones.season")} style={{ display: "flex", gap: 6, flex: "none" }}>
         {kind === "temp" && (
-          <button type="button" className="btn" aria-pressed={season === undefined} onClick={() => onChange("latest_lst")}>
+          <button type="button" className="btn chip" aria-pressed={season === undefined} onClick={() => onChange("latest_lst")}>
             {t("season.latest_scene")}
           </button>
         )}
@@ -53,7 +53,7 @@ export function LayerChips({ value, onChange }: LayerChipsProps) {
           <button
             key={option}
             type="button"
-            className="btn"
+            className="btn chip"
             aria-pressed={season === option}
             onClick={() => onChange(layerFor(kind, option))}
           >

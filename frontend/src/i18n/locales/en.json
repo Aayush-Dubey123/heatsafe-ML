@@ -2,7 +2,8 @@
   "app": {
     "name": "HeatSafe Nagpur",
     "skip": "Skip to content",
-    "tagline": "Satellite surface heat for Nagpur"
+    "tagline": "Satellite surface heat for Nagpur",
+    "short": "HeatSafe"
   },
   "nav": {
     "home": "Home",
@@ -96,7 +97,8 @@
     "water_body": "Water body",
     "health_facility": "Health facility",
     "public_shelter": "Public shelter",
-    "drinking_water": "Drinking water"
+    "drinking_water": "Drinking water",
+    "directions": "Directions"
   },
   "map": {
     "title": "Heat map",
@@ -112,7 +114,11 @@
     "unavailable": "The map could not be loaded. You can still use search and the Zones page.",
     "ariaLabel": "Interactive heat map of Nagpur",
     "pickedSpot": "Selected spot",
-    "fullDetails": "See full details and cooling places"
+    "fullDetails": "See full details and cooling places",
+    "expand": "Show details",
+    "collapse": "Hide details",
+    "spotTitle": "Cooling place",
+    "credits": "Map © OpenStreetMap contributors and OpenFreeMap. Heat data: Landsat 8/9 (USGS)."
   },
   "zones": {
     "title": "Zones and localities",
@@ -176,5 +182,17 @@
     ],
     "officialTitle": "Not an official warning system",
     "official": "HeatSafe is a research project. It does not replace advisories from the India Meteorological Department, the National Disaster Management Authority or Nagpur Municipal Corporation."
+  },
+  "theme": {
+    "toDark": "Switch to dark theme",
+    "toLight": "Switch to light theme"
+  },
+  "advice": {
+    "mild": "The ground is mild right now",
+    "warm": "The ground is warm right now",
+    "hot": "Hot ground. Take breaks in the shade",
+    "veryHot": "Very hot ground. Stay in the shade and drink water",
+    "nearest": "Nearest cool place: {{name}}, {{distance}} away",
+    "directions": "Directions"
   }
 }

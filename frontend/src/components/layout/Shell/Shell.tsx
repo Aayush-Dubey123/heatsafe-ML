@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ApiError } from "../../../api/client/client";
 import { useMetadata } from "../../../api/queries/queries";
@@ -7,6 +7,7 @@ import { useOnline } from "../../../hooks/useDevice/useDevice";
 import { FreshnessBanner } from "../../status/FreshnessBanner/FreshnessBanner";
 import { Icon } from "../../ui/Icon/Icon";
 import type { IconName } from "../../ui/Icon/Icon";
+import { ThemeToggle } from "../../ui/ThemeToggle/ThemeToggle";
 import { LanguageSwitch } from "../../ui/LanguageSwitch/LanguageSwitch";
 import styles from "./Shell.module.css";
 
@@ -21,6 +22,7 @@ const TABS: { to: string; key: string; icon: IconName; end?: boolean }[] = [
 export function Shell() {
   const { t } = useTranslation();
   const online = useOnline();
+  const onMap = useLocation().pathname === "/map"; // the map page carries its own disclaimer in the sheet
   const { state } = useUrlState();
   const metadata = useMetadata();
   const search = locationSearch(state);
@@ -35,7 +37,8 @@ export function Shell() {
       <header className={styles.header}>
         <div className={styles.brand}>
           <span className={styles.logo} aria-hidden="true" />
-          <span>{t("app.name")}</span>
+          <span className={styles.long}>{t("app.name")}</span>
+          <span className={styles.short}>{t("app.short")}</span>
         </div>
         <nav className={styles.nav} aria-label={t("nav.primary")}>
           {TABS.map((tab) => (
@@ -50,7 +53,10 @@ export function Shell() {
             </NavLink>
           ))}
         </nav>
-        <LanguageSwitch />
+        <div className={styles.tools}>
+          <LanguageSwitch />
+          <ThemeToggle />
+        </div>
       </header>
       <div className={styles.banner}>
         <FreshnessBanner product={metadata.data?.product} offline={!online} noProduct={noProduct} />
@@ -58,10 +64,12 @@ export function Shell() {
       <main id="main" className={styles.main} tabIndex={-1}>
         <Outlet />
       </main>
-      <footer className={styles.footer}>
-        <p>{t("disclaimer.short")}</p>
-        <p>{t("disclaimer.advisory")}</p>
-      </footer>
+      {!onMap && (
+        <footer className={styles.footer}>
+          <p>{t("disclaimer.short")}</p>
+          <p>{t("disclaimer.advisory")}</p>
+        </footer>
+      )}
     </div>
   );
 }

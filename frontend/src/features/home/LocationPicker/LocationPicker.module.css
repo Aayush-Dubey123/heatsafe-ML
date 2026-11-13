@@ -14,6 +14,7 @@
   background: var(--surface);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
 }
 
 .field:focus-within {
@@ -70,4 +71,29 @@
 
 .empty {
   color: var(--text-2);
+}
+
+.pill {
+  min-height: 50px;
+  border-radius: var(--radius-pill);
+  border-color: transparent;
+  box-shadow: var(--shadow);
+  padding-right: 6px;
+}
+
+.locate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent-bg);
+  color: var(--accent-text);
+}
+
+.locate:hover {
+  filter: brightness(0.95);
 }

@@ -3,6 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./App";
+import { applyTheme, readStoredTheme } from "./hooks/useTheme/useTheme";
 import { detectLanguage, initI18n, readStoredLanguage } from "./i18n/setup/i18n";
 import "./styles/tokens.css";
 import "./styles/global.css";
@@ -12,6 +13,7 @@ const queryClient = new QueryClient({
 });
 
 async function start(): Promise<void> {
+  applyTheme(readStoredTheme());
   const urlLang = new URLSearchParams(window.location.search).get("lang");
   await initI18n(detectLanguage(urlLang, readStoredLanguage(), navigator.language));
   const root = document.getElementById("root");

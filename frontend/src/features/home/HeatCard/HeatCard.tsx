@@ -9,13 +9,15 @@ interface HeatCardProps {
   heat: HeatResponse;
   /** Compact layout for the map side panel: skips the seasonal table. */
   compact?: boolean;
+  /** Show the big number and its range sentence; turn off when a hero above already shows them. */
+  showHeadline?: boolean;
 }
 
 /**
  * The answer to "how hot is it here": estimate with its 90% range, whether the satellite saw the spot,
  * how old the image is, and how this place compares across seasons. It always says this is surface temperature.
  */
-export function HeatCard({ heat, compact = false }: HeatCardProps) {
+export function HeatCard({ heat, compact = false, showHeadline = true }: HeatCardProps) {
   const { t, i18n } = useTranslation();
   const { product } = heat;
   const date = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "short", year: "numeric" }).format(
@@ -47,12 +49,14 @@ export function HeatCard({ heat, compact = false }: HeatCardProps) {
       {place.length > 0 && <p className="small muted">{place.join(" · ")}</p>}
       <div>
         <p className="small muted">{t("heat.surface")}</p>
-        <p className={styles.headline}>
-          <span className={styles.value} aria-hidden="true">
-            {Math.round(heat.lst_celsius)} °C
-          </span>
-          <span className="muted">{t("heat.rangeShort", { low: Math.round(low), high: Math.round(high) })}</span>
-        </p>
+        {showHeadline && (
+          <p className={styles.headline}>
+            <span className={styles.value} aria-hidden="true">
+              {Math.round(heat.lst_celsius)} °C
+            </span>
+            <span className="muted">{t("heat.rangeShort", { low: Math.round(low), high: Math.round(high) })}</span>
+          </p>
+        )}
         <RangeBar value={heat.lst_celsius} low={low} high={high} />
       </div>
 

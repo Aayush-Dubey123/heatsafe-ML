@@ -97,3 +97,8 @@ export function svgPath(feature: AreaFeature, project: (lon: number, lat: number
 export function osmPlaceLink(lat: number, lon: number): string {
   return `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=18/${lat}/${lon}`;
 }
+
+/** Link that opens turn-by-turn directions to a place in Google Maps (opened only when the user taps it). */
+export function directionsLink(lat: number, lon: number): string {
+  return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
+}
