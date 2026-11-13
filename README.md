@@ -386,7 +386,7 @@ python -m ml.src.ingest --source landsat --start-date 2024-01-01 --end-date 2024
 ```
 
 ### 6. Using the API
-With the server running (step 4) and a product bundle in `ml/data/published/` (build one with `python -m ml.src.publish.products`, or fetch the latest with `python -m ml.src.publish.storage restore-bundle`), the interactive docs are at `/docs`. Examples:
+With the server running (step 4) and a product bundle in `ml/data/published/` (build one with `python -m ml.src.publish.products`, or fetch the latest with `python -m ml.src.sync.storage restore-bundle`), the interactive docs are at `/docs`. Examples:
 ```bash
 curl "http://127.0.0.1:8000/api/v1/metadata"
 curl "http://127.0.0.1:8000/api/v1/heat?lat=21.1458&lon=79.0882"

@@ -25,7 +25,7 @@ from ml.src.dataset.build import INTERIM_DIR, SCENE_INDEX, SCENES_DIR, discover_
 from ml.src.dataset.splits import load_thresholds
 from ml.src.pipeline.fallback import RunLock, RunLockError, record_run, serve_last_good
 from ml.src.publish.products import build_bundle, load_bundle_to_database, published_dir, read_latest
-from ml.src.publish.storage import StorageNotConfiguredError, get_token, upload_bundle, upload_state
+from ml.src.sync.storage import StorageNotConfiguredError, get_token, upload_bundle, upload_state
 
 logging = get_ml_logger(__name__)
 

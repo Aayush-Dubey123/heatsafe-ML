@@ -49,10 +49,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Restore model, terrain, scene index, and map layers
-        run: python -m ml.src.publish.storage restore-state
+        run: python -m ml.src.sync.storage restore-state
 
       - name: Restore the last published bundle
-        run: python -m ml.src.publish.storage restore-bundle
+        run: python -m ml.src.sync.storage restore-bundle
 
       - name: Run pipeline once
         run: python -m ml.src.pipeline.run_batch

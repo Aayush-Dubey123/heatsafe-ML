@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from ml.src.publish import storage
+from ml.src.sync import storage
 from ml.src.publish.products import read_latest, set_latest, write_manifest
 
 REPO = "owner/test-repo"
