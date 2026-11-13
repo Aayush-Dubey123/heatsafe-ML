@@ -92,8 +92,8 @@ flowchart TD
   subgraph S_DELIVERY ["Acceptance Gates and Delivery Milestones"]
     direction LR
     GATE_BE{"<b>Backend Gate Certified?</b><br/>- Warm p95 under 200 ms | Cov 85% plus<br/>- OpenAPI v1 frozen | Rs 0 cost<br/>- Phase 12 verification"}
-    GATE_FE{"<b>Frontend Unlocked?</b><br/>- Explicit owner command<br/>- Status: [LOCKED]"}
-    FE_DASH["<b>Frontend Web Dashboard (frontend/)</b><br/>- Next.js/React app with Deck.gl 30 m heat map viewer<br/>- Zone heat exposure scorecards and cooling spot finder<br/>- Consumes frozen /api/v1 OpenAPI contract<br/>- Free hosting (Vercel / Netlify / Cloudflare Pages)<br/>- Status: [LOCKED - Awaiting Gate Exit]"]
+    GATE_FE{"<b>Frontend Unlocked?</b><br/>- Explicit owner command<br/>- Status: [UNLOCKED 2026-11-13, D20]"}
+    FE_DASH["<b>Frontend Web Dashboard (frontend/)</b><br/>- Next.js/React app with Deck.gl 30 m heat map viewer<br/>- Zone heat exposure scorecards and cooling spot finder<br/>- Consumes frozen /api/v1 OpenAPI contract<br/>- Free hosting (Vercel / Netlify / Cloudflare Pages)<br/>- Status: [PLANNED] Design direction pending owner choice"]
 
     GATE_BE -- "Owner Command: 'move to frontend'" --> GATE_FE
     GATE_FE -- "Unlocks Branch 2" --> FE_DASH

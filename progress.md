@@ -4,7 +4,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 
 ## Ground Rules & Two-Branch Governance
 1. **Branch 1 (Backend & ML)** is built completely first. No frontend work of any kind during Branch 1.
-2. **Branch 2 (Frontend)** is **LOCKED**. It opens only when BOTH conditions are met:
+2. **Branch 2 (Frontend)** was **LOCKED** until BOTH conditions were met (it was opened early by the owner on 2026-11-13, decision D20, with Phase 12 deferred):
    - The Backend Acceptance Gate (end of Branch 1) is fully ticked, AND
    - The project owner explicitly issues the command: *"move to frontend"*.
 3. **Strict Gate Closure:** A phase closes only when **every measurable exit criterion** is ticked and its evidence is logged in the phase's *Evidence* line. No skipping ahead — with one logged exception: the API contract track (D9) may run in parallel once Phase 5 baselines exist.
@@ -15,8 +15,8 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 12 (Hardening & Zero-Cost Deployment) — Phases 0–9 and 11 closed; Phase 10 open only on the 14-day scheduled-run check (set `HEATSAFE_PIPELINE_ENABLED=true`). Backend API v1 contract frozen: frontend may start.  
-**Frontend status:** 🔒 LOCKED  
+**Current phase:** Phase F1 (Frontend design and plan, D20) — waiting on the owner to pick a design direction. Backend: Phases 0–11 closed (Phase 10 accepted, D19); Phase 12 (deployment hardening) deferred.  
+**Frontend status:** 🔓 OPEN for planning (D20)  
 **Last updated:** 2026-11-13  
 
 ---
@@ -43,6 +43,8 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | D16 | Named localities | The owner supplied the official NMC intention map (scan dated 2025-06-16). It has no zone layer, so the 10 approximate zones stay for the risk ranking (T18), and its ~50 revenue villages are added as a second, readable layer: **55 named localities** traced automatically from the map's index panel and fitted to the OSM city boundary (IoU 0.87; the difference is mainly the Hudkeshwar–Narsala extension, which OSM lacks and is now included). Positional accuracy ~100 m. "Nagpur and Sitabuldi" and "Takali Sim and Jaitala" could not be separated; seven small localities were grown from seed points. | 2026-11-11 (Phase 9) |
 | D17 | API reads the bundle, not PostGIS | The API answers from the published bundle held in memory (rasters, GeoJSON, tables) instead of querying PostGIS: no database round-trip, no spatial index to maintain, the database is optional for reads, and the data and the API can never disagree about which product is current. The database tables (Phase 9) remain as the audit and future-query store. Revisit if the dataset outgrows memory (it is ~36 MB of arrays today). | 2026-11-13 (Phase 11) |
 | D18 | Frontend work on `main`; Dependabot removed | 2026-11-13: `development` was fast-forwarded into `main` on the owner's instruction (D13) and both branches now point at the same commit; frontend work continues on `main`. Dependabot was removed because its automatic pull-request branches (6 appeared within minutes, mostly major-version bumps) break the two-branch policy; vulnerabilities are still caught by `pip-audit` in CI and upgrades are done by hand. | 2026-11-13 |
+| D19 | Phase 10 check accepted | 2026-11-13: the owner confirmed the Phase 10 check as done after a green manual run of the pipeline workflow on GitHub (run 43391740222, `workflow_dispatch` on `main`) and a green local run against the live catalogue (`no_new_scene`, last product kept, run audited in `pipeline_runs`). The 14-consecutive-scheduled-runs criterion (D10) is therefore waived in favour of this evidence; the daily schedule stays on and any failure shows in the Actions tab and `pipeline_runs`. | 2026-11-13 (Phase 10) |
+| D20 | Frontend unlocked | 2026-11-13: the owner commanded "now we move to frontend" and chose to build it on `main` (see D18). Phase 12 (deployment hardening) is deferred until after the frontend plan; the frontend builds against the frozen OpenAPI v1 contract, so Phase 12 cannot break it. This is a logged exception to the "gate fully ticked" rule, like D9. Branch 2 is open for Phase F1 (design and plan); code is written only after the owner picks a design direction. | 2026-11-13 |
 
 ### Technology Decision Log (Plan v2, locked 2026-11-09)
 
@@ -617,31 +619,61 @@ All items must be checked before Branch 2 (Frontend) can be proposed:
 
 ---
 
-# BRANCH 2 — FRONTEND (Phases F1–F4) 🔒 LOCKED
-*Do not start, scaffold, or design frontend code until the Backend Acceptance Gate above is fully certified.*
+# BRANCH 2 — FRONTEND (Phases F1–F4) 🔓 OPEN (planning, D20)
+*Frontend code starts only after the owner picks a design direction (Phase F1 exit). It follows [code-standards/frontend-standards](code-standards/frontend-standards), the `impeccable` and `web-design-guidelines` skills, and the three structural rules (see "Rule fit" below).*
 
-#### Phase F1 — UX & Design Spec `[ ]`
-- [ ] User flow diagrams, responsive wireframes, UI copy, and clear heat-safety disclaimers
-- [ ] Design tokens and accessibility targets (WCAG 2.1 AA) adhering to [.agents/skills/web-design-guidelines](.agents/skills/web-design-guidelines)
-- **Exit:** Approved UI/UX specification.
+### Frontend brief
+- **Job:** a person in Nagpur opens the app (mostly on a phone, often outdoors) and learns in seconds how hot their surroundings are, whether the number can be trusted (observed vs model-filled, data age), and where the nearest cool place is. Planners get a read-only ranking of zones and localities (T1).
+- **Mode:** Operate (task UI): scanability, familiar patterns, honest uncertainty. Heat colours live on the map; the interface stays quiet.
+- **Content it must carry (real ranges):** surface temperature 15–68 °C with a 90% range; 4 seasons plus latest scene; 10 zones, 55 localities, 889 cooling places; data age 0–30+ days with a stale state after 16; three languages (English, Hindi, Marathi, T16).
+- **Honest-by-design rules:** always say "surface temperature, not air temperature"; always show the range and whether the cell was observed; show scene age; show "not an official warning system"; never present the approximate zone polygons as official boundaries; never say "street-level".
+- **Anti-goals:** no accounts, no ads or tracking, no alerts (T4), no live air-temperature or heat-index claims, no forecast until a model exists.
+
+### Frontend decisions (confirmed unless the owner objects)
+| ID | Topic | Decision |
+|:---|:---|:---|
+| FD1 | Stack | React 18 + TypeScript + Vite, single-page app, static output (free hosting). No server rendering needed: all data is public and cacheable. |
+| FD2 | Map | MapLibre GL JS. Our PNG tiles (`/api/v1/tiles/...`) as raster overlays on the free OpenFreeMap basemap (no key, attribution shown); fall back to plain OSM raster tiles at low zoom use if the basemap is unreachable. |
+| FD3 | Data and state | TanStack Query for API caching; selected location, layer, season and language live in the URL so any view is a shareable link. No global store. |
+| FD4 | Styling | CSS Modules + design tokens as CSS variables (light and dark). No Tailwind, no component library: few dependencies, one source of truth for tokens. |
+| FD5 | Languages | i18next with en / hi / mr. The API returns codes (`very_high`, `outside_study_area`); all words live in the app. Devanagari font bundled. |
+| FD6 | Types | TypeScript types generated from `backend/tests/api/openapi_v1.json`; a test fails if the generated file drifts from the contract. |
+| FD7 | Testing | Vitest + Testing Library + MSW (mock API) for units; Playwright for three critical flows (check my location, switch season, find cooling places); axe checks for accessibility. No test needs the live API. |
+| FD8 | Offline | Service worker caches the app shell and last metadata so the app opens offline with a clear "offline, showing saved data" state. |
+| FD9 | Search | Locality search runs client-side over `/localities` (55 names, names in the map's spelling); no paid geocoder. "Check my location" uses the browser Geolocation API and never sends it anywhere except the `/heat` call. |
+| FD10 | Hosting | Cloudflare Pages (free); API base URL from `VITE_API_BASE_URL`; the API's CORS list gets the Pages domain. Until Phase 12 the app talks to a local API. |
+| FD11 | CI | New `frontend` job in `ci.yml`: Node 22, `npm ci`, lint, typecheck, unit tests, build, bundle-size budget. |
+
+### Rule fit (agent.md)
+- **Rule A (2 code files per folder):** `src/` holds only `main.tsx` and `App.tsx`; everything else is folder-per-unit, e.g. `src/components/<Name>/<Name>.tsx` + `<Name>.test.tsx`, `src/hooks/<name>/` with at most two files, `src/api/{client,endpoints,types}/` with at most two files each. CSS modules and JSON are not code files.
+- **Rule B:** no new `.gitignore` or `requirements.txt`. `frontend/package.json` and `package-lock.json` are unavoidable npm manifests for a separate ecosystem (like `requirements.txt` is for Python) and are the one deliberate exception, logged here; the root `.gitignore` already covers `node_modules/` and `dist/`.
+- **Rule C:** no new `.md` files. The design skill's `PRODUCT.md` / `DESIGN.md` outputs are not created; the brief above and the tokens in `frontend/src/styles/` serve instead.
+
+#### Phase F1 — UX & Design Spec `[~]`
+- [x] Frontend brief, decisions FD1–FD11, rule fit (above).
+- [ ] Owner picks a design direction from three references (map-first, answer-first, planner console, or a combination).
+- [ ] Design tokens (colour, type scale, spacing, motion) with light and dark, WCAG 2.1 AA contrast verified; heat colour scale chosen to stay legible for colour-blind users.
+- [ ] Screen list and flows: Map and heat card, Zones and localities ranking, Cooling places, About the data (limits, model card summary, credits), states (loading, empty, error, offline, stale, outside study area, model-filled cell).
+- [ ] UI copy and disclaimers in English, Hindi, Marathi (reviewed by a native speaker before release).
+- **Exit:** owner approves the direction and the screen list.
 
 #### Phase F2 — Core App Architecture `[ ]`
-- [ ] Web client initialized according to [code-standards/frontend-standards](code-standards/frontend-standards)
-- [ ] Interactive map view (MapLibre / Leaflet) rendering Nagpur heat raster tiles and ward boundaries
-- [ ] Location check feature ("Check my location" and ward search)
-- **Exit:** Interactive map successfully communicates with the production backend API.
+- [ ] `frontend/` initialised per the standards; Vite + TypeScript strict; lint, typecheck, test scripts.
+- [ ] Typed API client generated from the OpenAPI snapshot, with normalised errors (`error.code`, `request_id`).
+- [ ] Map with basemap, heat tile layers, layer and season switcher, legend, locality and zone outlines.
+- [ ] "Check my location" and locality search → `/heat` → heat card.
+- **Exit:** the map and heat card work against a local API on real data; CI frontend job green.
 
 #### Phase F3 — User Features & Disclaimers `[ ]`
-- [ ] Heat level, uncertainty range display, and data freshness / staleness indicator
-- [ ] Nearest cooling spots locator and navigation helper
-- [ ] Prominent scientific and public-safety disclaimers ("Not an official warning system")
-- [ ] Graceful offline, error, and stale-data states
-- **Exit:** All backend intelligence surfaced accurately with complete error handling.
+- [ ] Heat card: temperature with 90% range bar, observed vs model-filled badge, level code in words, scene age and stale banner, seasonal comparison.
+- [ ] Zones and localities ranking with rank intervals; hotspots layer; cooling places list with distance and "open in maps" link.
+- [ ] Persistent disclaimers; "About the data" page with limits; three languages; offline and error states.
+- **Exit:** every API answer is surfaced accurately with its caveats and complete error handling.
 
 #### Phase F4 — Usability Testing, Hardening & v1.0 Release `[ ]`
-- [ ] Usability testing on desktop and mobile viewports
-- [ ] Frontend automated tests (component rendering, API mock tests, E2E user flow)
-- [ ] Production build optimization, CI/CD deployment on a free tier (T2), and v1.0 release tag
-- **Exit:** Public release with published release notes; transition to maintenance.
+- [ ] Usability pass on real phones (low-end Android, slow network) and desktop; axe audit zero serious issues.
+- [ ] Performance budget: first meaningful view under 3 s on a throttled mid phone; app bundle under 250 KB gzipped excluding the map library.
+- [ ] Playwright critical flows green; deployment to Cloudflare Pages; v1.0 tag and release notes.
+- **Exit:** public release; transition to maintenance.
 
 ---
