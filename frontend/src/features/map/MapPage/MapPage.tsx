@@ -7,6 +7,7 @@ import type { AssetCategory } from "../../../api/types/types";
 import { ErrorBlock, LoadingBlock } from "../../../components/status/StateViews/StateViews";
 import { BottomSheet } from "../../../components/ui/BottomSheet/BottomSheet";
 import { Icon } from "../../../components/ui/Icon/Icon";
+import { Tabs } from "../../../components/ui/Tabs/Tabs";
 import { locationSearch, useUrlState } from "../../../hooks/useUrlState/useUrlState";
 import { fmtDistance } from "../../../utils/format/format";
 import { directionsLink } from "../../../utils/geo/geo";
@@ -31,6 +32,7 @@ export function MapPage() {
   const [showHotspots, setShowHotspots] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [spotId, setSpotId] = useState<string>();
+  const [sheetTab, setSheetTab] = useState("details");
 
   const { kind, season } = describeLayer(state.layer);
   const heat = useHeat(state.lat, state.lon);
@@ -87,6 +89,7 @@ export function MapPage() {
           onPick={(lat, lon) => pick(lat, lon)}
           onSpot={(id) => {
             setSpotId(id);
+            setSheetTab("places");
             setExpanded(true);
           }}
         />
@@ -111,49 +114,75 @@ export function MapPage() {
           </div>
         }
       >
-        <div className="stack">
-          {spot && (
-            <section className="card stack" style={{ gap: 8 }} aria-label={t("map.spotTitle")}>
-              <p className="small muted">{t("map.spotTitle")}</p>
-              <p style={{ fontWeight: 600 }}>
-                {spot.name ?? t("cooling.unnamed", { type: t(`cooling.${spot.category as AssetCategory}`) })}
-              </p>
-              <p className="small muted">
-                {t(`cooling.${spot.category as AssetCategory}`)} · {t("cooling.away", { distance: fmtDistance(spot.distance_km) })}
-              </p>
-              <a
-                className="btn btn-primary"
-                href={directionsLink(spot.latitude, spot.longitude)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Icon name="route" size={16} /> {t("cooling.directions")}
-              </a>
-            </section>
-          )}
-          <Legend kind={kind} vmin={layerInfo.vmin} vmax={layerInfo.vmax} />
-          <div className="row" style={{ gap: 16 }}>
-            <label className="row small" style={{ gap: 8 }}>
-              <input type="checkbox" checked={showLocalities} onChange={(event) => setShowLocalities(event.target.checked)} />
-              {t("map.showLocalities")}
-            </label>
-            <label className="row small" style={{ gap: 8 }}>
-              <input type="checkbox" checked={showHotspots} onChange={(event) => setShowHotspots(event.target.checked)} />
-              {t("map.showHotspots")}
-            </label>
-          </div>
-          {hasPoint && heat.data?.covered && <HeatCard heat={heat.data} compact showHeadline={false} />}
-          {hasPoint && heat.data && state.lat !== undefined && state.lon !== undefined && (
-            <CoolingList lat={state.lat} lon={state.lon} />
-          )}
-          {hasPoint && heat.data && (
-            <Link className="btn" to={{ pathname: "/", search: locationSearch(state) }}>
-              {t("map.fullDetails")}
-            </Link>
-          )}
-          <p className="small muted">{t("disclaimer.short")} {t("disclaimer.advisory")}</p>
-          <p className="small muted">{t("map.credits")}</p>
-        </div>
+        <Tabs
+          label={t("map.title")}
+          value={sheetTab}
+          onChange={setSheetTab}
+          tabs={[
+            {
+              id: "details",
+              label: t("tab.details"),
+              content: (
+                <div className="stack" style={{ gap: 10 }}>
+                  {hasPoint && heat.data?.covered && <HeatCard heat={heat.data} compact showHeadline={false} bare hidePlace />}
+                  {hasPoint && heat.data && (
+                    <Link className="btn" to={{ pathname: "/", search: locationSearch(state) }}>
+                      {t("map.fullDetails")}
+                    </Link>
+                  )}
+                  {!hasPoint && <p className="muted">{t("map.tapHint")}</p>}
+                </div>
+              ),
+            },
+            {
+              id: "places",
+              label: t("tab.places"),
+              content: (
+                <div className="stack" style={{ gap: 10 }}>
+                  {spot && (
+                    <div className="row" style={{ gap: 10, flexWrap: "nowrap", background: "var(--ok-bg)", color: "var(--ok-text)", borderRadius: "var(--radius-sm)", padding: "8px 8px 8px 12px" }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontWeight: 600 }}>{spot.name ?? t("cooling.unnamed", { type: t(`cooling.${spot.category as AssetCategory}`) })}</p>
+                        <p className="small">
+                          {t(`cooling.${spot.category as AssetCategory}`)} · {t("cooling.away", { distance: fmtDistance(spot.distance_km) })}
+                        </p>
+                      </div>
+                      <a className="btn btn-primary" style={{ flex: "none", minHeight: 40 }} href={directionsLink(spot.latitude, spot.longitude)} target="_blank" rel="noopener noreferrer">
+                        <Icon name="route" size={16} /> {t("cooling.directions")}
+                      </a>
+                    </div>
+                  )}
+                  {hasPoint && state.lat !== undefined && state.lon !== undefined ? (
+                    <CoolingList lat={state.lat} lon={state.lon} bare />
+                  ) : (
+                    <p className="muted">{t("map.tapHint")}</p>
+                  )}
+                </div>
+              ),
+            },
+            {
+              id: "layers",
+              label: t("tab.layers"),
+              content: (
+                <div className="stack" style={{ gap: 12 }}>
+                  <Legend kind={kind} vmin={layerInfo.vmin} vmax={layerInfo.vmax} />
+                  <div className="row" style={{ gap: 16 }}>
+                    <label className="row small" style={{ gap: 8 }}>
+                      <input type="checkbox" checked={showLocalities} onChange={(event) => setShowLocalities(event.target.checked)} />
+                      {t("map.showLocalities")}
+                    </label>
+                    <label className="row small" style={{ gap: 8 }}>
+                      <input type="checkbox" checked={showHotspots} onChange={(event) => setShowHotspots(event.target.checked)} />
+                      {t("map.showHotspots")}
+                    </label>
+                  </div>
+                  <p className="small muted">{t("disclaimer.short")} {t("disclaimer.advisory")}</p>
+                  <p className="small muted">{t("map.credits")}</p>
+                </div>
+              ),
+            },
+          ]}
+        />
       </BottomSheet>
     </div>
   );

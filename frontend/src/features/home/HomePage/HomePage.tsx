@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
 import { useHeat } from "../../../api/queries/queries";
 import { ErrorBlock, LoadingBlock } from "../../../components/status/StateViews/StateViews";
 import { Icon } from "../../../components/ui/Icon/Icon";
+import { Tabs } from "../../../components/ui/Tabs/Tabs";
+import type { TabItem } from "../../../components/ui/Tabs/Tabs";
+import { useMediaQuery } from "../../../hooks/useMediaQuery/useMediaQuery";
 import { locationSearch, useUrlState } from "../../../hooks/useUrlState/useUrlState";
 import { AdviceHero } from "../AdviceHero/AdviceHero";
 import { CityPulse } from "../CityPulse/CityPulse";
@@ -15,12 +18,14 @@ import { ZoneGlance } from "../ZoneGlance/ZoneGlance";
 import styles from "./HomePage.module.css";
 
 /**
- * Answer-first home. The left column answers for the chosen place; the right column keeps the page useful
- * even before a place is chosen: the city right now, zone risk at a glance, and ways to stay cool.
+ * Answer-first home that fits the screen without scrolling. The answer for the chosen place sits on top;
+ * everything else (details, seasons, cool places, the city, zones, tips) is one tap away in tabs.
+ * On wide screens the cool places stay beside the answer and the other tabs fill the right column.
  */
 export function HomePage() {
   const { t } = useTranslation();
   const { state, update } = useUrlState();
+  const wide = useMediaQuery("(min-width: 900px)");
   const [changing, setChanging] = useState(false);
   const hasPoint = state.lat !== undefined && state.lon !== undefined;
   const heat = useHeat(state.lat, state.lon);
@@ -32,66 +37,83 @@ export function HomePage() {
 
   const placeName = state.name ?? heat.data?.locality?.name ?? (hasPoint ? `${state.lat?.toFixed(3)}, ${state.lon?.toFixed(3)}` : "");
   const search = locationSearch(state);
+  const showAnswer = hasPoint && !changing;
 
-  return (
-    <div className={`page ${styles.grid}`}>
-      <div className="stack">
-        {!hasPoint && (
-          <header className="stack" style={{ gap: 8 }}>
-            <h1 style={{ fontSize: "var(--fs-xl)" }}>{t("home.title")}</h1>
-            <p className="muted">{t("home.intro")}</p>
-          </header>
-        )}
+  const cityTab: TabItem = { id: "city", label: t("tab.city"), content: <CityPulse onPick={pick} rows={wide ? 8 : 5} /> };
+  const zonesTab: TabItem = { id: "zones", label: t("tab.zones"), content: <ZoneGlance /> };
+  const tipsTab: TabItem = { id: "tips", label: t("tab.tips"), content: <CoolTips bare /> };
+  const tabs: TabItem[] = [];
+  if (hasPoint && heat.data?.covered && !wide) {
+    tabs.push({ id: "now", label: t("tab.now"), content: <HeatCard heat={heat.data} compact showHeadline={false} bare /> });
+    tabs.push({ id: "seasons", label: t("tab.seasons"), content: <HeatCard heat={heat.data} tableOnly bare /> });
+  }
+  if (hasPoint && state.lat !== undefined && state.lon !== undefined) {
+    tabs.push({ id: "cool", label: t("tab.cool"), content: <CoolingList lat={state.lat} lon={state.lon} bare /> });
+  }
+  tabs.push(cityTab, zonesTab);
+  if (hasPoint || !wide) tabs.push(tipsTab);
 
-        {(!hasPoint || changing) && <LocationPicker onPick={pick} />}
-
-        {hasPoint && !changing && (
-          <div className="row" style={{ justifyContent: "space-between" }}>
-            <div className="row" style={{ gap: 8 }}>
-              <Icon name="pin" />
-              <div>
-                <p className="small muted">{t("home.yourPlace")}</p>
-                <h1 style={{ fontSize: "var(--fs-lg)" }}>{placeName}</h1>
-              </div>
+  const answer = (
+    <>
+      {showAnswer && (
+        <div className="card" style={{ background: "var(--accent-bg)", borderColor: "transparent", padding: "10px 14px", display: "flex", flexDirection: "column", gap: 6 }}>
+          <div className="row" style={{ justifyContent: "space-between", flexWrap: "nowrap", gap: 8 }}>
+            <div className="row" style={{ gap: 6, flexWrap: "nowrap", minWidth: 0 }}>
+              <Icon name="pin" size={16} />
+              <h1 style={{ fontSize: "var(--fs-md)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{placeName}</h1>
             </div>
-            <button type="button" className="btn" onClick={() => setChanging(true)}>
+            <button type="button" className="btn" style={{ minHeight: 36, padding: "0 12px", flex: "none" }} onClick={() => setChanging(true)}>
               {t("home.change")}
             </button>
           </div>
-        )}
-
-        {hasPoint && heat.isPending && <LoadingBlock lines={4} />}
-        {hasPoint && heat.isError && <ErrorBlock error={heat.error} onRetry={() => void heat.refetch()} />}
-        <div aria-live="polite" className="stack">
-          {hasPoint && heat.data && (
-            <div className="card" style={{ background: "var(--accent-bg)", borderColor: "transparent" }}>
-              <AdviceHero heat={heat.data} />
-            </div>
-          )}
-          {hasPoint && heat.data && <HeatCard heat={heat.data} showHeadline={false} />}
+          {heat.isPending && <LoadingBlock lines={3} />}
+          {heat.isError && <ErrorBlock error={heat.error} onRetry={() => void heat.refetch()} />}
+          <div aria-live="polite">{heat.data && <AdviceHero heat={heat.data} />}</div>
+          {heat.data && !heat.data.covered && <HeatCard heat={heat.data} compact bare />}
         </div>
+      )}
+    </>
+  );
 
-        {hasPoint && heat.data && state.lat !== undefined && state.lon !== undefined && (
+  return (
+    <div className={`page ${styles.grid}`}>
+      <div className={styles.left}>
+        {!showAnswer && (
           <>
-            <CoolingList lat={state.lat} lon={state.lon} />
-            <div className="row">
-              <Link className="btn btn-primary" to={{ pathname: "/map", search }}>
-                <Icon name="map" /> {t("home.openMap")}
-              </Link>
-              <Link className="btn" to={{ pathname: "/zones", search }}>
-                <Icon name="list" /> {t("home.hottestZones")}
-              </Link>
-            </div>
+            <header className="stack" style={{ gap: 6 }}>
+              <h1 style={{ fontSize: "var(--fs-xl)" }}>{t("home.title")}</h1>
+              <p className="muted">{t("home.intro")}</p>
+            </header>
+            <LocationPicker onPick={pick} />
           </>
         )}
-        {!hasPoint && <CoolTips />}
+        {answer}
+        {showAnswer && wide && heat.data?.covered && (
+          <div className={`card ${styles.cool}`}>
+            <HeatCard heat={heat.data} showHeadline={false} bare />
+          </div>
+        )}
+        {!hasPoint && wide && (
+          <div className={`card ${styles.cool}`}>
+            <h2 style={{ fontSize: "var(--fs-md)", marginBottom: 8 }}>{t("tips.title")}</h2>
+            <CoolTips bare />
+          </div>
+        )}
+        {showAnswer && !wide && heat.data && (
+          <div className="row" style={{ flexWrap: "nowrap" }}>
+            <Link className="btn btn-primary" style={{ flex: 1 }} to={{ pathname: "/map", search }}>
+              <Icon name="map" /> {t("home.openMap")}
+            </Link>
+            <Link className="btn" style={{ flex: 1 }} to={{ pathname: "/zones", search }}>
+              <Icon name="list" /> {t("home.hottestZones")}
+            </Link>
+          </div>
+        )}
       </div>
 
-      <aside className="stack" aria-label={t("pulse.title")}>
-        <CityPulse onPick={pick} />
-        <ZoneGlance />
-        {hasPoint && <CoolTips />}
-      </aside>
+      <div className={styles.right}>
+        <Tabs key={`${hasPoint}-${wide}-${heat.data?.covered ?? "x"}`} tabs={tabs} label={t("home.title")} />
+      </div>
     </div>
   );
 }

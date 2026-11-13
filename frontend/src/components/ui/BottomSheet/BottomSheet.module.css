@@ -38,7 +38,9 @@
 
 .body {
   min-height: 0;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   max-height: 0;
   visibility: hidden;
   padding: 0 var(--space-4);
@@ -46,9 +48,17 @@
 }
 
 .sheet[data-expanded="true"] .body {
-  max-height: 58dvh;
+  height: 48dvh;
+  max-height: 48dvh;
   visibility: visible;
   padding-bottom: var(--space-4);
+}
+
+/* Expanded on a phone: give the room to the tabs by folding away the secondary lines of the summary. */
+@media (max-width: 899px) {
+  .sheet[data-expanded="true"] .summary :global([data-collapsible]) {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -77,6 +87,7 @@
   .body,
   .sheet[data-expanded="true"] .body {
     flex: 1;
+    height: auto;
     max-height: none;
     visibility: visible;
     padding-bottom: var(--space-4);

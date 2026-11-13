@@ -8,7 +8,7 @@ import { sortZones } from "../../zones/ZoneTable/ZoneTable";
 
 const TOP = 3;
 
-/** Small zone-risk map with the three highest-risk zones; one tap opens the full Zones page on that zone. */
+/** Zone-risk map that fills the space it is given, with the three highest-risk zones; a tap opens that zone. */
 export function ZoneGlance() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -17,27 +17,23 @@ export function ZoneGlance() {
   const open = (zoneId: number) => navigate({ pathname: "/zones", search: `?zone=${zoneId}` });
 
   return (
-    <section className="card stack" aria-labelledby="glance-title" style={{ gap: 12 }}>
-      <h2 id="glance-title" style={{ fontSize: "var(--fs-lg)" }}>{t("glance.title")}</h2>
+    <section className="stack" aria-label={t("glance.title")} style={{ gap: 8, height: "100%", minHeight: 0 }}>
       {(zones.isPending || geo.isPending) && <LoadingBlock lines={5} />}
       {zones.isError && <ErrorBlock error={zones.error} onRetry={() => void zones.refetch()} />}
       {zones.data && geo.data && (
         <>
-          <ZoneMap collection={geo.data} metric="risk" metricLabel={t("zones.risk")} onSelect={open} />
-          <div className="stack" style={{ gap: 4 }}>
-            <h3 style={{ fontSize: "var(--fs-md)" }}>{t("glance.top")}</h3>
-            <ol style={{ margin: 0, paddingLeft: 20 }}>
-              {sortZones(zones.data, "risk").slice(0, TOP).map((zone) => (
-                <li key={zone.zone_id} style={{ padding: "4px 0" }}>
-                  <button type="button" onClick={() => open(zone.zone_id)} style={{ background: "none", border: 0, padding: 0, color: "var(--accent-text)", textDecoration: "underline", fontWeight: 500 }}>
-                    {zone.zone_name}
-                  </button>
-                  <span className="muted"> · {fmtTemp(zone.risk_score)}</span>
-                </li>
-              ))}
-            </ol>
+          <div style={{ flex: 1, minHeight: 0 }}>
+            <ZoneMap collection={geo.data} metric="risk" metricLabel={t("zones.risk")} onSelect={open} fit />
           </div>
-          <Link className="btn" to="/zones">{t("glance.seeAll")}</Link>
+          <div className="row" style={{ gap: 6, flexWrap: "nowrap" }}>
+            <span className="small muted" style={{ flex: "none" }}>{t("glance.top")}</span>
+            {sortZones(zones.data, "risk").slice(0, TOP).map((zone) => (
+              <button key={zone.zone_id} type="button" className="btn chip" style={{ minHeight: 36, padding: "0 10px", fontSize: "var(--fs-sm)" }} onClick={() => open(zone.zone_id)}>
+                {zone.zone_name} · {fmtTemp(zone.risk_score, 0)}
+              </button>
+            ))}
+            <Link className="btn" style={{ minHeight: 36, padding: "0 12px", marginLeft: "auto" }} to="/zones">{t("glance.seeAll")}</Link>
+          </div>
         </>
       )}
     </section>

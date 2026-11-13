@@ -5,9 +5,10 @@ import { ErrorBlock, LoadingBlock } from "../../../components/status/StateViews/
 import { fmtTemp } from "../../../utils/format/format";
 import { featureCenter } from "../../../utils/geo/geo";
 
-const ROWS = 4;
 
 interface CityPulseProps {
+  /** Rows per list; use more when there is room so the panel is filled. */
+  rows?: number;
   onPick: (lat: number, lon: number, name: string) => void;
 }
 
@@ -18,7 +19,7 @@ interface Row {
 }
 
 /** What the city looks like right now: the hottest and coolest localities, each one tap from its own answer. */
-export function CityPulse({ onPick }: CityPulseProps) {
+export function CityPulse({ onPick, rows: count = 5 }: CityPulseProps) {
   const { t } = useTranslation();
   const localities = useLocalities("latest_scene");
   const geo = useLocalitiesGeoJson();
@@ -39,15 +40,15 @@ export function CityPulse({ onPick }: CityPulseProps) {
   );
 
   const renderList = (title: string, rows: Row[], tone: "hot" | "cool") => (
-    <div className="stack" style={{ gap: 4 }}>
+    <div className="stack" style={{ gap: 2, minWidth: 0, minHeight: 0 }}>
       <h3 style={{ fontSize: "var(--fs-md)" }}>{title}</h3>
-      <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+      <ul style={{ listStyle: "none", margin: 0, padding: 0, flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
         {rows.map((row) => (
-          <li key={row.id}>
+          <li key={row.id} style={{ flex: 1, maxHeight: 60, display: "flex" }}>
             <button
               type="button"
               className="btn"
-              style={{ width: "100%", justifyContent: "space-between", border: 0, borderBottom: "1px solid var(--border)", borderRadius: 0, background: "none", fontWeight: 400 }}
+              style={{ width: "100%", height: "100%", minHeight: 40, padding: "0 4px", gap: 6, justifyContent: "space-between", border: 0, borderBottom: "1px solid var(--border)", borderRadius: 0, background: "none", fontWeight: 400, fontSize: "var(--fs-sm)" }}
               aria-label={t("pulse.pick", { name: row.name })}
               onClick={() => {
                 const center = centers.get(row.id);
@@ -64,14 +65,15 @@ export function CityPulse({ onPick }: CityPulseProps) {
   );
 
   return (
-    <section className="card stack" aria-labelledby="pulse-title" style={{ gap: 12 }}>
-      <h2 id="pulse-title" style={{ fontSize: "var(--fs-lg)" }}>{t("pulse.title")}</h2>
+    <section className="stack" aria-label={t("pulse.title")} style={{ gap: 10, height: "100%", minHeight: 0 }}>
       {(localities.isPending || geo.isPending) && <LoadingBlock lines={4} />}
       {localities.isError && <ErrorBlock error={localities.error} onRetry={() => void localities.refetch()} />}
       {sorted.length > 0 && (
         <>
-          {renderList(t("pulse.hottest"), sorted.slice(0, ROWS), "hot")}
-          {renderList(t("pulse.coolest"), sorted.slice(-ROWS).reverse(), "cool")}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 12, flex: 1, minHeight: 0 }}>
+            {renderList(t("pulse.hottest"), sorted.slice(0, count), "hot")}
+            {renderList(t("pulse.coolest"), sorted.slice(-count).reverse(), "cool")}
+          </div>
           <p className="small muted">{t("pulse.note")}</p>
         </>
       )}

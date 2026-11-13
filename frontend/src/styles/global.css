@@ -4,6 +4,12 @@
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
 }
@@ -14,7 +20,8 @@ body {
   color: var(--text);
   font-family: var(--font);
   font-size: var(--fs-md);
-  line-height: 1.55;
+  line-height: 1.5;
+  overflow: hidden; /* the app fits the screen: no page scroll anywhere */
 }
 
 h1,
@@ -75,9 +82,21 @@ button {
 }
 
 .page {
-  max-width: 1080px;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: var(--space-4);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  overflow: hidden;
+}
+
+.fill {
+  flex: 1;
+  min-height: 0;
 }
 
 .card {
@@ -229,6 +248,7 @@ button {
 
 @media (min-width: 900px) {
   .page {
-    padding: var(--space-5);
+    padding: var(--space-4);
+    gap: var(--space-4);
   }
 }

@@ -16,9 +16,21 @@ describe("HomePage", () => {
     const { calls } = mockApi();
     renderWithProviders(<HomePage />, "/?lat=21.1458&lon=79.0882&name=Dhantoli");
     expect(await screen.findByText("33 °C")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("tab", { name: "Cool places" }));
     expect(await screen.findByText("Dik Hospital")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Dhantoli" })).toBeInTheDocument();
     expect(calls.some((c) => c.startsWith("/heat?lat=21.1458"))).toBe(true);
+  });
+
+  it("keeps everything on one screen by moving extra content into tabs", async () => {
+    mockApi();
+    renderWithProviders(<HomePage />, "/?lat=21.1458&lon=79.0882&name=Dhantoli");
+    expect(await screen.findByText("33 °C")).toBeInTheDocument();
+    const tabs = screen.getAllByRole("tab").map((tab) => tab.textContent);
+    expect(tabs).toEqual(["Now", "Seasons", "Cool places", "City", "Zones", "Tips"]);
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("tab", { name: "Seasons" }));
+    expect(screen.getByRole("table")).toBeInTheDocument();
   });
 
   it("puts the chosen place in the URL after searching", async () => {

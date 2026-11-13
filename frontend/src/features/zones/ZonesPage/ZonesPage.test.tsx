@@ -19,7 +19,7 @@ describe("ZonesPage", () => {
     mockApi();
     renderWithProviders(<ZonesPage />);
     await screen.findByRole("table");
-    await userEvent.click(screen.getByRole("button", { name: "Exposure" }));
+    await userEvent.selectOptions(screen.getByRole("combobox", { name: /Rank by/ }), "exposure");
     const first = within(screen.getByRole("table")).getAllByRole("row")[1] as HTMLElement;
     expect(within(first).getByRole("button").textContent).toBe("Mangalwari");
   });

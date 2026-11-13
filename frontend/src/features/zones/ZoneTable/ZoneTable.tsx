@@ -54,7 +54,7 @@ export function ZoneTable({ zones, metric, selectedId, onSelect }: ZoneTableProp
             <td>{fmtTemp(zone.risk_score)}</td>
             <td>
               {fmtTemp(zone.exposure_index)}
-              {isExposureLevel(zone.exposure_level) && <span className="small muted"> · {t(`level.${zone.exposure_level}`)}</span>}
+              {isExposureLevel(zone.exposure_level) && <span className={`small muted ${styles.lvl}`}> · {t(`level.${zone.exposure_level}`)}</span>}
             </td>
             <td>{fmtTemp(zone.vulnerability_score)}</td>
           </tr>

@@ -66,8 +66,9 @@ export function Shell() {
       </main>
       {!onMap && (
         <footer className={styles.footer}>
-          <p>{t("disclaimer.short")}</p>
-          <p>{t("disclaimer.advisory")}</p>
+          <p>
+            {t("disclaimer.short")} {t("disclaimer.advisory")}
+          </p>
         </footer>
       )}
     </div>

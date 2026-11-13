@@ -1,13 +1,42 @@
-.grid {
-  display: grid;
-  gap: var(--space-4);
-  grid-template-columns: minmax(0, 1fr);
-  align-items: start;
+/* One screen, no scroll: a column on phones, two columns on wide screens. */
+div.grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.left {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.right {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cool {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 @media (min-width: 900px) {
-  .grid {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    gap: var(--space-5);
+  div.grid {
+    flex-direction: row;
+    gap: var(--space-4);
+  }
+  .left {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+  }
+  .right {
+    flex: 1 1 0;
+    min-width: 0;
   }
 }

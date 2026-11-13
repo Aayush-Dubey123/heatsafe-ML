@@ -11,13 +11,20 @@ interface HeatCardProps {
   compact?: boolean;
   /** Show the big number and its range sentence; turn off when a hero above already shows them. */
   showHeadline?: boolean;
+  /** Drop the card chrome so it can sit inside a tab. */
+  bare?: boolean;
+  /** Show only the seasonal table. */
+  tableOnly?: boolean;
+  /** Leave out the locality and zone line (the caller already shows the place). */
+  hidePlace?: boolean;
 }
 
 /**
  * The answer to "how hot is it here": estimate with its 90% range, whether the satellite saw the spot,
  * how old the image is, and how this place compares across seasons. It always says this is surface temperature.
  */
-export function HeatCard({ heat, compact = false, showHeadline = true }: HeatCardProps) {
+export function HeatCard({ heat, compact = false, showHeadline = true, bare = false, tableOnly = false, hidePlace = false }: HeatCardProps) {
+  const shell = bare ? `stack ${styles.card}` : `card stack ${styles.card}`;
   const { t, i18n } = useTranslation();
   const { product } = heat;
   const date = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "short", year: "numeric" }).format(
@@ -26,14 +33,16 @@ export function HeatCard({ heat, compact = false, showHeadline = true }: HeatCar
   const level = (code: string | null | undefined) => (isExposureLevel(code) ? t(`level.${code}`) : "–");
   const summer = heat.seasons["summer"];
 
-  const place = [
-    heat.locality ? t("heat.inLocality", { name: heat.locality.name }) : null,
-    heat.zone ? t("heat.inZone", { name: heat.zone.name }) : null,
-  ].filter(Boolean);
+  const place = hidePlace
+    ? []
+    : [
+        heat.locality ? t("heat.inLocality", { name: heat.locality.name }) : null,
+        heat.zone ? t("heat.inZone", { name: heat.zone.name }) : null,
+      ].filter(Boolean);
 
   if (!heat.covered || heat.lst_celsius === null) {
     return (
-      <section className={`card stack ${styles.card}`} aria-label={t("heat.surface")}>
+      <section className={shell} aria-label={t("heat.surface")}>
         {place.length > 0 && <p className="small muted">{place.join(" · ")}</p>}
         <p role="status">{t("heat.notCovered")}</p>
       </section>
@@ -44,11 +53,37 @@ export function HeatCard({ heat, compact = false, showHeadline = true }: HeatCar
   const high = heat.lst_p95 ?? heat.lst_celsius;
   const sceneKey = product.scene_age_days === 0 ? "heat.sceneToday" : "heat.scene";
 
+  const seasonsTable = (
+      <table className={styles.table}>
+          <caption className="small muted">{t("heat.seasonsTitle")}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{t("heat.colSeason")}</th>
+              <th scope="col">{t("heat.colMean")}</th>
+              <th scope="col">{t("heat.colExposure")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {SEASONS.map((season) => {
+              const row = heat.seasons[season];
+              return (
+                <tr key={season}>
+                  <th scope="row">{t(`season.${season}`)}</th>
+                  <td>{fmtTemp(row?.mean_lst_celsius)}</td>
+                  <td>{level(row?.exposure_level)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+      </table>
+  );
+  if (tableOnly) return <section className={shell} aria-label={t("heat.seasonsTitle")}>{seasonsTable}</section>;
+
   return (
-    <section className={`card stack ${styles.card}`} aria-label={t("heat.surface")}>
+    <section className={shell} aria-label={t("heat.surface")}>
       {place.length > 0 && <p className="small muted">{place.join(" · ")}</p>}
       <div>
-        <p className="small muted">{t("heat.surface")}</p>
+        {showHeadline && <p className="small muted">{t("heat.surface")}</p>}
         {showHeadline && (
           <p className={styles.headline}>
             <span className={styles.value} aria-hidden="true">
@@ -74,30 +109,7 @@ export function HeatCard({ heat, compact = false, showHeadline = true }: HeatCar
         </p>
       )}
 
-      {!compact && (
-        <table className={styles.table}>
-          <caption className="small muted">{t("heat.seasonsTitle")}</caption>
-          <thead>
-            <tr>
-              <th scope="col">{t("heat.colSeason")}</th>
-              <th scope="col">{t("heat.colMean")}</th>
-              <th scope="col">{t("heat.colExposure")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {SEASONS.map((season) => {
-              const row = heat.seasons[season];
-              return (
-                <tr key={season}>
-                  <th scope="row">{t(`season.${season}`)}</th>
-                  <td>{fmtTemp(row?.mean_lst_celsius)}</td>
-                  <td>{level(row?.exposure_level)}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      )}
+      {!compact && seasonsTable}
       <p className="small muted">{t("heat.airNote")}</p>
     </section>
   );

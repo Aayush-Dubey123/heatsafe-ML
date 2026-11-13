@@ -1,5 +1,6 @@
 .frame {
-  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   padding-bottom: var(--tabbar-h);
@@ -86,10 +87,11 @@
 }
 
 .banner {
-  max-width: 1080px;
+  flex: none;
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 var(--space-4);
+  padding: 0 var(--space-3);
 }
 
 .banner:not(:empty) {
@@ -98,12 +100,17 @@
 
 .main {
   flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   outline: none;
 }
 
 .footer {
-  padding: var(--space-4);
-  font-size: var(--fs-xs);
+  flex: none;
+  padding: 6px var(--space-3);
+  font-size: 0.6875rem;
+  line-height: 1.35;
   color: var(--text-2);
   text-align: center;
   border-top: 1px solid var(--border);

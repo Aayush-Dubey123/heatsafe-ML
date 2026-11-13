@@ -36,10 +36,10 @@ export function AdviceHero({ heat, place }: AdviceHeroProps) {
     <section
       aria-label={t(`advice.${adviceKey(heat.lst_celsius)}`)}
       className="stack"
-      style={{ gap: 10, padding: "4px 2px" }}
+      style={{ gap: 6, padding: "2px" }}
     >
       {place && <p className="small muted row" style={{ gap: 4 }}><Icon name="pin" size={14} /> {place}</p>}
-      <h2 style={{ fontSize: "var(--fs-xl)", lineHeight: 1.2 }}>{t(`advice.${adviceKey(heat.lst_celsius)}`)}</h2>
+      <h2 data-collapsible="true" style={{ fontSize: "var(--fs-lg)", lineHeight: 1.2 }}>{t(`advice.${adviceKey(heat.lst_celsius)}`)}</h2>
       <p style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
         <span style={{ fontSize: "var(--fs-hero)", fontWeight: 650, lineHeight: 1, color: "var(--accent-text)" }}>
           {Math.round(heat.lst_celsius)} °C
@@ -47,17 +47,18 @@ export function AdviceHero({ heat, place }: AdviceHeroProps) {
         <span className="muted">{t("heat.rangeShort", { low: Math.round(low), high: Math.round(high) })}</span>
       </p>
       {nearest && (
-        <div className="row" style={{ gap: 10, background: "var(--ok-bg)", color: "var(--ok-text)", borderRadius: "var(--radius-sm)", padding: "8px 12px" }}>
+        <div className="row" data-collapsible="true" style={{ gap: 8, flexWrap: "nowrap", background: "var(--ok-bg)", color: "var(--ok-text)", borderRadius: "var(--radius-sm)", padding: "6px 8px 6px 12px" }}>
           <Icon name="tree" size={20} />
-          <span style={{ flex: 1, minWidth: 160 }}>{t("advice.nearest", { name: nearestName, distance: fmtDistance(nearest.distance_km) })}</span>
+          <span className="small" style={{ flex: 1, minWidth: 0 }}>{t("advice.nearest", { name: nearestName, distance: fmtDistance(nearest.distance_km) })}</span>
           <a
             className="btn"
-            style={{ minHeight: 36 }}
+            aria-label={t("advice.directions")}
+            style={{ minHeight: 40, padding: "0 12px", flex: "none" }}
             href={directionsLink(nearest.latitude, nearest.longitude)}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Icon name="route" size={16} /> {t("advice.directions")}
+            <Icon name="route" size={18} /> <span className="sr-only">{t("advice.directions")}</span>
           </a>
         </div>
       )}

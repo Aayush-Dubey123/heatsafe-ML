@@ -22,6 +22,8 @@ interface ZoneMapProps {
   metricLabel: string;
   selectedId?: number;
   onSelect: (zoneId: number) => void;
+  /** Fill the height of the parent instead of the natural height. */
+  fit?: boolean;
 }
 
 function valueOf(properties: Record<string, unknown>, metric: ZoneMetric): number | null {
@@ -33,7 +35,7 @@ function valueOf(properties: Record<string, unknown>, metric: ZoneMetric): numbe
  * Zone choropleth drawn as plain SVG: light and works offline, keyboard accessible.
  * Colours are relative (min to max among the zones), so they show ranking, not absolute heat.
  */
-export function ZoneMap({ collection, metric, metricLabel, selectedId, onSelect }: ZoneMapProps) {
+export function ZoneMap({ collection, metric, metricLabel, selectedId, onSelect, fit = false }: ZoneMapProps) {
   const { t } = useTranslation();
   const shapes = useMemo(() => {
     const project = makeProjector(boundsOf(collection.features), WIDTH, HEIGHT);
@@ -67,8 +69,8 @@ export function ZoneMap({ collection, metric, metricLabel, selectedId, onSelect 
   };
 
   return (
-    <figure style={{ margin: 0 }}>
-      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} width="100%" role="group" aria-label={t("zones.mapLabel", { metric: metricLabel })}>
+    <figure style={fit ? { margin: 0, height: "100%", minHeight: 0, display: "flex", flexDirection: "column" } : { margin: 0 }}>
+      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} width="100%" style={fit ? { flex: 1, minHeight: 0 } : undefined} role="group" aria-label={t("zones.mapLabel", { metric: metricLabel })}>
         {shapes.map((shape) => (
           <path
             key={shape.id}

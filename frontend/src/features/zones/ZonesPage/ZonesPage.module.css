@@ -1,0 +1,30 @@
+.cols {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.cell {
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.side {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.mapCard {
+  flex: 1;
+  min-height: 160px;
+  padding: var(--space-3);
+}
+
+.detail {
+  flex: none;
+}

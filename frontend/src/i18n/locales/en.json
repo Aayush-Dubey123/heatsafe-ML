@@ -164,7 +164,10 @@
     "assets": "Cooling places inside",
     "exposureCi": "Exposure 95% range {{low}} to {{high}}",
     "extendedLimit": "Extended limit",
-    "viewOnMap": "Check this place"
+    "viewOnMap": "Check this place",
+    "prev": "Previous",
+    "next": "Next",
+    "pageOf": "Page {{page}} of {{pages}}"
   },
   "about": {
     "title": "About the data",
@@ -189,7 +192,12 @@
       "Boundaries and cooling places: © OpenStreetMap contributors (ODbL); locality names and shapes traced from the Nagpur Municipal Corporation intention map."
     ],
     "officialTitle": "Not an official warning system",
-    "official": "HeatSafe is a research project. It does not replace advisories from the India Meteorological Department, the National Disaster Management Authority or Nagpur Municipal Corporation."
+    "official": "HeatSafe is a research project. It does not replace advisories from the India Meteorological Department, the National Disaster Management Authority or Nagpur Municipal Corporation.",
+    "tabWhat": "The data",
+    "tabLimits": "Limits",
+    "tabAccuracy": "Accuracy",
+    "tabCredits": "Credits",
+    "tabOfficial": "Not official"
   },
   "theme": {
     "toDark": "Switch to dark theme",
@@ -224,5 +232,17 @@
       "Check on older neighbours, children and anyone who lives alone."
     ],
     "note": "General tips, not medical advice."
+  },
+  "tab": {
+    "now": "Now",
+    "seasons": "Seasons",
+    "cool": "Cool places",
+    "city": "City",
+    "zones": "Zones",
+    "tips": "Tips",
+    "layers": "Layers",
+    "details": "Details",
+    "places": "Places",
+    "ranking": "Ranking"
   }
 }
