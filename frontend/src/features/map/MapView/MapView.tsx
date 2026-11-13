@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { COOLING_LAYER, useMapLayers } from "./useMapLayers";
 import type { MapLayerOptions } from "./useMapLayers";
+import { ZoomDock } from "../ZoomDock/ZoomDock";
+import type { ZoomableMap } from "../ZoomDock/ZoomDock";
 import styles from "./MapView.module.css";
 
 /** Free, light vector basemap (OpenFreeMap Positron, no key): muted so the heat colours stand out. If it cannot load we fall back to plain OpenStreetMap tiles. */
@@ -73,7 +75,6 @@ export function MapView({ center, onPick, onSpot, ...layerOptions }: MapViewProp
       instance.setStyle(FALLBACK_STYLE);
     };
     const timer = window.setTimeout(switchToFallback, STYLE_TIMEOUT_MS);
-    instance.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-left");
     instance.on("style.load", () => {
       loadedOnce = true;
       setStyleVersion((version) => version + 1);
@@ -127,5 +128,10 @@ export function MapView({ center, onPick, onSpot, ...layerOptions }: MapViewProp
       </div>
     );
   }
-  return <div ref={container} className={styles.map} role="region" aria-label={t("map.ariaLabel")} />;
+  return (
+    <div className={styles.wrap}>
+      <div ref={container} className={styles.map} role="region" aria-label={t("map.ariaLabel")} />
+      {map && <ZoomDock map={map as unknown as ZoomableMap} bounds={bounds} spot={center} />}
+    </div>
+  );
 }

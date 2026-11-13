@@ -1,0 +1,82 @@
+.dock {
+  position: absolute;
+  z-index: 7;
+  right: var(--space-3);
+  top: 128px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 4px;
+  background: var(--surface);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--text);
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+
+.btn:active:not(:disabled) {
+  background: var(--accent-bg);
+}
+
+.btn:disabled {
+  color: var(--text-3);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sign {
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+/* Vertical slider: dragging up zooms in. */
+.slider {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 28px;
+  height: 96px;
+  margin: 2px 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.band {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--accent-text);
+  padding: 0 4px 2px;
+  white-space: nowrap;
+}
+
+/* Phones are short: keep plus, minus, slider and the whole-city jump. */
+@media (max-width: 899px) {
+  .spotBtn {
+    display: none;
+  }
+}
+
+@media (min-width: 900px) {
+  .dock {
+    right: var(--space-4);
+    top: 140px;
+  }
+  .slider {
+    height: 140px;
+  }
+}

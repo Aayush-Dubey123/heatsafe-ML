@@ -118,7 +118,15 @@
     "expand": "Show details",
     "collapse": "Hide details",
     "spotTitle": "Cooling place",
-    "credits": "Map © OpenStreetMap contributors and OpenFreeMap. Heat data: Landsat 8/9 (USGS)."
+    "credits": "Map © OpenStreetMap contributors and OpenFreeMap. Heat data: Landsat 8/9 (USGS).",
+    "zoomLabel": "Zoom",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "zoomFit": "Show whole city",
+    "zoomSpot": "Zoom to selected spot",
+    "zoomCity": "City",
+    "zoomArea": "Area",
+    "zoomStreet": "Street"
   },
   "zones": {
     "title": "Zones and localities",
@@ -194,5 +202,27 @@
     "veryHot": "Very hot ground. Stay in the shade and drink water",
     "nearest": "Nearest cool place: {{name}}, {{distance}} away",
     "directions": "Directions"
+  },
+  "pulse": {
+    "title": "City right now",
+    "hottest": "Hottest localities",
+    "coolest": "Coolest localities",
+    "note": "Surface temperature from the latest satellite image. Tap a name to check it.",
+    "pick": "Check {{name}}"
+  },
+  "glance": {
+    "title": "Zone risk at a glance",
+    "seeAll": "See all zones",
+    "top": "Highest risk"
+  },
+  "tips": {
+    "title": "Ways to stay cool",
+    "items": [
+      "Drink water often, even before you feel thirsty.",
+      "Plan outdoor work for early morning or evening, and rest in the shade at midday.",
+      "Wear light, loose clothes and cover your head outdoors.",
+      "Check on older neighbours, children and anyone who lives alone."
+    ],
+    "note": "General tips, not medical advice."
   }
 }
