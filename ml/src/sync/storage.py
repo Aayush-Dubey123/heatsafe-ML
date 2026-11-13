@@ -10,10 +10,10 @@ Repo layout (repo id from thresholds.yaml `storage.repo_id`):
 The write token is read from HEATSAFE_STORAGE_TOKEN and is never logged.
 
 Usage:
-    python -m ml.src.publish.storage upload-state
-    python -m ml.src.publish.storage restore-state
-    python -m ml.src.publish.storage upload-bundle
-    python -m ml.src.publish.storage restore-bundle
+    python -m ml.src.sync.storage upload-state
+    python -m ml.src.sync.storage restore-state
+    python -m ml.src.sync.storage upload-bundle
+    python -m ml.src.sync.storage restore-bundle
 """
 
 import argparse

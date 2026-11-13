@@ -503,13 +503,13 @@ Risk ranks are stable across seasons (each zone moves by at most two places). Zo
 ---
 
 #### Phase 9 — Versioned Data Products & Publishing `[x]`
-**Concrete assets:** `ml/src/publish/{products.py, tiles.py}`, `ml/tests/publish/test_publish.py`, `backend/core/models/product_model.py`, Alembic `0002`, `ml/data/raw/boundary/nagpur_localities.geojson`; bundles under git-ignored `ml/data/published/<version>/`.
+**Concrete assets:** `ml/src/publish/{products.py, tiles.py}`, `ml/src/sync/storage.py`, `ml/tests/publish/test_publish.py`, `ml/tests/sync/test_storage.py`, `backend/core/models/product_model.py`, Alembic `0002`, `ml/data/raw/boundary/nagpur_localities.geojson`; bundles under git-ignored `ml/data/published/<version>/`.
 - [x] One bundle per scene: COGs for the latest-scene Model 1 LST estimate with 5th/95th percentile bounds and an observed/filled mask, plus seasonal mean LST and exposure index (EPSG:32644). Cloudy cells are estimated with long-term mean spectral indices; open water is left empty.
 - [x] Pre-rendered PNG XYZ tiles, zoom 10–16, for 9 layers (latest LST, 4 seasonal LST, 4 seasonal exposure): 18,806 tiles.
 - [x] Vector layers (EPSG:4326): zones, **55 named localities** (D16), cooling assets, Gi* hotspots; zone and locality metric tables.
 - [x] Database tables via Alembic `0002`: `products`, `zones`, `zone_metrics`, `localities`, `locality_metrics`, `cooling_assets`, `pipeline_runs`; loader replaces reference tables and upserts the product in one transaction. Geometries are stored as GeoJSON text; PostGIS geometry columns and spatial indexes are deferred to Phase 11, when the API needs them.
 - [x] `products` row with version, scene, model version, timestamp, manifest SHA-256; `latest.json` switched atomically (`os.replace`), bundle built in a staging folder first.
-- [x] Bundles and pipeline state uploaded to a free Hugging Face dataset repo (`ayushji23/heatsafe-products`: `latest.json`, `bundles/<version>.tar`, `state/pipeline_state.tar`; keeps the newest 2 bundles). `python -m ml.src.publish.storage restore-bundle` downloads and hash-verifies the latest bundle; the API serves the local copy, which the deployment container restores at start (Phase 12).
+- [x] Bundles and pipeline state uploaded to a free Hugging Face dataset repo (`ayushji23/heatsafe-products`: `latest.json`, `bundles/<version>.tar`, `state/pipeline_state.tar`; keeps the newest 2 bundles). `python -m ml.src.sync.storage restore-bundle` downloads and hash-verifies the latest bundle; the API serves the local copy, which the deployment container restores at start (Phase 12).
 - **Measurable Exit Criteria:**
   - [x] Publishing the same product twice is idempotent (second run: "already published and intact; nothing rewritten"; database load tested twice with identical row counts).
   - [x] 100% of published files listed in the bundle manifest with re-verifiable hashes (18,827 files, 278.7 MB).
