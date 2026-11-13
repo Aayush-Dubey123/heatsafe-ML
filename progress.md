@@ -15,9 +15,9 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
 **Current branch:** 1 — Backend & ML  
-**Current phase:** Phase 11 (Public API v1) — Phases 0–8 closed; Phases 9–10 implemented and tested but open on free-storage upload and scheduled runs (needs owner account).  
+**Current phase:** Phase 12 (Hardening & Zero-Cost Deployment) — Phases 0–9 and 11 closed; Phase 10 open only on the 14-day scheduled-run check (set `HEATSAFE_PIPELINE_ENABLED=true`). Backend API v1 contract frozen: frontend may start.  
 **Frontend status:** 🔒 LOCKED  
-**Last updated:** 2026-11-11  
+**Last updated:** 2026-11-13  
 
 ---
 
@@ -41,6 +41,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | D14 | LST screening range | Upper screening bound raised from 62 °C to **70 °C**. Evidence (2019–2025, 2.44 M sampled pixels): 0.51% exceed 62 °C, max 68.2 °C, concentrated in mid-May/June scenes on low-NDVI, built/bare surfaces (mean NDVI 0.22, NDBI +0.09) — physically plausible peak surface heat, not sensor error. 62 °C had been set from a single winter scene. | Locked 2026-11-09 (Phase 5) |
 | D15 | Phase 7 Go / No-Go | **Go.** On 2026-11-10 the owner instructed "resume phase 7 do till 8" before the test was run. All numeric Phase 7 criteria then passed (test RMSE 1.358 °C ≤ 2.068 °C and ≤ 2.5 °C), so the instruction is recorded as the Go. Known gaps accepted with the Go: no station comparison; intervals cover 87% instead of 90%. The owner may revoke this after reviewing the Model Card. | 2026-11-10 (Phase 7) |
 | D16 | Named localities | The owner supplied the official NMC intention map (scan dated 2025-06-16). It has no zone layer, so the 10 approximate zones stay for the risk ranking (T18), and its ~50 revenue villages are added as a second, readable layer: **55 named localities** traced automatically from the map's index panel and fitted to the OSM city boundary (IoU 0.87; the difference is mainly the Hudkeshwar–Narsala extension, which OSM lacks and is now included). Positional accuracy ~100 m. "Nagpur and Sitabuldi" and "Takali Sim and Jaitala" could not be separated; seven small localities were grown from seed points. | 2026-11-11 (Phase 9) |
+| D17 | API reads the bundle, not PostGIS | The API answers from the published bundle held in memory (rasters, GeoJSON, tables) instead of querying PostGIS: no database round-trip, no spatial index to maintain, the database is optional for reads, and the data and the API can never disagree about which product is current. The database tables (Phase 9) remain as the audit and future-query store. Revisit if the dataset outgrows memory (it is ~36 MB of arrays today). | 2026-11-13 (Phase 11) |
 
 ### Technology Decision Log (Plan v2, locked 2026-11-09)
 
@@ -501,20 +502,20 @@ Risk ranks are stable across seasons (each zone moves by at most two places). Zo
 
 ---
 
-#### Phase 9 — Versioned Data Products & Publishing `[~]`
+#### Phase 9 — Versioned Data Products & Publishing `[x]`
 **Concrete assets:** `ml/src/publish/{products.py, tiles.py}`, `ml/tests/publish/test_publish.py`, `backend/core/models/product_model.py`, Alembic `0002`, `ml/data/raw/boundary/nagpur_localities.geojson`; bundles under git-ignored `ml/data/published/<version>/`.
 - [x] One bundle per scene: COGs for the latest-scene Model 1 LST estimate with 5th/95th percentile bounds and an observed/filled mask, plus seasonal mean LST and exposure index (EPSG:32644). Cloudy cells are estimated with long-term mean spectral indices; open water is left empty.
 - [x] Pre-rendered PNG XYZ tiles, zoom 10–16, for 9 layers (latest LST, 4 seasonal LST, 4 seasonal exposure): 18,806 tiles.
 - [x] Vector layers (EPSG:4326): zones, **55 named localities** (D16), cooling assets, Gi* hotspots; zone and locality metric tables.
 - [x] Database tables via Alembic `0002`: `products`, `zones`, `zone_metrics`, `localities`, `locality_metrics`, `cooling_assets`, `pipeline_runs`; loader replaces reference tables and upserts the product in one transaction. Geometries are stored as GeoJSON text; PostGIS geometry columns and spatial indexes are deferred to Phase 11, when the API needs them.
 - [x] `products` row with version, scene, model version, timestamp, manifest SHA-256; `latest.json` switched atomically (`os.replace`), bundle built in a staging folder first.
-- [ ] Bundles uploaded to free storage (Hugging Face Dataset / GitHub Releases) and fetched by the API at startup — **not done: needs an account and token from the owner.**
+- [x] Bundles and pipeline state uploaded to a free Hugging Face dataset repo (`ayushji23/heatsafe-products`: `latest.json`, `bundles/<version>.tar`, `state/pipeline_state.tar`; keeps the newest 2 bundles). `python -m ml.src.publish.storage restore-bundle` downloads and hash-verifies the latest bundle; the API serves the local copy, which the deployment container restores at start (Phase 12).
 - **Measurable Exit Criteria:**
   - [x] Publishing the same product twice is idempotent (second run: "already published and intact; nothing rewritten"; database load tested twice with identical row counts).
   - [x] 100% of published files listed in the bundle manifest with re-verifiable hashes (18,827 files, 278.7 MB).
   - [x] Tiles cover the full study-area extent at every published zoom (per zoom for one layer: {'10': 2, '11': 4, '12': 15, '13': 48, '14': 156, '15': 552, '16': 2153}).
 - **Evidence (2026-11-11):** bundle `2026-11-03_LC09_L2SP_144045_20261103_02_T1_m1-20261109T150313Z` (scene 2026-11-03, age 10 days, stale=false); observed fraction 82.6%, remainder model-filled; bundle loaded into local PostgreSQL 16 + PostGIS on 2026-11-13 (10 zones, 40 zone metrics, 55 localities, 275 locality metrics, 889 cooling assets, 1 latest product; also tested on SQLite); `ml/tests/publish` green.
-- **Still open:** free-storage upload (above). Phase stays `[~]` until then.
+- **Storage evidence (2026-11-13):** uploaded 90.7 MB state + 316.9 MB bundle; a fresh-runner round trip into an empty folder restored the model, terrain, scene index, maps and exposure layers, and the bundle verified against its manifest (18,806 tiles). A test caught that the PNG-skip filter meant for the state archive would also have dropped every map tile from bundles; fixed so only the state archive skips previews.
 
 ---
 
@@ -522,43 +523,37 @@ Risk ranks are stable across seasons (each zone moves by at most two places). Zo
 
 #### Phase 10 — Automated Inference Pipeline (Historical to Live) `[~]`
 **Concrete assets:** `ml/src/pipeline/{run_batch.py, fallback.py}`, `ml/tests/pipeline/test_pipeline.py`, `.github/workflows/pipeline.yml`, table `pipeline_runs`.
-- [x] Batch job `run_once`: detect new scenes → ingest (cropped) → preprocess → predict → publish (Phase 9) → load database → record the run in `pipeline_runs`.
+- [x] Batch job `run_once`: detect new scenes → ingest (cropped) → preprocess → predict → publish (Phase 9) → load database → upload to free storage → record the run in `pipeline_runs` (an upload failure leaves the product online and fails the run with status `published_upload_failed`).
 - [x] Historical 2019–2026 backfill done on the dev laptop (153 scenes).
 - [x] Freshness fields per D2 on every product and pointer (`scene_age_days`, `stale` when older than 16 days).
 - [x] Fallback: on network failure, corrupt input, no new pass, or an unusable (cloudy) scene the last good product stays published, gets its age refreshed, and records the cause in `last_run_issue`.
 - [x] Retry with backoff for catalogue and download calls (ingestion client); file run lock with a 6-hour abandoned-lock timeout.
 - [x] Failure-injection tests: network outage, corrupt raster, no new pass, database down — all green.
-- [ ] Scheduled live runs. `pipeline.yml` (daily 13:00 IST + manual) exists but is **disabled**: a GitHub runner has no model, scene cubes, or previous bundle until free storage is set up (same blocker as Phase 9).
+- [~] Scheduled live runs: `pipeline.yml` (daily 13:00 IST + manual) now restores state and the last bundle from the Hugging Face repo, runs the pipeline, and the run uploads the new bundle and refreshed state. The storage token is configured as a repository secret. **To start the schedule, set the repository variable `HEATSAFE_PIPELINE_ENABLED` to `true`** (a manual "Run workflow" works without it).
 - **Measurable Exit Criteria:**
   - [ ] 14 consecutive daily scheduled runs with 0 unhandled exceptions (D10) — cannot start until the schedule is enabled.
   - [x] Every injected failure results in a fallback plus a stale-data warning flag (all 4 tests green).
 - **Evidence (2026-11-11):** `ml/tests/pipeline` 9/9 passed; full suite 102 passed; backend tests 21/21 on Docker PostgreSQL; CI green on 31e0f13 (both jobs, run 42969167032).
 - **Not yet exercised:** a real end-to-end `run_once` against the live catalogue (the newest available scene is already published, so a live run would report `no_new_scene`).
 
-#### Phase 11 — Public API v1 `[ ]`
-**Concrete assets:** per-domain subfolders under each backend layer (`routes/`, `controllers/`, `cruds/`, `services/`, `models/`, `schemas/`); in-memory raster service for point lookups; OpenAPI snapshot test; `backend/tests/postman_collection.json`.
-- [ ] Endpoints under `/api/v1` (output in EPSG:4326):
-  - `GET /health`, `GET /metadata` (model version, products, coverage extent, disclaimers)
-  - `GET /heat?lat&lon&season` → LST (°C), 90% interval, exposure level, zone, `scene_age_days`, `stale`, model version; air temperature and heat index are NOT returned until their models exist
-  - `GET /zones`, `GET /zones/{id}` → simplified GeoJSON, zone stats and rank
-  - `GET /cooling-spots?lat&lon&type&limit` → nearest spots via PostGIS KNN
-  - `GET /tiles/{product}/{z}/{x}/{y}.png` → pre-rendered tiles with cache headers
-  - `GET /hotspots?season` → Gi* clusters as GeoJSON
-  - `GET /forecast` → clean `501` until a forecast model is validated
-  - `POST /admin/products/{version}/publish|rollback` (auth required — T6)
-- [ ] Point lookups served from in-memory NumPy arrays loaded at startup (942 × 795 float32 ≈ 3 MB per layer)
-- [ ] Pydantic v2 request/response schemas; uniform error envelope; out-of-boundary coordinates return a documented `422`
-- [ ] In-process rate limiting and response caching (T12); no Redis unless scaled to multiple instances
-- [ ] OpenAPI v1 contract frozen by a snapshot test — this is the contract the frontend will build against
-- [ ] Google-style docstrings on all functions and methods; central logging in `backend/commons/logger.py`
-- [ ] Swagger docs, curl examples, and a Postman collection
-- [ ] Load test with Locust or k6 (local, free): 50 concurrent requests per endpoint
+#### Phase 11 — Public API v1 `[x]`
+**Concrete assets:** routes `backend/core/apis/routes/{product/product.py, product/areas.py, tiles/tiles.py}`; controller `backend/core/controllers/product_controller.py`; services `backend/core/services/product/{store.py, lookup.py}`; schemas `backend/core/apis/schemas/{requests,responses}/product/`; tests `backend/tests/api/{test_product_api.py, bundle_factory.py, openapi_v1.json}`.
+- [x] Endpoints under `/api/v1` (all read-only, output in EPSG:4326): `GET /metadata`, `/heat?lat&lon`, `/zones`, `/zones/{id}`, `/zones/geojson`, `/localities`, `/localities/geojson`, `/cooling-spots?lat&lon&category&limit&radius_km`, `/hotspots`, `/tiles/{layer}/{z}/{x}/{y}.png`, `/forecast` (clean `501`), `/health`.
+- [x] `GET /heat` returns LST (°C) with a 90% range, whether the cell was observed or model-filled, locality and zone, seasonal exposure with level codes, `scene_age_days`, `stale` (computed per request), model version; air temperature and heat index are not returned.
+- [x] Point lookups are array reads from the bundle held in memory (about 12 layers, ~36 MB); zones and localities are pre-rasterised so a point maps to its area in O(1). The API never runs the model (T10). See D17.
+- [x] Uniform error envelope with stable codes (`outside_study_area`, `no_product_available`, `not_implemented`, `rate_limited`, `validation_error`, `not_found`); coordinates outside Nagpur → 422; no loaded product → 503.
+- [x] In-process per-client rate limiting (300/min default, tiles exempt, 429 + `Retry-After`) and `Cache-Control` headers; request-ID and security-header middleware rewritten as plain ASGI.
+- [x] OpenAPI contract frozen by a snapshot test (`openapi_v1.json`); this is the contract the frontend builds against. Swagger UI at `/docs`.
+- [ ] Postman collection: not created. `/openapi.json` imports into Postman directly.
 - **Measurable Exit Criteria:**
-  - [ ] Warm-instance p95 latency ≤ 200 ms at 50 concurrent requests; cold-start time measured and documented separately (D10).
-  - [ ] Branch coverage ≥ 85% across routes, controllers, and services.
-  - [ ] 100% of endpoints return the documented error envelope on invalid input.
-  - [ ] OpenAPI snapshot test green.
-- **Evidence:** load-test output; coverage report summary; OpenAPI snapshot hash.
+  - [x] p95 latency ≤ 200 ms at 50 concurrent requests: measured 2026-11-13 on the real bundle, single uvicorn worker on the dev laptop (the load generator shared the same CPU): metadata 94 ms, zones 100 ms, tiles 115 ms, localities 119 ms, heat 147 ms, cooling-spots 189 ms (1,000 requests each, 0 errors, 340–750 req/s). The first run (before the middleware rewrite) had heat at 236 ms.
+  - [x] Branch coverage ≥ 85% across the backend: **94%** (routes 71–84% because their unexpected-error branches are only reachable by fault injection; controllers 99%, services 96–100%).
+  - [x] Every endpoint returns the documented error envelope on invalid input (tests cover validation, out-of-area, unknown zone/season/category/layer, missing tile, no product, rate limit).
+  - [x] OpenAPI snapshot test green.
+- **Evidence (2026-11-13):** `backend/tests/api` 17 tests; backend suite 38 passed on Docker PostgreSQL; full suite 128 passed; ruff + mypy clean; load-test numbers above.
+- **Limits:** the load test measures a warm instance (cold start after free-tier sleep is documented in Phase 12); the rate limiter is per process and trusts the first `X-Forwarded-For` entry, which is spoofable — adequate for a public read-only demo, not for abuse prevention.
+
+---
 
 #### Phase 12 — Hardening, Monitoring & Zero-Cost Deployment `[ ]`
 **Concrete assets:** root `Dockerfile`, `.env.example`, `.github/workflows/{ci.yml, pipeline.yml, backup.yml}`; drift report outputs; backup/rollback runbook inside `README.md`.

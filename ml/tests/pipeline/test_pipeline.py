@@ -38,6 +38,7 @@ def steps(**overrides) -> PipelineSteps:
         "ingest_and_process": lambda scenes: [{"scene_id": "LC08_NEW", "date": "2026-11-10", "usable": True}],
         "publish": publish,
         "load_database": lambda bundle, url: {"products": 1},
+        "upload": lambda bundle: {"skipped": True},
     }
     defaults.update(overrides)
     return PipelineSteps(**defaults)
@@ -165,3 +166,28 @@ def test_runs_are_audited_in_database(tmp_path: Path):
     engine.dispose()
     assert record_run("sqlite:///nonexistent_dir/x.sqlite3", {"status": "x"}) is False
     assert serve_last_good(tmp_path / "none", "network_error", TODAY, 16)["version"] is None
+
+
+def test_upload_failure_keeps_product_published_but_is_reported(tmp_path: Path):
+    """
+    A storage outage after publishing leaves the product online and flags the run as failed.
+    """
+    result = run(tmp_path, published_root(tmp_path), steps=steps(upload=raising(ConnectionError("storage down"))))
+    assert result["status"] == "published_upload_failed" and result["version"] == "new-LC08_NEW"
+
+
+def test_upload_runs_after_a_successful_publish(tmp_path: Path):
+    """
+    The upload step receives the new bundle folder exactly once.
+    """
+    seen: list[Path] = []
+
+    def upload(bundle: Path) -> dict:
+        """
+        Record the uploaded bundle.
+        """
+        seen.append(bundle)
+        return {}
+
+    result = run(tmp_path, published_root(tmp_path), steps=steps(upload=upload))
+    assert result["status"] == "published" and seen == [Path("unused")]

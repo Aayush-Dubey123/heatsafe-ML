@@ -1,0 +1,1913 @@
+{
+ "components": {
+  "schemas": {
+   "AssetCategory": {
+    "description": "Cooling-related place categories (OpenStreetMap).",
+    "enum": [
+     "green_space",
+     "water_body",
+     "health_facility",
+     "public_shelter",
+     "drinking_water"
+    ],
+    "title": "AssetCategory",
+    "type": "string"
+   },
+   "CoolingSpot": {
+    "description": "A public cooling-related place from OpenStreetMap.",
+    "properties": {
+     "asset_id": {
+      "title": "Asset Id",
+      "type": "string"
+     },
+     "category": {
+      "title": "Category",
+      "type": "string"
+     },
+     "distance_km": {
+      "title": "Distance Km",
+      "type": "number"
+     },
+     "latitude": {
+      "title": "Latitude",
+      "type": "number"
+     },
+     "longitude": {
+      "title": "Longitude",
+      "type": "number"
+     },
+     "name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Name"
+     }
+    },
+    "required": [
+     "asset_id",
+     "category",
+     "name",
+     "latitude",
+     "longitude",
+     "distance_km"
+    ],
+    "title": "CoolingSpot",
+    "type": "object"
+   },
+   "CoolingSpotsResponse": {
+    "description": "Cooling places near a point, nearest first.",
+    "properties": {
+     "count": {
+      "title": "Count",
+      "type": "integer"
+     },
+     "latitude": {
+      "title": "Latitude",
+      "type": "number"
+     },
+     "longitude": {
+      "title": "Longitude",
+      "type": "number"
+     },
+     "radius_km": {
+      "title": "Radius Km",
+      "type": "number"
+     },
+     "source": {
+      "default": "OpenStreetMap contributors (ODbL); completeness varies",
+      "title": "Source",
+      "type": "string"
+     },
+     "spots": {
+      "items": {
+       "$ref": "#/components/schemas/CoolingSpot"
+      },
+      "title": "Spots",
+      "type": "array"
+     }
+    },
+    "required": [
+     "latitude",
+     "longitude",
+     "radius_km",
+     "count",
+     "spots"
+    ],
+    "title": "CoolingSpotsResponse",
+    "type": "object"
+   },
+   "ErrorBody": {
+    "description": "Machine- and human-readable description of a failed request.\n\nAttributes:\n    code (str): Stable snake_case error code clients can branch on.\n    message (str): Safe, human-readable summary (never a stack trace).\n    details (list[dict[str, Any]] | None): Optional field-level problems.\n    request_id (str): Correlation ID echoed in the X-Request-ID header.",
+    "properties": {
+     "code": {
+      "description": "Stable snake_case error code, e.g. 'validation_error'.",
+      "title": "Code",
+      "type": "string"
+     },
+     "details": {
+      "anyOf": [
+       {
+        "items": {
+         "additionalProperties": true,
+         "type": "object"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Optional field-level problems (location, message, type).",
+      "title": "Details"
+     },
+     "message": {
+      "description": "Safe human-readable summary of the error.",
+      "title": "Message",
+      "type": "string"
+     },
+     "request_id": {
+      "description": "Correlation ID matching the X-Request-ID response header.",
+      "title": "Request Id",
+      "type": "string"
+     }
+    },
+    "required": [
+     "code",
+     "message",
+     "request_id"
+    ],
+    "title": "ErrorBody",
+    "type": "object"
+   },
+   "ErrorResponse": {
+    "description": "Uniform error envelope returned by every endpoint (Decision T15).\n\nAttributes:\n    error (ErrorBody): The error description.",
+    "properties": {
+     "error": {
+      "$ref": "#/components/schemas/ErrorBody"
+     }
+    },
+    "required": [
+     "error"
+    ],
+    "title": "ErrorResponse",
+    "type": "object"
+   },
+   "GeoJSONFeatureCollection": {
+    "description": "Generic GeoJSON FeatureCollection (WGS84).",
+    "properties": {
+     "features": {
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "title": "Features",
+      "type": "array"
+     },
+     "properties": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Properties"
+     },
+     "type": {
+      "default": "FeatureCollection",
+      "title": "Type",
+      "type": "string"
+     }
+    },
+    "required": [
+     "features"
+    ],
+    "title": "GeoJSONFeatureCollection",
+    "type": "object"
+   },
+   "HealthPingRequest": {
+    "description": "Inbound request schema for optional diagnostic ping payload.\n\nAttributes:\n    client_tag (Optional[str]): Diagnostic identifier passed by caller.\n    echo_message (Optional[str]): Echo test string for transport validation.",
+    "properties": {
+     "client_tag": {
+      "anyOf": [
+       {
+        "maxLength": 64,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Diagnostic identifier of the calling service or test runner.",
+      "title": "Client Tag"
+     },
+     "echo_message": {
+      "anyOf": [
+       {
+        "maxLength": 128,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Optional echo test string verified on return.",
+      "title": "Echo Message"
+     }
+    },
+    "title": "HealthPingRequest",
+    "type": "object"
+   },
+   "HealthResponse": {
+    "description": "Standardized operational health and status check payload schema.\n\nAttributes:\n    status (str): Operational state indicator ('healthy', 'degraded', 'down').\n    service (str): Service name identifier.\n    version (str): Application semantic release version.\n    timestamp (datetime): UTC timestamp of generated health response.\n    database (str): Database connectivity state.\n    echo (Optional[str]): Echoed client diagnostic message if provided.",
+    "properties": {
+     "database": {
+      "default": "connected",
+      "description": "Persistence engine status.",
+      "title": "Database",
+      "type": "string"
+     },
+     "echo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Optional diagnostic echo string.",
+      "title": "Echo"
+     },
+     "service": {
+      "default": "heatsafe-backend",
+      "description": "Service identifier.",
+      "title": "Service",
+      "type": "string"
+     },
+     "status": {
+      "description": "Operational health indicator of the service.",
+      "title": "Status",
+      "type": "string"
+     },
+     "timestamp": {
+      "description": "UTC timestamp of generated status.",
+      "format": "date-time",
+      "title": "Timestamp",
+      "type": "string"
+     },
+     "version": {
+      "default": "0.1.0",
+      "description": "Application semantic version.",
+      "title": "Version",
+      "type": "string"
+     }
+    },
+    "required": [
+     "status",
+     "timestamp"
+    ],
+    "title": "HealthResponse",
+    "type": "object"
+   },
+   "HeatResponse": {
+    "description": "Heat answer for one location.\n\nAttributes:\n    lst_celsius (float | None): Model 1 land-surface temperature estimate (not air temperature).\n    lst_p05 (float | None): 5th percentile bound of the 90% range.\n    lst_p95 (float | None): 95th percentile bound of the 90% range.\n    observed (bool): True if the satellite saw this cell clearly in the latest scene; False if model-filled.\n    covered (bool): False for open water or cells without an estimate.",
+    "properties": {
+     "covered": {
+      "title": "Covered",
+      "type": "boolean"
+     },
+     "latitude": {
+      "title": "Latitude",
+      "type": "number"
+     },
+     "locality": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Locator"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "longitude": {
+      "title": "Longitude",
+      "type": "number"
+     },
+     "lst_celsius": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Lst Celsius"
+     },
+     "lst_p05": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Lst P05"
+     },
+     "lst_p95": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Lst P95"
+     },
+     "note": {
+      "title": "Note",
+      "type": "string"
+     },
+     "observed": {
+      "title": "Observed",
+      "type": "boolean"
+     },
+     "product": {
+      "$ref": "#/components/schemas/ProductInfo"
+     },
+     "seasons": {
+      "additionalProperties": {
+       "$ref": "#/components/schemas/SeasonExposure"
+      },
+      "title": "Seasons",
+      "type": "object"
+     },
+     "zone": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Locator"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    },
+    "required": [
+     "latitude",
+     "longitude",
+     "covered",
+     "lst_celsius",
+     "lst_p05",
+     "lst_p95",
+     "observed",
+     "locality",
+     "zone",
+     "seasons",
+     "product",
+     "note"
+    ],
+    "title": "HeatResponse",
+    "type": "object"
+   },
+   "LayerInfo": {
+    "description": "One map layer the frontend can display.\n\nAttributes:\n    id (str): Layer id used in tile URLs.\n    kind (str): \"lst\" (surface temperature, deg C) or \"exposure\" (index 0-100).\n    season (str | None): Season for seasonal layers; None for the latest scene.\n    tile_url (str): Tile URL template with {z}/{x}/{y}.\n    vmin (float): Value mapped to the low end of the colour scale.\n    vmax (float): Value mapped to the high end.\n    unit (str): Unit label.",
+    "properties": {
+     "id": {
+      "title": "Id",
+      "type": "string"
+     },
+     "kind": {
+      "title": "Kind",
+      "type": "string"
+     },
+     "season": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Season"
+     },
+     "tile_url": {
+      "title": "Tile Url",
+      "type": "string"
+     },
+     "unit": {
+      "title": "Unit",
+      "type": "string"
+     },
+     "vmax": {
+      "title": "Vmax",
+      "type": "number"
+     },
+     "vmin": {
+      "title": "Vmin",
+      "type": "number"
+     }
+    },
+    "required": [
+     "id",
+     "kind",
+     "season",
+     "tile_url",
+     "vmin",
+     "vmax",
+     "unit"
+    ],
+    "title": "LayerInfo",
+    "type": "object"
+   },
+   "LocalitySummary": {
+    "description": "Mean surface temperature and exposure of one named locality (revenue village).",
+    "properties": {
+     "area_km2": {
+      "title": "Area Km2",
+      "type": "number"
+     },
+     "exposure_index": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exposure Index"
+     },
+     "exposure_level": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exposure Level"
+     },
+     "in_extended_limit": {
+      "title": "In Extended Limit",
+      "type": "boolean"
+     },
+     "layer": {
+      "title": "Layer",
+      "type": "string"
+     },
+     "locality_id": {
+      "title": "Locality Id",
+      "type": "integer"
+     },
+     "locality_name": {
+      "title": "Locality Name",
+      "type": "string"
+     },
+     "mean_lst_celsius": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mean Lst Celsius"
+     }
+    },
+    "required": [
+     "locality_id",
+     "locality_name",
+     "area_km2",
+     "in_extended_limit",
+     "layer",
+     "mean_lst_celsius",
+     "exposure_index",
+     "exposure_level"
+    ],
+    "title": "LocalitySummary",
+    "type": "object"
+   },
+   "Locator": {
+    "description": "A named area a point falls in.",
+    "properties": {
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "name"
+    ],
+    "title": "Locator",
+    "type": "object"
+   },
+   "MetadataResponse": {
+    "description": "Product description for the app: freshness, extent, layers, and honest limits.",
+    "properties": {
+     "bounds": {
+      "description": "[west, south, east, north] in WGS84 degrees.",
+      "items": {
+       "type": "number"
+      },
+      "title": "Bounds",
+      "type": "array"
+     },
+     "center": {
+      "description": "[longitude, latitude] of the study-area centre.",
+      "items": {
+       "type": "number"
+      },
+      "title": "Center",
+      "type": "array"
+     },
+     "disclaimers": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Disclaimers",
+      "type": "array"
+     },
+     "exposure_levels": {
+      "description": "Level codes from coolest to hottest; the app localises them.",
+      "items": {
+       "type": "string"
+      },
+      "title": "Exposure Levels",
+      "type": "array"
+     },
+     "layers": {
+      "items": {
+       "$ref": "#/components/schemas/LayerInfo"
+      },
+      "title": "Layers",
+      "type": "array"
+     },
+     "product": {
+      "$ref": "#/components/schemas/ProductInfo"
+     },
+     "resolution_note": {
+      "title": "Resolution Note",
+      "type": "string"
+     },
+     "seasons": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Seasons",
+      "type": "array"
+     },
+     "variable": {
+      "default": "land_surface_temperature",
+      "title": "Variable",
+      "type": "string"
+     },
+     "zoom_max": {
+      "title": "Zoom Max",
+      "type": "integer"
+     },
+     "zoom_min": {
+      "title": "Zoom Min",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "product",
+     "bounds",
+     "center",
+     "zoom_min",
+     "zoom_max",
+     "layers",
+     "seasons",
+     "exposure_levels",
+     "resolution_note",
+     "disclaimers"
+    ],
+    "title": "MetadataResponse",
+    "type": "object"
+   },
+   "MetricLayer": {
+    "description": "Layers that locality metrics are reported for.",
+    "enum": [
+     "latest_scene",
+     "summer",
+     "monsoon",
+     "post-monsoon",
+     "winter"
+    ],
+    "title": "MetricLayer",
+    "type": "string"
+   },
+   "ProductInfo": {
+    "description": "Which published product an answer comes from and how fresh it is (Decision D2).\n\nAttributes:\n    version (str): Bundle version.\n    scene_id (str): Landsat scene id.\n    scene_date (str): Acquisition date, YYYY-MM-DD.\n    scene_age_days (int): Days since acquisition, computed at request time.\n    stale (bool): True when the scene is older than the freshness limit (16 days).\n    model_version (str): Model 1 version that produced the estimate.\n    published_utc (str | None): When the bundle was published.\n    observed_fraction (float | None): Share of land cells with a clear observation (rest is model-filled).",
+    "properties": {
+     "model_version": {
+      "title": "Model Version",
+      "type": "string"
+     },
+     "observed_fraction": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Observed Fraction"
+     },
+     "published_utc": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Published Utc"
+     },
+     "scene_age_days": {
+      "title": "Scene Age Days",
+      "type": "integer"
+     },
+     "scene_date": {
+      "title": "Scene Date",
+      "type": "string"
+     },
+     "scene_id": {
+      "title": "Scene Id",
+      "type": "string"
+     },
+     "stale": {
+      "title": "Stale",
+      "type": "boolean"
+     },
+     "version": {
+      "title": "Version",
+      "type": "string"
+     }
+    },
+    "required": [
+     "version",
+     "scene_id",
+     "scene_date",
+     "scene_age_days",
+     "stale",
+     "model_version"
+    ],
+    "title": "ProductInfo",
+    "type": "object"
+   },
+   "Season": {
+    "description": "Seasons used for seasonal composites and exposure layers.",
+    "enum": [
+     "summer",
+     "monsoon",
+     "post-monsoon",
+     "winter"
+    ],
+    "title": "Season",
+    "type": "string"
+   },
+   "SeasonExposure": {
+    "description": "Seasonal exposure at a point (relative daytime surface heat within the city).",
+    "properties": {
+     "exposure_index": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exposure Index"
+     },
+     "exposure_level": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exposure Level"
+     },
+     "mean_lst_celsius": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mean Lst Celsius"
+     }
+    },
+    "required": [
+     "mean_lst_celsius",
+     "exposure_index",
+     "exposure_level"
+    ],
+    "title": "SeasonExposure",
+    "type": "object"
+   },
+   "TileLayer": {
+    "description": "Map tile layers published with each product bundle.",
+    "enum": [
+     "latest_lst",
+     "lst_summer",
+     "lst_monsoon",
+     "lst_post-monsoon",
+     "lst_winter",
+     "exposure_summer",
+     "exposure_monsoon",
+     "exposure_post-monsoon",
+     "exposure_winter"
+    ],
+    "title": "TileLayer",
+    "type": "string"
+   },
+   "ZoneDetail": {
+    "description": "One zone with its figures for every season.",
+    "properties": {
+     "area_km2": {
+      "title": "Area Km2",
+      "type": "number"
+     },
+     "seasons": {
+      "additionalProperties": {
+       "$ref": "#/components/schemas/ZoneSummary"
+      },
+      "title": "Seasons",
+      "type": "object"
+     },
+     "zone_id": {
+      "title": "Zone Id",
+      "type": "integer"
+     },
+     "zone_name": {
+      "title": "Zone Name",
+      "type": "string"
+     }
+    },
+    "required": [
+     "zone_id",
+     "zone_name",
+     "area_km2",
+     "seasons"
+    ],
+    "title": "ZoneDetail",
+    "type": "object"
+   },
+   "ZoneSummary": {
+    "description": "Zone figures for one season: exposure, vulnerability, risk, and rank intervals (95% bootstrap).\n\nZone polygons are approximate (generated, not an official map) and population comes from a\nmodelled 1 km grid; see the Model Card limits.",
+    "properties": {
+     "area_km2": {
+      "title": "Area Km2",
+      "type": "number"
+     },
+     "assets": {
+      "additionalProperties": {
+       "type": "integer"
+      },
+      "description": "Cooling places per category inside the zone.",
+      "title": "Assets",
+      "type": "object"
+     },
+     "exposure_index": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exposure Index"
+     },
+     "exposure_index_ci_high": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exposure Index Ci High"
+     },
+     "exposure_index_ci_low": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exposure Index Ci Low"
+     },
+     "exposure_level": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exposure Level"
+     },
+     "exposure_rank": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exposure Rank"
+     },
+     "green_deficit": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Green Deficit"
+     },
+     "mean_lst_celsius": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mean Lst Celsius"
+     },
+     "population": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Population"
+     },
+     "population_density_per_km2": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Population Density Per Km2"
+     },
+     "risk_rank": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Risk Rank"
+     },
+     "risk_rank_high": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Risk Rank High"
+     },
+     "risk_rank_low": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Risk Rank Low"
+     },
+     "risk_score": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Risk Score"
+     },
+     "season": {
+      "title": "Season",
+      "type": "string"
+     },
+     "share_age_60_plus": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Share Age 60 Plus"
+     },
+     "vulnerability_score": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Vulnerability Score"
+     },
+     "zone_id": {
+      "title": "Zone Id",
+      "type": "integer"
+     },
+     "zone_name": {
+      "title": "Zone Name",
+      "type": "string"
+     }
+    },
+    "required": [
+     "zone_id",
+     "zone_name",
+     "area_km2",
+     "season",
+     "mean_lst_celsius",
+     "exposure_index",
+     "exposure_index_ci_low",
+     "exposure_index_ci_high",
+     "exposure_level",
+     "exposure_rank",
+     "vulnerability_score",
+     "risk_score",
+     "risk_rank",
+     "risk_rank_low",
+     "risk_rank_high",
+     "population",
+     "population_density_per_km2",
+     "share_age_60_plus",
+     "green_deficit"
+    ],
+    "title": "ZoneSummary",
+    "type": "object"
+   }
+  }
+ },
+ "info": {
+  "description": "Geospatial Machine Learning & Heat Exposure Analytics API for Nagpur, India",
+  "title": "HeatSafe-ML Backend API",
+  "version": "contract"
+ },
+ "openapi": "3.1.0",
+ "paths": {
+  "/api/v1/cooling-spots": {
+   "get": {
+    "description": "Parks, water bodies, health facilities, shelters and drinking water near a point, nearest first (OpenStreetMap; completeness varies).",
+    "operationId": "cooling_spots_api_v1_cooling_spots_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "lat",
+      "required": true,
+      "schema": {
+       "examples": [
+        21.1458
+       ],
+       "maximum": 21.3,
+       "minimum": 21.0,
+       "title": "Lat",
+       "type": "number"
+      }
+     },
+     {
+      "in": "query",
+      "name": "lon",
+      "required": true,
+      "schema": {
+       "examples": [
+        79.0882
+       ],
+       "maximum": 79.3,
+       "minimum": 78.9,
+       "title": "Lon",
+       "type": "number"
+      }
+     },
+     {
+      "in": "query",
+      "name": "category",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/AssetCategory"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Category"
+      }
+     },
+     {
+      "in": "query",
+      "name": "limit",
+      "required": false,
+      "schema": {
+       "default": 10,
+       "maximum": 50,
+       "minimum": 1,
+       "title": "Limit",
+       "type": "integer"
+      }
+     },
+     {
+      "in": "query",
+      "name": "radius_km",
+      "required": false,
+      "schema": {
+       "default": 5.0,
+       "exclusiveMinimum": 0,
+       "maximum": 20,
+       "title": "Radius Km",
+       "type": "number"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CoolingSpotsResponse"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Invalid or out-of-area coordinates"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No heat product is published yet"
+     }
+    },
+    "summary": "Nearest cooling places",
+    "tags": [
+     "areas"
+    ]
+   }
+  },
+  "/api/v1/forecast": {
+   "get": {
+    "description": "No forecast model has been validated yet; this endpoint returns 501 until one exists.",
+    "operationId": "get_forecast_api_v1_forecast_get",
+    "responses": {
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "501": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Forecasting is not available"
+     }
+    },
+    "summary": "Forecast (not available)",
+    "tags": [
+     "heat"
+    ]
+   }
+  },
+  "/api/v1/health": {
+   "get": {
+    "description": "Evaluate operational availability and verify database connectivity.",
+    "operationId": "get_health_status_api_v1_health_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HealthResponse"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     }
+    },
+    "summary": "Service Health Check",
+    "tags": [
+     "health"
+    ]
+   }
+  },
+  "/api/v1/health/ping": {
+   "post": {
+    "description": "Validate end-to-end transport schema serialization with client diagnostic echo.",
+    "operationId": "ping_service_api_v1_health_ping_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/HealthPingRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HealthResponse"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     }
+    },
+    "summary": "Diagnostic Ping",
+    "tags": [
+     "health"
+    ]
+   }
+  },
+  "/api/v1/heat": {
+   "get": {
+    "description": "Surface temperature estimate with a 90% range, the locality and zone, seasonal exposure, and data age. Coordinates outside Nagpur return 422 with code `outside_study_area`.",
+    "operationId": "get_heat_api_v1_heat_get",
+    "parameters": [
+     {
+      "description": "Latitude (WGS84)",
+      "in": "query",
+      "name": "lat",
+      "required": true,
+      "schema": {
+       "description": "Latitude (WGS84)",
+       "examples": [
+        21.1458
+       ],
+       "maximum": 21.3,
+       "minimum": 21.0,
+       "title": "Lat",
+       "type": "number"
+      }
+     },
+     {
+      "description": "Longitude (WGS84)",
+      "in": "query",
+      "name": "lon",
+      "required": true,
+      "schema": {
+       "description": "Longitude (WGS84)",
+       "examples": [
+        79.0882
+       ],
+       "maximum": 79.3,
+       "minimum": 78.9,
+       "title": "Lon",
+       "type": "number"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HeatResponse"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Invalid or out-of-area coordinates"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No heat product is published yet (code `no_product_available`)"
+     }
+    },
+    "summary": "Heat at a location",
+    "tags": [
+     "heat"
+    ]
+   }
+  },
+  "/api/v1/hotspots": {
+   "get": {
+    "description": "Getis-Ord Gi* clusters of the seasonal mean surface temperature (FDR-controlled). They show relatively hot or cool areas within the city, not anomalies.",
+    "operationId": "get_hotspots_api_v1_hotspots_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "season",
+      "required": false,
+      "schema": {
+       "$ref": "#/components/schemas/Season",
+       "default": "summer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/GeoJSONFeatureCollection"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "404": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No hotspot layer for that season"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No heat product is published yet"
+     }
+    },
+    "summary": "Hot and cold clusters",
+    "tags": [
+     "map"
+    ]
+   }
+  },
+  "/api/v1/localities": {
+   "get": {
+    "description": "55 named localities (revenue villages) traced from the NMC intention map (~100 m), with mean surface temperature and exposure for the chosen layer.",
+    "operationId": "list_localities_api_v1_localities_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "layer",
+      "required": false,
+      "schema": {
+       "$ref": "#/components/schemas/MetricLayer",
+       "default": "latest_scene"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/LocalitySummary"
+         },
+         "title": "Response List Localities Api V1 Localities Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No heat product is published yet"
+     }
+    },
+    "summary": "Named localities",
+    "tags": [
+     "areas"
+    ]
+   }
+  },
+  "/api/v1/localities/geojson": {
+   "get": {
+    "description": "HTTP GET endpoint returning locality polygons with figures.\n\nArgs:\n    request (Request): Incoming request.\n    response (Response): Response used to set cache headers.\n    layer (MetricLayer): \"latest_scene\" or a season.\n\nReturns:\n    dict: GeoJSON FeatureCollection.\n\nRaises:\n    HTTPException: 503 when no product is loaded; 500 for unexpected errors.",
+    "operationId": "localities_geojson_api_v1_localities_geojson_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "layer",
+      "required": false,
+      "schema": {
+       "$ref": "#/components/schemas/MetricLayer",
+       "default": "latest_scene"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/GeoJSONFeatureCollection"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No heat product is published yet"
+     }
+    },
+    "summary": "Locality polygons with figures",
+    "tags": [
+     "areas"
+    ]
+   }
+  },
+  "/api/v1/metadata": {
+   "get": {
+    "description": "Freshness of the data, map extent, available layers, level codes, and the honest limits of the numbers.",
+    "operationId": "get_metadata_api_v1_metadata_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/MetadataResponse"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No heat product is published yet (code `no_product_available`)"
+     }
+    },
+    "summary": "Product description",
+    "tags": [
+     "heat"
+    ]
+   }
+  },
+  "/api/v1/tiles/{layer}/{z}/{x}/{y}.png": {
+   "get": {
+    "description": "Pre-rendered PNG map tile (Web Mercator, standard XYZ). Layer ids come from /metadata.",
+    "operationId": "get_tile_api_v1_tiles__layer___z___x___y__png_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "layer",
+      "required": true,
+      "schema": {
+       "$ref": "#/components/schemas/TileLayer"
+      }
+     },
+     {
+      "in": "path",
+      "name": "z",
+      "required": true,
+      "schema": {
+       "maximum": 22,
+       "minimum": 0,
+       "title": "Z",
+       "type": "integer"
+      }
+     },
+     {
+      "in": "path",
+      "name": "x",
+      "required": true,
+      "schema": {
+       "minimum": 0,
+       "title": "X",
+       "type": "integer"
+      }
+     },
+     {
+      "in": "path",
+      "name": "y",
+      "required": true,
+      "schema": {
+       "minimum": 0,
+       "title": "Y",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "image/png": {}
+      },
+      "description": "PNG tile"
+     },
+     "404": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No tile here (outside the study area or no data)"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No heat product is published yet"
+     }
+    },
+    "summary": "Map tile",
+    "tags": [
+     "map"
+    ]
+   }
+  },
+  "/api/v1/zones": {
+   "get": {
+    "description": "The 10 NMC zones for one season, ranked by risk (1 = highest) with 95% rank intervals. Zone polygons are approximate.",
+    "operationId": "list_zones_api_v1_zones_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "season",
+      "required": false,
+      "schema": {
+       "$ref": "#/components/schemas/Season",
+       "default": "summer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/ZoneSummary"
+         },
+         "title": "Response List Zones Api V1 Zones Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No heat product is published yet"
+     }
+    },
+    "summary": "Zone ranking",
+    "tags": [
+     "areas"
+    ]
+   }
+  },
+  "/api/v1/zones/geojson": {
+   "get": {
+    "description": "Zone polygons (WGS84) with the season's figures as properties.",
+    "operationId": "zones_geojson_api_v1_zones_geojson_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "season",
+      "required": false,
+      "schema": {
+       "$ref": "#/components/schemas/Season",
+       "default": "summer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/GeoJSONFeatureCollection"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No heat product is published yet"
+     }
+    },
+    "summary": "Zone polygons with figures",
+    "tags": [
+     "areas"
+    ]
+   }
+  },
+  "/api/v1/zones/{zone_id}": {
+   "get": {
+    "description": "HTTP GET endpoint returning one zone across all seasons.\n\nArgs:\n    request (Request): Incoming request.\n    response (Response): Response used to set cache headers.\n    zone_id (int): Zone id (1-10).\n\nReturns:\n    ZoneDetail: Zone with per-season figures.\n\nRaises:\n    HTTPException: 404 for an unknown zone; 503 when no product is loaded; 500 for unexpected errors.",
+    "operationId": "get_zone_api_v1_zones__zone_id__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "zone_id",
+      "required": true,
+      "schema": {
+       "title": "Zone Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ZoneDetail"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "404": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Unknown zone"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Request validation failed"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "Internal server error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorResponse"
+        }
+       }
+      },
+      "description": "No heat product is published yet"
+     }
+    },
+    "summary": "One zone, all seasons",
+    "tags": [
+     "areas"
+    ]
+   }
+  }
+ }
+}

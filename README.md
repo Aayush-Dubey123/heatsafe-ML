@@ -8,10 +8,10 @@ By integrating multispectral and thermal satellite observations from **Landsat 8
 
 > **Current Operational Status (Branch 1 - Backend & ML):**  
 > - **Roadmap:** Plan v2 (adopted 2026-11-09) — production backend for a public-facing app, citizens first, at zero recurring cost (Decisions D8–D10, T1–T18 in [`progress.md`](progress.md)).  
-> - **Active Phase:** Phase 11 (Public API v1). Phases 0–8 closed; Phases 9–10 (data products, tiles, automated pipeline) implemented and tested, open only on free-storage upload and scheduled runs  
+> - **Active Phase:** Phase 12 (Hardening & Zero-Cost Deployment). Phases 0–9 and 11 closed; Phase 10 open only on its 14-day scheduled-run check. **Public API v1 is frozen and ready for the frontend**  
 > - **Completed Milestones:** Phase 0 (Foundation Architecture), Phase 1 (Study Area & Master Grid), Phase 2 (STAC Ingestion Pipeline), Phase 3 (Preprocessing, QA Masking & Feature Engineering)  
 > - **Branch 2 (Frontend UI):** 🔒 **LOCKED** under Two-Branch Governance until full Backend Acceptance Gate verification.  
-> - **Live Test Suite:** 102/102 unit & integration tests passing (`python -m pytest -v`, verified 2026-11-11).
+> - **Live Test Suite:** 128/128 unit & integration tests passing (`python -m pytest -v`, verified 2026-11-13); backend branch coverage 94%.
 
 ---
 
@@ -290,10 +290,10 @@ Progress is strictly gated across thirteen defined phases (Plan v2, Decision D8)
 | **6** | **Model 1 Development** | Machine Learning | **`[x]` DONE** | LightGBM/RF on CPU, 2 km spatial-block CV, leakage test, 90% quantile intervals, RMSE ≥ 15% better than Baseline 3 |
 | **7** | **Validation & Model Card** | Verification | **`[x]` DONE** | Held-out 2026 test opened once, bootstrap CIs, Model Card, owner Go/No-Go |
 | **8** | **Exposure, Vulnerability & Cooling Assets** | Risk Analytics | **`[x]` DONE** | Exposure Index 0–100, zone vulnerability & ranks with intervals, OSM cooling assets |
-| **9** | **Versioned Data Products** | Publishing | **`[~]` UPLOAD PENDING** | COGs, pre-rendered tiles, PostGIS zone tables, atomic "latest" pointer, hashed bundles |
+| **9** | **Versioned Data Products** | Publishing | **`[x]` DONE** | COGs, pre-rendered tiles, PostGIS zone tables, atomic "latest" pointer, hashed bundles |
 | **10** | **Automated Inference Pipeline** | Pipeline | **`[~]` SCHEDULE PENDING** | Scheduled GitHub Actions run, freshness flags (`scene_age_days ≤ 16`), fallback, 4 failure-injection tests |
-| **11** | **Public API v1** | FastAPI Endpoints | **`[~]` NEXT** | `/heat`, `/zones`, `/cooling-spots`, `/tiles`, `/hotspots`; warm p95 ≤ 200 ms, coverage ≥ 85%, frozen OpenAPI contract |
-| **12** | **Hardening & Zero-Cost Deployment** | Deployment | `[ ]` PLANNED | Hugging Face Spaces + Neon, Docker, monitoring, backups & restore test, ₹0 recurring cost |
+| **11** | **Public API v1** | FastAPI Endpoints | **`[x]` DONE** | `/heat`, `/zones`, `/cooling-spots`, `/tiles`, `/hotspots`; warm p95 ≤ 200 ms, coverage ≥ 85%, frozen OpenAPI contract |
+| **12** | **Hardening & Zero-Cost Deployment** | Deployment | **`[~]` NEXT** | Hugging Face Spaces + Neon, Docker, monitoring, backups & restore test, ₹0 recurring cost |
 
 ### Zero-Cost Infrastructure (Decision D10)
 HeatSafe-ML is built and operated at ₹0 recurring cost. The API never runs the model per request; the pipeline publishes versioned products and the API only reads them.
@@ -384,6 +384,17 @@ python -m ml.src.ingest --source dem --dry-run
 # Execute live scene ingestion for a targeted date range
 python -m ml.src.ingest --source landsat --start-date 2024-01-01 --end-date 2024-05-31 --max-cloud 15.0
 ```
+
+### 6. Using the API
+With the server running (step 4) and a product bundle in `ml/data/published/` (build one with `python -m ml.src.publish.products`, or fetch the latest with `python -m ml.src.publish.storage restore-bundle`), the interactive docs are at `/docs`. Examples:
+```bash
+curl "http://127.0.0.1:8000/api/v1/metadata"
+curl "http://127.0.0.1:8000/api/v1/heat?lat=21.1458&lon=79.0882"
+curl "http://127.0.0.1:8000/api/v1/zones?season=summer"
+curl "http://127.0.0.1:8000/api/v1/cooling-spots?lat=21.1458&lon=79.0882&limit=5"
+curl -o tile.png "http://127.0.0.1:8000/api/v1/tiles/latest_lst/12/2947/1800.png"
+```
+Errors always look like `{"error": {"code", "message", "details", "request_id"}}`. The OpenAPI contract is frozen in `backend/tests/api/openapi_v1.json`; to change it on purpose run the tests with `UPDATE_OPENAPI_SNAPSHOT=1`.
 
 ---
 

@@ -1,16 +1,26 @@
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from backend.core import logger
-from backend.core.apis.middleware import REQUEST_ID_HEADER, RequestContextMiddleware, register_error_handlers
+from backend.core.apis.middleware import (
+    REQUEST_ID_HEADER,
+    RateLimitMiddleware,
+    RequestContextMiddleware,
+    register_error_handlers,
+)
 from backend.core.apis.routes.health import router as health_router
+from backend.core.apis.routes.product.areas import router as areas_router
+from backend.core.apis.routes.product.product import router as product_router
+from backend.core.apis.routes.tiles.tiles import router as tiles_router
 from backend.core.apis.schemas.responses.error_response import ErrorResponse
 from backend.core.config.settings import get_settings
 from backend.core.database.database import engine
+from backend.core.services.product.store import load_store
 
 logging = logger(__name__)
 
@@ -29,6 +39,9 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     Yields:
         None: Yields control to running application until SIGTERM/SIGINT.
     """
+    settings = get_settings()
+    root = Path(settings.published_dir)
+    app.state.store = load_store(root if root.is_absolute() else Path(__file__).resolve().parents[3] / root)
     logging.info("Executing application lifespan startup: verifying database connectivity")
     try:
         with engine.connect() as connection:
@@ -65,6 +78,8 @@ def create_app() -> FastAPI:
         },
     )
 
+    # Order matters (last added = outermost): request context > CORS > rate limit, so 429 replies carry CORS headers.
+    application.add_middleware(RateLimitMiddleware, limit_per_minute=settings.rate_limit_per_minute)
     # Public, read-only API: no cookies, so credentials stay disabled.
     application.add_middleware(
         CORSMiddleware,
@@ -82,6 +97,10 @@ def create_app() -> FastAPI:
 
     # Mount domain routes
     application.include_router(health_router, prefix="/api")
+    application.include_router(product_router, prefix="/api")
+    application.include_router(areas_router, prefix="/api")
+    application.include_router(tiles_router, prefix="/api")
+    application.state.store = None
 
     logging.info(f"FastAPI application constructed for environment '{settings.environment}'")
     return application

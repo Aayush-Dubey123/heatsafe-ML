@@ -1,11 +1,15 @@
 name: HeatSafe-ML Pipeline
 
-# Daily check for a new Landsat scene (Phase 10).
+# Daily check for a new Landsat 8/9 scene (Phase 10).
 #
-# The job needs the trained model, scene cubes, and the last published bundle,
-# which live in free storage outside git. Until that storage is configured it is
-# switched off: set the repository variable HEATSAFE_PIPELINE_ENABLED to "true"
-# and add the secrets below to enable it. Manual runs are always possible.
+# A runner starts empty, so it first restores the model, terrain, scene index and
+# map layers from the free Hugging Face dataset repo, runs the pipeline once, and
+# the pipeline uploads the new bundle and refreshed state back.
+#
+# Enable by setting the repository variable HEATSAFE_PIPELINE_ENABLED to "true"
+# (Settings -> Secrets and variables -> Actions -> Variables). Required secret:
+# HEATSAFE_STORAGE_TOKEN. Optional secret: HEATSAFE_DATABASE_URL (serving database).
+# Manual runs are possible from the Actions tab at any time.
 on:
   schedule:
     - cron: "30 7 * * *"   # 13:00 IST, a few hours after the ~10:00 local overpass
@@ -21,14 +25,13 @@ concurrency:
 jobs:
   run-pipeline:
     name: Detect, process, and publish new scene
-    if: ${{ vars.HEATSAFE_PIPELINE_ENABLED == 'true' }}
+    if: ${{ vars.HEATSAFE_PIPELINE_ENABLED == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
       PYTHONPATH: "."
-      HEATSAFE_ENVIRONMENT: production
-      HEATSAFE_DATABASE_URL: ${{ secrets.HEATSAFE_DATABASE_URL }}
       HEATSAFE_STORAGE_TOKEN: ${{ secrets.HEATSAFE_STORAGE_TOKEN }}
+      HEATSAFE_DATABASE_URL: ${{ secrets.HEATSAFE_DATABASE_URL }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -45,11 +48,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Restore model, scene cubes, and last published bundle
-        run: |
-          echo "Storage sync is not implemented yet (Phase 12): no free storage account is configured."
-          echo "Enable this job only after the restore/upload steps exist."
-          exit 1
+      - name: Restore model, terrain, scene index, and map layers
+        run: python -m ml.src.publish.storage restore-state
+
+      - name: Restore the last published bundle
+        run: python -m ml.src.publish.storage restore-bundle
 
       - name: Run pipeline once
         run: python -m ml.src.pipeline.run_batch

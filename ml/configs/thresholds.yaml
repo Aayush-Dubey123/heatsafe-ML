@@ -86,3 +86,8 @@ pipeline:
   lock_file: "ml/data/published/pipeline.lock"
   lock_timeout_hours: 6
   lookback_days: 40            # how far back to search for scenes newer than the last published one
+
+# Free storage (Hugging Face Dataset repo; token comes from HEATSAFE_STORAGE_TOKEN)
+storage:
+  repo_id: "ayushji23/heatsafe-products"
+  keep_bundles: 2

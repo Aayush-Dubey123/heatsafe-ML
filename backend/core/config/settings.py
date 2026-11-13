@@ -44,6 +44,9 @@ class Settings(BaseSettings):
     cors_origins: Annotated[list[str], NoDecode] = Field(default_factory=list)
     host: str = "127.0.0.1"
     port: int = Field(default=8000, ge=1, le=65535)
+    published_dir: str = "ml/data/published"
+    max_scene_age_days: int = Field(default=16, ge=1, le=120)
+    rate_limit_per_minute: int = Field(default=300, ge=10, le=100000)
 
     @field_validator("cors_origins", mode="before")
     @classmethod

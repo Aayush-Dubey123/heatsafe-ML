@@ -25,6 +25,7 @@ from ml.src.dataset.build import INTERIM_DIR, SCENE_INDEX, SCENES_DIR, discover_
 from ml.src.dataset.splits import load_thresholds
 from ml.src.pipeline.fallback import RunLock, RunLockError, record_run, serve_last_good
 from ml.src.publish.products import build_bundle, load_bundle_to_database, published_dir, read_latest
+from ml.src.publish.storage import StorageNotConfiguredError, get_token, upload_bundle, upload_state
 
 logging = get_ml_logger(__name__)
 
@@ -111,6 +112,26 @@ def ingest_and_process(scenes: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return rows
 
 
+def upload_outputs(bundle: Path) -> dict[str, Any]:
+    """
+    Upload the new bundle and the refreshed pipeline state to free storage.
+
+    Does nothing when no storage token is configured (e.g. local runs).
+
+    Args:
+        bundle (Path): Newly published bundle folder.
+
+    Returns:
+        dict[str, Any]: Upload summary, or {"skipped": True} without a token.
+    """
+    try:
+        get_token()
+    except StorageNotConfiguredError:
+        logging.info("Storage token not set; skipping upload")
+        return {"skipped": True}
+    return {"bundle": upload_bundle(bundle), "state": upload_state()}
+
+
 @dataclass
 class PipelineSteps:
     """
@@ -121,6 +142,7 @@ class PipelineSteps:
     ingest_and_process: Callable[[list[dict[str, Any]]], list[dict[str, Any]]] = ingest_and_process
     publish: Callable[[str], dict[str, Any]] = field(default=lambda scene_id: build_bundle(scene_id))
     load_database: Callable[[Path, str], dict[str, int]] = load_bundle_to_database
+    upload: Callable[[Path], dict[str, Any]] = upload_outputs
 
 
 def run_once(steps: PipelineSteps | None = None, today: date | None = None, root: Path | None = None,
@@ -199,6 +221,14 @@ def run_once(steps: PipelineSteps | None = None, today: date | None = None, root
                                     logging.error(f"Error in run_once database load: {error}")
                                     outcome.update(status="published_db_unavailable",
                                                    detail=f"{type(error).__name__}: {error}"[:500])
+                            try:
+                                steps.upload(Path(published["bundle"]))
+                            except Exception as error:
+                                logging.error(f"Error in run_once storage upload: {error}")
+                                if outcome["status"] == "published":
+                                    outcome["status"] = "published_upload_failed"
+                                note = f"{outcome.get('detail', '')} upload: {type(error).__name__}"
+                                outcome["detail"] = note[:500]
     except RunLockError as error:
         outcome.update(status="locked", detail=str(error))
 
