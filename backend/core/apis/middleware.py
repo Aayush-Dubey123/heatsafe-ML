@@ -1,15 +1,16 @@
 import re
+import time
 import uuid
-from collections.abc import Awaitable, Callable
+from collections import OrderedDict, deque
 from http import HTTPStatus
 from typing import Any
 
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from starlette.datastructures import Headers, MutableHeaders
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import Response
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from backend.commons.logger import request_id_ctx
 from backend.core import logger
@@ -23,60 +24,139 @@ _DOCS_PATHS = ("/docs", "/redoc", "/openapi.json")
 _API_CSP = "default-src 'none'; frame-ancestors 'none'"
 
 
-class RequestContextMiddleware(BaseHTTPMiddleware):
+class RequestContextMiddleware:
     """
     Assign a correlation ID to every request and add security headers.
 
-    Reuses a well-formed inbound X-Request-ID, otherwise generates a UUID4,
-    exposes it to the logger, and returns it on the response.
+    Written as plain ASGI middleware (much cheaper than Starlette's BaseHTTPMiddleware).
+    Reuses a well-formed inbound X-Request-ID, otherwise generates a UUID4, exposes it to
+    the logger, and returns it on the response.
     """
 
-    def __init__(self, app: Any, enable_hsts: bool = False) -> None:
+    def __init__(self, app: ASGIApp, enable_hsts: bool = False) -> None:
         """
         Configure the middleware.
 
         HSTS is only sent when the API is served over HTTPS in production.
 
         Args:
-            app (Any): Downstream ASGI application.
+            app (ASGIApp): Downstream ASGI application.
             enable_hsts (bool): Whether to emit Strict-Transport-Security.
         """
-        super().__init__(app)
+        self.app = app
         self.enable_hsts = enable_hsts
 
-    async def dispatch(
-        self,
-        request: Request,
-        call_next: Callable[[Request], Awaitable[Response]],
-    ) -> Response:
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         """
-        Bind the request ID, run the request, and decorate the response.
+        Bind the request ID, run the request, and decorate the response headers.
 
         Args:
-            request (Request): Inbound HTTP request.
-            call_next (Callable): Next handler in the ASGI chain.
-
-        Returns:
-            Response: Downstream response with request ID and security headers.
+            scope (Scope): ASGI connection scope.
+            receive (Receive): ASGI receive channel.
+            send (Send): ASGI send channel.
         """
-        inbound = request.headers.get(REQUEST_ID_HEADER, "")
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+        inbound = Headers(scope=scope).get(REQUEST_ID_HEADER, "")
         request_id = inbound if _VALID_REQUEST_ID.match(inbound) else str(uuid.uuid4())
-        request.state.request_id = request_id
+        scope.setdefault("state", {})["request_id"] = request_id
+        is_docs = str(scope["path"]).startswith(_DOCS_PATHS)
         token = request_id_ctx.set(request_id)
+
+        async def send_with_headers(message: Message) -> None:
+            """
+            Add the correlation ID and security headers to the response start message.
+            """
+            if message["type"] == "http.response.start":
+                headers = MutableHeaders(scope=message)
+                headers[REQUEST_ID_HEADER] = request_id
+                headers["X-Content-Type-Options"] = "nosniff"
+                headers["X-Frame-Options"] = "DENY"
+                headers["Referrer-Policy"] = "no-referrer"
+                if not is_docs:
+                    headers["Content-Security-Policy"] = _API_CSP
+                if self.enable_hsts:
+                    headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+            await send(message)
+
         try:
-            response = await call_next(request)
+            await self.app(scope, receive, send_with_headers)
         finally:
             request_id_ctx.reset(token)
 
-        response.headers[REQUEST_ID_HEADER] = request_id
-        response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["X-Frame-Options"] = "DENY"
-        response.headers["Referrer-Policy"] = "no-referrer"
-        if not request.url.path.startswith(_DOCS_PATHS):
-            response.headers["Content-Security-Policy"] = _API_CSP
-        if self.enable_hsts:
-            response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-        return response
+
+class RateLimitMiddleware:
+    """
+    In-process sliding-window rate limiter per client (Decision T12: single instance, no Redis).
+
+    Map tiles and documentation pages are exempt because a map view legitimately loads many tiles.
+    The client key is the first X-Forwarded-For entry when present (hosting proxies), else the socket address.
+    """
+
+    EXEMPT_PREFIXES = ("/api/v1/tiles/", "/docs", "/redoc", "/openapi.json")
+    MAX_CLIENTS = 10_000
+    WINDOW_SECONDS = 60.0
+
+    def __init__(self, app: ASGIApp, limit_per_minute: int) -> None:
+        """
+        Configure the limiter.
+
+        Args:
+            app (ASGIApp): Downstream ASGI application.
+            limit_per_minute (int): Allowed requests per client per minute.
+        """
+        self.app = app
+        self.limit = limit_per_minute
+        self.hits: OrderedDict[str, deque[float]] = OrderedDict()
+
+    def _retry_after(self, client: str) -> int | None:
+        """
+        Record a hit for a client and report how long it must wait if over quota.
+
+        Args:
+            client (str): Client key.
+
+        Returns:
+            int | None: Seconds to wait, or None when the request is allowed.
+        """
+        now = time.monotonic()
+        window = self.hits.pop(client, deque())
+        while window and now - window[0] > self.WINDOW_SECONDS:
+            window.popleft()
+        if len(window) >= self.limit:
+            self.hits[client] = window
+            return max(1, int(self.WINDOW_SECONDS - (now - window[0])))
+        window.append(now)
+        self.hits[client] = window
+        while len(self.hits) > self.MAX_CLIENTS:
+            self.hits.popitem(last=False)
+        return None
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        """
+        Reject the request with 429 when the client exceeded its quota.
+
+        Args:
+            scope (Scope): ASGI connection scope.
+            receive (Receive): ASGI receive channel.
+            send (Send): ASGI send channel.
+        """
+        if scope["type"] != "http" or str(scope["path"]).startswith(self.EXEMPT_PREFIXES):
+            await self.app(scope, receive, send)
+            return
+        forwarded = Headers(scope=scope).get("x-forwarded-for", "").split(",")[0].strip()
+        client_info = scope.get("client")
+        client = forwarded or (client_info[0] if client_info else "unknown")
+        retry_after = self._retry_after(client)
+        if retry_after is None:
+            await self.app(scope, receive, send)
+            return
+        logging.warning("Rate limit exceeded for a client")
+        response = _error_response(Request(scope), status.HTTP_429_TOO_MANY_REQUESTS, "rate_limited",
+                                   "Too many requests. Wait a moment and try again.",
+                                   headers={"Retry-After": str(retry_after)})
+        await response(scope, receive, send)
 
 
 def _request_id(request: Request) -> str:
@@ -152,11 +232,16 @@ async def http_exception_handler(request: Request, exc: Exception) -> JSONRespon
         JSONResponse: Error envelope with the original status code.
     """
     assert isinstance(exc, StarletteHTTPException)  # noqa: S101 - handler is registered for this type only
-    message = exc.detail if isinstance(exc.detail, str) else HTTPStatus(exc.status_code).phrase
+    code = _status_code_name(exc.status_code)
+    detail = exc.detail
+    if isinstance(detail, dict) and isinstance(detail.get("code"), str) and isinstance(detail.get("message"), str):
+        code, message = detail["code"], detail["message"]  # stable, documented error code chosen by the caller
+    else:
+        message = detail if isinstance(detail, str) else HTTPStatus(exc.status_code).phrase
     return _error_response(
         request,
         exc.status_code,
-        _status_code_name(exc.status_code),
+        code,
         message,
         headers=getattr(exc, "headers", None),
     )
