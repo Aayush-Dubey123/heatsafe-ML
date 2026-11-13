@@ -304,7 +304,7 @@ HeatSafe-ML is built and operated at ₹0 recurring cost. The API never runs the
 | Database | Neon free tier (PostgreSQL + PostGIS); Docker Compose Postgres locally |
 | Live pipeline scheduler | GitHub Actions scheduled workflow |
 | Product storage | Hugging Face Dataset repo / GitHub Releases |
-| CI, dependency & security scans | GitHub Actions, Dependabot, `pip-audit` |
+| CI, dependency & security scans | GitHub Actions, `pip-audit` |
 | Monitoring | UptimeRobot; Sentry free tier (optional) |
 | Backups | Nightly `pg_dump` via GitHub Actions |
 

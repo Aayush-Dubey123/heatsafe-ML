@@ -42,6 +42,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | D15 | Phase 7 Go / No-Go | **Go.** On 2026-11-10 the owner instructed "resume phase 7 do till 8" before the test was run. All numeric Phase 7 criteria then passed (test RMSE 1.358 °C ≤ 2.068 °C and ≤ 2.5 °C), so the instruction is recorded as the Go. Known gaps accepted with the Go: no station comparison; intervals cover 87% instead of 90%. The owner may revoke this after reviewing the Model Card. | 2026-11-10 (Phase 7) |
 | D16 | Named localities | The owner supplied the official NMC intention map (scan dated 2025-06-16). It has no zone layer, so the 10 approximate zones stay for the risk ranking (T18), and its ~50 revenue villages are added as a second, readable layer: **55 named localities** traced automatically from the map's index panel and fitted to the OSM city boundary (IoU 0.87; the difference is mainly the Hudkeshwar–Narsala extension, which OSM lacks and is now included). Positional accuracy ~100 m. "Nagpur and Sitabuldi" and "Takali Sim and Jaitala" could not be separated; seven small localities were grown from seed points. | 2026-11-11 (Phase 9) |
 | D17 | API reads the bundle, not PostGIS | The API answers from the published bundle held in memory (rasters, GeoJSON, tables) instead of querying PostGIS: no database round-trip, no spatial index to maintain, the database is optional for reads, and the data and the API can never disagree about which product is current. The database tables (Phase 9) remain as the audit and future-query store. Revisit if the dataset outgrows memory (it is ~36 MB of arrays today). | 2026-11-13 (Phase 11) |
+| D18 | Frontend work on `main`; Dependabot removed | 2026-11-13: `development` was fast-forwarded into `main` on the owner's instruction (D13) and both branches now point at the same commit; frontend work continues on `main`. Dependabot was removed because its automatic pull-request branches (6 appeared within minutes, mostly major-version bumps) break the two-branch policy; vulnerabilities are still caught by `pip-audit` in CI and upgrades are done by hand. | 2026-11-13 |
 
 ### Technology Decision Log (Plan v2, locked 2026-11-09)
 
@@ -65,7 +66,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
 | T16 | Languages | Backend returns codes (e.g. `exposure_level: "very_high"`); the app localises to English / Hindi / Marathi. |
 | T17 | Runtime & dependencies | Python **3.13** (changed from 3.11 on 2026-11-10: the first CI run failed because pinned `rasterio==1.5.2` has no Python 3.11 build; all local verification had been on 3.13); exact version pins in the single root `requirements.txt`. |
 | T18 | Administrative units | 10 NMC zones for v1; wards when boundaries are openly released. |
-| — | Free supporting services | Product storage: Hugging Face Dataset repo / GitHub Releases. CI & scans: GitHub Actions, Dependabot, `pip-audit`. Monitoring: UptimeRobot, Sentry free tier (optional). Backups: nightly `pg_dump` via GitHub Actions. Load test: Locust / k6 locally. |
+| — | Free supporting services | Product storage: Hugging Face Dataset repo / GitHub Releases. CI & scans: GitHub Actions, `pip-audit`. Monitoring: UptimeRobot, Sentry free tier (optional). Backups: nightly `pg_dump` via GitHub Actions. Load test: Locust / k6 locally. |
 
 ---
 
@@ -328,7 +329,7 @@ Landsat / DEM (Planetary Computer) → ingest → preprocess → Model 1 (batch)
 - [x] CORS origins from settings, credentials disabled; security headers (`nosniff`, `DENY`, `no-referrer`, API CSP; HSTS in production only)
 - [x] Auth (T6): JWT secret from settings, no fallback; algorithm pinned on decode; PyJWT added
 - [x] Exact version pins; vulnerable web/test packages upgraded (FastAPI 0.162.2 / Starlette 1.10.0, PyJWT 2.15.1, python-multipart 0.0.33, python-dotenv 1.2.4, pydantic-settings 2.16.2, pytest 9.2.0); ML/geospatial pins unchanged (T17)
-- [x] CI: ruff (incl. bandit `S` hardcoded-secret rules) + mypy on `backend/`, `pip-audit`, and a second job running backend tests + migrations against a PostGIS service; Dependabot weekly
+- [x] CI: ruff (incl. bandit `S` hardcoded-secret rules) + mypy on `backend/`, `pip-audit`, and a second job running backend tests + migrations against a PostGIS service
 - **Measurable Exit Criteria:**
   - [x] Clean clone → `docker compose up` → `alembic upgrade head` → `pytest` green. *(Verified locally 2026-11-09 on Docker `postgis/postgis:16-3.4`.)*
   - [x] CI green with ruff + mypy + pip-audit + tests: run 42814984846 on commit `fbc1b8e` (2026-11-10), both jobs passed (SQLite job and PostgreSQL + PostGIS job). The first run (42810508353) failed at dependency install because `rasterio==1.5.2` has no Python 3.11 build; CI moved to Python 3.13 (T17).
