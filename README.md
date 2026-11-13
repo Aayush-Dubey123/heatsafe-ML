@@ -271,7 +271,7 @@ All agent operations, developer modifications, and roadmap tracking adhere to th
 
 ### Two-Branch Development Governance
 - **Branch 1 (Backend & ML):** Active branch. Covers data ingestion, preprocessing, ML feature engineering, baseline benchmarking, and the production FastAPI backend.
-- **Branch 2 (Frontend UI):** 🔓 **Open, built** (D20/D21, 2026-11-13). The owner chose "Combine all three" designs; the app lives in `frontend/` (run `npm run dev` there with the API on port 8000). It lives on `main` and follows the frontend standards and the three structural rules.
+- **Branch 2 (Frontend UI):** 🔓 **Open, built** (D20/D21, 2026-11-13). The owner chose "Combine all three" designs; the app lives in `frontend/` (run everything locally with one command from the repo root: `.\dev.cmd` starts the API on :8000 and the web app on :3000 and opens the browser). It lives on `main` and follows the frontend standards and the three structural rules.
 
 ---
 
