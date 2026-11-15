@@ -487,3 +487,20 @@ Final test, opened once (2026-11-10): pixels in 36 two-kilometre blocks the mode
 ---
 
 **Built with scientific rigor, spatial transparency, and engineering discipline for Nagpur.**
+
+## Deploying the API
+
+The `Dockerfile` builds the read-only API image (port 7860, non-root). Set these on the host as secrets or variables, never in the repository:
+
+| Variable | Purpose |
+|:---|:---|
+| `HEATSAFE_ENVIRONMENT=production` | Enables the strict checks below |
+| `HEATSAFE_JWT_SECRET_KEY` | Long random string (required in production) |
+| `HEATSAFE_DATABASE_URL` | PostgreSQL URL; the API still serves if it is unreachable and `/health` reports it |
+| `HEATSAFE_CORS_ORIGINS` | The web app's exact origin(s), no wildcard |
+| `HEATSAFE_TRUSTED_HOSTS` | The API's own host name(s), no wildcard (for example `your-space.hf.space`) |
+| `HEATSAFE_TRUSTED_PROXY_IPS` | Leave empty unless the host documents its proxy IPs |
+| `HEATSAFE_STORAGE_TOKEN` | Hugging Face token so the container can download the latest bundle at start |
+
+Build the web app with `VITE_API_BASE_URL` set to the deployed API address.
+
