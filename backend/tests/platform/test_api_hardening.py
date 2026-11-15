@@ -5,6 +5,7 @@ from alembic.migration import MigrationContext
 from fastapi.testclient import TestClient
 
 from backend.core.apis.api import app, create_app
+from backend.core.config.settings import Settings
 from backend.core.cruds.health_crud import HealthCRUD
 from backend.core.database.base_class import Base, migration_name_filter
 from backend.core.database.database import engine
@@ -47,6 +48,26 @@ def test_docs_page_not_blocked_by_csp():
     response = client.get("/docs")
     assert response.status_code == 200
     assert "Content-Security-Policy" not in response.headers
+
+
+def test_production_hides_interactive_docs(monkeypatch):
+    """
+    Production applications do not publish OpenAPI or interactive documentation.
+    """
+    production_settings = Settings(
+        _env_file=None,
+        environment="production",
+        database_url="postgresql+psycopg://user@localhost:5432/heatsafe",
+        jwt_secret_key="x" * 40,
+        cors_origins=["https://app.heatsafe.test"],
+        trusted_hosts=["testserver"],
+    )
+    monkeypatch.setattr("backend.core.apis.api.get_settings", lambda: production_settings)
+    production_app = create_app()
+    production_client = TestClient(production_app)
+    assert production_client.get("/docs").status_code == 404
+    assert production_client.get("/redoc").status_code == 404
+    assert production_client.get("/openapi.json").status_code == 404
 
 
 def test_valid_inbound_request_id_is_reused_and_invalid_is_replaced():

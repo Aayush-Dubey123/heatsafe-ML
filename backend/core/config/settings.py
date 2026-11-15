@@ -24,6 +24,8 @@ class Settings(BaseSettings):
         jwt_algorithm (str): JWT signing algorithm.
         access_token_expire_minutes (int): Admin token lifetime in minutes.
         cors_origins (list[str]): Browser origins allowed to call the API.
+        trusted_hosts (list[str]): HTTP Host values accepted by the API.
+        trusted_proxy_ips (list[str]): Reverse-proxy addresses allowed to supply client IP headers.
         host (str): Interface the ASGI server binds to.
         port (int): Port the ASGI server listens on.
     """
@@ -42,25 +44,27 @@ class Settings(BaseSettings):
     jwt_algorithm: Literal["HS256", "HS384", "HS512"] = "HS256"
     access_token_expire_minutes: int = Field(default=60, ge=1, le=1440)
     cors_origins: Annotated[list[str], NoDecode] = Field(default_factory=list)
+    trusted_hosts: Annotated[list[str], NoDecode] = Field(default_factory=lambda: ["*"])
+    trusted_proxy_ips: Annotated[list[str], NoDecode] = Field(default_factory=list)
     host: str = "127.0.0.1"
     port: int = Field(default=8000, ge=1, le=65535)
     published_dir: str = "ml/data/published"
     max_scene_age_days: int = Field(default=16, ge=1, le=120)
     rate_limit_per_minute: int = Field(default=300, ge=10, le=100000)
 
-    @field_validator("cors_origins", mode="before")
+    @field_validator("cors_origins", "trusted_hosts", "trusted_proxy_ips", mode="before")
     @classmethod
-    def split_cors_origins(cls, value: object) -> object:
+    def split_comma_separated_values(cls, value: object) -> object:
         """
-        Accept CORS origins as a comma-separated string or a JSON list.
+        Accept configured origin or host lists as comma-separated strings or JSON lists.
 
-        Lets `.env` files use `HEATSAFE_CORS_ORIGINS=https://a.app,https://b.app`.
+        Lets `.env` files use comma-separated values without JSON escaping.
 
         Args:
             value (object): Raw value read from the environment.
 
         Returns:
-            object: List of trimmed origins, or the value unchanged if already a list.
+            object: List of trimmed values, or the value unchanged if already a list.
         """
         if isinstance(value, str) and not value.strip().startswith("["):
             return [origin.strip() for origin in value.split(",") if origin.strip()]
@@ -71,8 +75,8 @@ class Settings(BaseSettings):
         """
         Reject configurations that are unsafe for the selected environment.
 
-        SQLite is test-only; production additionally requires a strong JWT secret
-        and an explicit CORS allow-list without wildcards.
+        SQLite is test-only; production additionally requires a strong JWT secret,
+        explicit CORS origins, and an explicit HTTP host allow-list.
 
         Returns:
             Settings: The validated settings instance.
@@ -93,6 +97,8 @@ class Settings(BaseSettings):
                 )
             if "*" in self.cors_origins:
                 raise ValueError("Wildcard CORS origin '*' is not allowed in production.")
+            if not self.trusted_hosts or "*" in self.trusted_hosts:
+                raise ValueError("HEATSAFE_TRUSTED_HOSTS must be an explicit allow-list in production.")
         return self
 
 

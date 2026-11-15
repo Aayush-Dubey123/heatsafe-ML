@@ -5,6 +5,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from backend.core import logger
 from backend.core.apis.middleware import (
@@ -69,8 +70,9 @@ def create_app() -> FastAPI:
         title="HeatSafe-ML Backend API",
         description="Geospatial Machine Learning & Heat Exposure Analytics API for Nagpur, India",
         version=settings.app_version,
-        docs_url="/docs",
-        redoc_url="/redoc",
+        docs_url=None if settings.environment == "production" else "/docs",
+        redoc_url=None if settings.environment == "production" else "/redoc",
+        openapi_url=None if settings.environment == "production" else "/openapi.json",
         lifespan=lifespan,
         responses={
             422: {"model": ErrorResponse, "description": "Request validation failed"},
@@ -79,7 +81,11 @@ def create_app() -> FastAPI:
     )
 
     # Order matters (last added = outermost): request context > CORS > rate limit, so 429 replies carry CORS headers.
-    application.add_middleware(RateLimitMiddleware, limit_per_minute=settings.rate_limit_per_minute)
+    application.add_middleware(
+        RateLimitMiddleware,
+        limit_per_minute=settings.rate_limit_per_minute,
+        trusted_proxy_ips=settings.trusted_proxy_ips,
+    )
     # Public, read-only API: no cookies, so credentials stay disabled.
     application.add_middleware(
         CORSMiddleware,
@@ -89,6 +95,7 @@ def create_app() -> FastAPI:
         allow_headers=["Authorization", "Content-Type", REQUEST_ID_HEADER],
         expose_headers=[REQUEST_ID_HEADER],
     )
+    application.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.trusted_hosts)
     application.add_middleware(
         RequestContextMiddleware,
         enable_hsts=settings.environment == "production",

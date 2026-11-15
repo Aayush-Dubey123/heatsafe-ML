@@ -91,23 +91,26 @@ class RateLimitMiddleware:
     In-process sliding-window rate limiter per client (Decision T12: single instance, no Redis).
 
     Map tiles and documentation pages are exempt because a map view legitimately loads many tiles.
-    The client key is the first X-Forwarded-For entry when present (hosting proxies), else the socket address.
+    The client key is the first X-Forwarded-For entry only when the direct peer is a configured trusted proxy;
+    otherwise it is the socket address. This keeps direct callers from forging an IP address to evade limits.
     """
 
     EXEMPT_PREFIXES = ("/api/v1/tiles/", "/docs", "/redoc", "/openapi.json")
     MAX_CLIENTS = 10_000
     WINDOW_SECONDS = 60.0
 
-    def __init__(self, app: ASGIApp, limit_per_minute: int) -> None:
+    def __init__(self, app: ASGIApp, limit_per_minute: int, trusted_proxy_ips: list[str] | None = None) -> None:
         """
         Configure the limiter.
 
         Args:
             app (ASGIApp): Downstream ASGI application.
             limit_per_minute (int): Allowed requests per client per minute.
+            trusted_proxy_ips (list[str] | None): Direct proxy addresses allowed to supply X-Forwarded-For.
         """
         self.app = app
         self.limit = limit_per_minute
+        self.trusted_proxy_ips = frozenset(trusted_proxy_ips or [])
         self.hits: OrderedDict[str, deque[float]] = OrderedDict()
 
     def _retry_after(self, client: str) -> int | None:
@@ -145,9 +148,10 @@ class RateLimitMiddleware:
         if scope["type"] != "http" or str(scope["path"]).startswith(self.EXEMPT_PREFIXES):
             await self.app(scope, receive, send)
             return
-        forwarded = Headers(scope=scope).get("x-forwarded-for", "").split(",")[0].strip()
         client_info = scope.get("client")
-        client = forwarded or (client_info[0] if client_info else "unknown")
+        peer = client_info[0] if client_info else "unknown"
+        forwarded = Headers(scope=scope).get("x-forwarded-for", "").split(",")[0].strip()
+        client = forwarded if peer in self.trusted_proxy_ips and forwarded else peer
         retry_after = self._retry_after(client)
         if retry_after is None:
             await self.app(scope, receive, send)

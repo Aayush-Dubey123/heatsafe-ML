@@ -65,6 +65,16 @@ def test_production_rejects_wildcard_cors():
         make_settings(environment="production", jwt_secret_key=STRONG_SECRET, cors_origins="*")
 
 
+def test_production_requires_explicit_trusted_hosts():
+    """
+    Production refuses a wildcard or omitted HTTP host allow-list.
+    """
+    with pytest.raises(ValidationError, match="TRUSTED_HOSTS"):
+        make_settings(environment="production", jwt_secret_key=STRONG_SECRET, trusted_hosts=[])
+    with pytest.raises(ValidationError, match="TRUSTED_HOSTS"):
+        make_settings(environment="production", jwt_secret_key=STRONG_SECRET, trusted_hosts="*")
+
+
 def test_valid_production_settings_and_cors_parsing():
     """
     A complete production configuration validates and splits comma-separated origins.
@@ -73,8 +83,18 @@ def test_valid_production_settings_and_cors_parsing():
         environment="production",
         jwt_secret_key=STRONG_SECRET,
         cors_origins="https://heatsafe.app, https://planner.heatsafe.app",
+        trusted_hosts="api.heatsafe.app,*.hf.space",
     )
     assert settings.cors_origins == ["https://heatsafe.app", "https://planner.heatsafe.app"]
+    assert settings.trusted_hosts == ["api.heatsafe.app", "*.hf.space"]
+
+
+def test_trusted_proxy_ips_are_parsed_as_a_list():
+    """
+    Reverse-proxy addresses accept the same concise environment syntax as other lists.
+    """
+    settings = make_settings(trusted_proxy_ips="10.0.0.1, 10.0.0.2")
+    assert settings.trusted_proxy_ips == ["10.0.0.1", "10.0.0.2"]
     assert STRONG_SECRET not in repr(settings)
 
 
