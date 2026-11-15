@@ -512,3 +512,15 @@ Hugging Face Docker Spaces need a paid PRO plan, so the free route is Render for
 2. **Web app on Vercel:** import the repository, set the root directory to `frontend`, framework Vite, and the environment variable `VITE_API_BASE_URL` to the Render address. `frontend/vercel.json` makes direct links such as `/map` work.
 3. Put the Vercel address into `HEATSAFE_CORS_ORIGINS` on Render and redeploy.
 4. Optional: a free uptime monitor hitting `/api/v1/metadata` every 5 minutes keeps the API awake (one service fits the 750 free hours a month).
+
+### Deploying from the published image (no build on Render)
+
+`.github/workflows/image.yml` builds the API image on every relevant push to `main` and publishes it to GitHub Container Registry:
+
+`ghcr.io/aayush-dubey123/heatsafe-api:latest`
+
+In Render choose New > Web Service > Existing image, paste that URL, pick the Free instance type, and add the same environment variables as in the table above (plus `HEATSAFE_PORT=10000`). If Render cannot pull it, open the package on GitHub (profile > Packages > heatsafe-api > Package settings) and set its visibility to Public. After a code change, trigger a deploy on Render to pull the new `latest`.
+
+### Keeping the API on fresh data
+
+The API reads the data bundle once when it starts. After the daily pipeline publishes a new bundle, its last step restarts the Render service. Enable it by adding the secret `RENDER_API_KEY` (Render > Account settings > API keys) and the repository variable `RENDER_SERVICE_ID` (the `srv-...` id in the service's dashboard URL). Without them the step is skipped with a notice.

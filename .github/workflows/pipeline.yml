@@ -6,6 +6,11 @@ name: HeatSafe-ML Pipeline
 # map layers from the free Hugging Face dataset repo, runs the pipeline once, and
 # the pipeline uploads the new bundle and refreshed state back.
 #
+# When a new bundle is published, the last step restarts the API on Render so it loads it
+# (the API reads the bundle once at start). That needs the secret RENDER_API_KEY and the
+# repository variable RENDER_SERVICE_ID (the srv-... id in the Render dashboard URL); without
+# them the step is skipped with a notice.
+#
 # Enable by setting the repository variable HEATSAFE_PIPELINE_ENABLED to "true"
 # (Settings -> Secrets and variables -> Actions -> Variables). Required secret:
 # HEATSAFE_STORAGE_TOKEN. Optional secret: HEATSAFE_DATABASE_URL (serving database).
@@ -55,4 +60,26 @@ jobs:
         run: python -m ml.src.sync.storage restore-bundle
 
       - name: Run pipeline once
-        run: python -m ml.src.pipeline.run_batch
+        run: python -m ml.src.pipeline.run_batch | tee run_result.json
+
+      - name: Restart the API so it loads a newly published bundle
+        if: ${{ always() }}
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ vars.RENDER_SERVICE_ID }}
+        run: |
+          status=$(grep -o '"status": *"[a-z_]*"' run_result.json 2>/dev/null | head -1 | cut -d'"' -f4)
+          echo "Pipeline status: ${status:-none}"
+          case "$status" in
+            published|published_db_unavailable) ;;
+            *) echo "No new bundle was published; the API does not need a restart."; exit 0 ;;
+          esac
+          if [ -z "$RENDER_API_KEY" ] || [ -z "$RENDER_SERVICE_ID" ]; then
+            echo "::notice::Render restart skipped: set the RENDER_API_KEY secret and the RENDER_SERVICE_ID variable."
+            exit 0
+          fi
+          http=$(curl -sS -o /dev/null -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" -H "Accept: application/json" \
+            "https://api.render.com/v1/services/${RENDER_SERVICE_ID}/restart")
+          echo "Render restart answered HTTP ${http}"
+          if [ "$http" -ge 300 ]; then echo "::warning::Render restart failed (HTTP ${http}); restart the service by hand."; fi
