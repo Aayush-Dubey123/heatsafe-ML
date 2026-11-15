@@ -14,10 +14,10 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done · `[!]` blocked
    - Absolute freeze on new markdown files; all documentation stays in [README.md](README.md), [agent.md](agent.md), and [progress.md](progress.md).
 5. **Defaults marked "(default)"** are proposed values. They are confirmed or changed once, in Phase 1 or Phase 5 (baselines), and the final value is written into the Decision Log. After that they do not move without a logged decision.
 
-**Current branch:** 1 — Backend & ML  
+**Current branch:** 2 — Frontend (built on `main`; `development` kept equal)  
 **Current phase:** Phase F2/F3 built (frontend, D20/D21): Home + Map + Zones + About running against the real API; next is native-speaker review of hi/mr, real-phone testing (F4) and deployment. Backend: Phases 0–11 closed (Phase 10 accepted, D19); Phase 12 (deployment hardening) deferred.  
-**Frontend status:** 🔓 OPEN for planning (D20)  
-**Last updated:** 2026-11-13  
+**Frontend status:** 🔓 OPEN and built (D20–D24): Home, Map, Zones, About; CI green; deployment pending  
+**Last updated:** 2026-11-15  
 
 ---
 
