@@ -1,0 +1,30 @@
+# Render Blueprint: one free web service running the read-only API from the repository's Dockerfile.
+# Create it in Render with New > Blueprint and pick this repository. Render asks for the values marked sync:false.
+services:
+  - type: web
+    name: heatsafe-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: HEATSAFE_ENVIRONMENT
+        value: production
+      # Render routes traffic to port 10000; the Dockerfile reads HEATSAFE_PORT.
+      - key: HEATSAFE_PORT
+        value: "10000"
+      # Not a real database: the API serves from the published bundle and only logs a warning.
+      # Replace with a Neon URL later if you want /health to show the database as connected.
+      - key: HEATSAFE_DATABASE_URL
+        value: postgresql+psycopg://heatsafe@localhost:5432/heatsafe
+      - key: HEATSAFE_JWT_SECRET_KEY
+        generateValue: true
+      # Enter the service's own host name (for example heatsafe-api.onrender.com), plus localhost,127.0.0.1.
+      - key: HEATSAFE_TRUSTED_HOSTS
+        sync: false
+      # Enter the web app's exact address (for example https://heatsafe.vercel.app). No wildcard.
+      - key: HEATSAFE_CORS_ORIGINS
+        sync: false
+      # Hugging Face token (read access is enough) so the container can download the latest bundle at start.
+      - key: HEATSAFE_STORAGE_TOKEN
+        sync: false

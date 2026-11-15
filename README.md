@@ -504,3 +504,11 @@ The `Dockerfile` builds the read-only API image (port 7860, non-root). Set these
 
 Build the web app with `VITE_API_BASE_URL` set to the deployed API address.
 
+### Free hosting recipe (decision D26)
+
+Hugging Face Docker Spaces need a paid PRO plan, so the free route is Render for the API and Vercel for the web app.
+
+1. **API on Render:** New > Blueprint, pick this repository (it reads `render.yaml`). Enter the three values it asks for: `HEATSAFE_TRUSTED_HOSTS` (the service's host, for example `heatsafe-api.onrender.com,localhost,127.0.0.1`), `HEATSAFE_CORS_ORIGINS` (the Vercel address, set after step 2) and `HEATSAFE_STORAGE_TOKEN`. The first start downloads the data bundle (measured 95 s cold) and needs about 260 MB of memory; the free plan sleeps after 15 minutes without traffic.
+2. **Web app on Vercel:** import the repository, set the root directory to `frontend`, framework Vite, and the environment variable `VITE_API_BASE_URL` to the Render address. `frontend/vercel.json` makes direct links such as `/map` work.
+3. Put the Vercel address into `HEATSAFE_CORS_ORIGINS` on Render and redeploy.
+4. Optional: a free uptime monitor hitting `/api/v1/metadata` every 5 minutes keeps the API awake (one service fits the 750 free hours a month).
